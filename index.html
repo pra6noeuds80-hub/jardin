@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jardin lunaire</title>
+<meta name="copyright" content="© 2026 — Tous droits réservés">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#123c40">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{--abysse:#123c40;--nacre:#f3efe6;--dahlia:#7a1f45;--corail:#e0654e;--laiton:#c9a45c;--vert:#2f6b57}
+*{box-sizing:border-box}
+body{margin:0;font:17px/1.6 'Palatino Linotype','Book Antiqua',Georgia,serif;color:var(--nacre);
+background:linear-gradient(rgba(9,32,35,.74),rgba(9,32,35,.9)),url(poster.jpg) center/cover fixed #0b2a2d}
+header{position:sticky;top:0;z-index:5;background:rgba(9,32,35,.88);backdrop-filter:blur(8px);border-bottom:1px solid rgba(201,164,92,.4);display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.4rem;padding:.6rem 1.2rem}
+header h1{margin:0;font-size:1.5rem;font-weight:400;font-style:italic;color:var(--laiton)}
+nav{display:none;position:absolute;top:100%;left:0;right:0;max-height:75vh;overflow:auto;background:rgba(9,32,35,.97);border-bottom:1px solid rgba(201,164,92,.4);padding:.7rem 1rem;box-shadow:0 12px 30px #0009}nav.open{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.4rem}nav button{text-align:left;border-radius:8px;padding:.55rem .8rem}#mb{font-size:1.3rem;line-height:1;padding:.35rem .7rem}#pg{margin-left:auto;opacity:.85;font-size:.95rem}
+nav button,.btn{font:inherit;background:none;border:1px solid transparent;color:var(--nacre);padding:.25rem .8rem;border-radius:999px;cursor:pointer}
+nav button:hover{border-color:var(--laiton)}nav button.on{background:var(--laiton);color:#1b2a22}
+.btn{border-color:var(--laiton);font-size:.9rem}.btn:hover{background:rgba(201,164,92,.25)}
+.btn.main{background:var(--corail);border-color:var(--corail);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--corail);outline-offset:2px}
+main{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.page{display:none}.page.on{display:block}
+h2{font-weight:400;font-size:2rem;margin:.2rem 0 1rem;color:var(--laiton)}
+.panel{background:rgba(243,239,230,.09);backdrop-filter:blur(6px);border:1px solid rgba(201,164,92,.35);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem}
+.hero{display:grid;grid-template-columns:1fr minmax(220px,340px);gap:2rem;align-items:center;margin-bottom:1.5rem}
+.hero img{width:100%;border-radius:170px 170px 10px 10px;border:3px solid var(--laiton);box-shadow:0 10px 40px #0008}
+.lune{font-size:5rem;line-height:1}.big{font-size:2.6rem;margin:.2rem 0;font-style:italic}
+.tag{display:inline-block;padding:.1rem .7rem;border-radius:999px;font-size:.85rem;margin:.1rem .2rem .1rem 0;color:#fff}
+.Fruit{background:var(--corail)}.Racine{background:#8a5a2b}.Fleur{background:var(--dahlia)}.Feuille{background:var(--vert)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .h{text-align:center;color:var(--laiton);font-size:.85rem}
+.d{min-height:74px;background:rgba(243,239,230,.1);border:1px solid rgba(243,239,230,.15);border-radius:6px;padding:3px 5px;cursor:pointer;font-size:.85rem;border-bottom-width:5px;color:inherit;text-align:left;font-family:inherit}
+.d:hover,.d.sel{border-color:var(--laiton)}.d.today{box-shadow:inset 0 0 0 2px var(--corail)}
+.d b{font-weight:400}.d span{float:right;font-size:1.25rem}.d small{display:block;opacity:.8;font-size:.7rem;line-height:1.1}
+.d.Fruit{border-bottom-color:var(--corail)}.d.Racine{border-bottom-color:#a9713a}.d.Fleur{border-bottom-color:#b0417a}.d.Feuille{border-bottom-color:#4ea884}
+input,select,textarea{font:inherit;background:rgba(9,32,35,.7);color:var(--nacre);border:1px solid rgba(201,164,92,.5);border-radius:6px;padding:.3rem .5rem}
+textarea{width:100%;min-height:90px}
+table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{text-align:left;padding:.35rem .5rem;border-bottom:1px solid rgba(243,239,230,.15);vertical-align:top}
+th{color:var(--laiton);font-weight:400}
+.ok{color:#8fe0b0}.ko{color:#ff9a86}.bar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:.8rem}
+.chip{display:inline-block;background:rgba(9,32,35,.7);border:1px solid rgba(243,239,230,.3);border-radius:6px;padding:0 .4rem;margin:2px;font-size:.85rem}
+.chip i{cursor:pointer;color:var(--corail);font-style:normal;margin-left:.3rem}
+
+#pl{width:2.4rem;height:2.4rem;border-radius:50%;font-size:1rem;padding:0;flex:none}#chm{text-align:left;border-radius:8px;padding:.55rem .8rem;cursor:pointer}
+@media(max-width:700px){header h1{font-size:1.15rem}.hero{grid-template-columns:1fr}.d{min-height:56px}.d small{display:none}}
+@media(prefers-reduced-motion:no-preference){.lune{animation:f 1.2s ease-out}@keyframes f{from{opacity:0;transform:scale(.7)}}}
+.al{border-left:6px solid var(--corail);background:rgba(224,101,78,.2);border-radius:6px;padding:.5rem .9rem;margin-bottom:.6rem}.al.sun{border-color:#e6c14a;background:rgba(230,193,74,.18)}.al.gel{border-color:#7fb8e6;background:rgba(127,184,230,.18)}.row{display:flex;justify-content:space-between;gap:.5rem;padding:.2rem 0;border-bottom:1px solid rgba(243,239,230,.15)}.row i{cursor:pointer;color:var(--corail);font-style:normal}
+.tb{display:flex;flex-wrap:wrap;gap:.4rem}.fc{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem}.fc .panel{margin:0}.fc h3{margin:.1rem 0 .4rem;font-size:1.2rem}.fl td.m{width:5.5%;padding:2px;text-align:center}.fl td.m span{display:block;height:1.1rem;border-radius:4px}.fl th.cur{color:var(--corail);border-bottom:2px solid var(--corail)}#dcv{overflow:auto;max-height:78vh;cursor:grab}#dcv svg{display:block;user-select:none}
+.ic{display:inline-flex;width:1.75rem;height:1.75rem;border-radius:50%;align-items:center;justify-content:center;background:#f3efe6;border:2px solid;font-size:1rem;vertical-align:middle;line-height:1}.ic.Fruit{border-color:var(--corail)}.ic.Racine{border-color:#a9713a}.ic.Fleur{border-color:#b0417a}.ic.Feuille{border-color:#4ea884}.fl td.m span.sb{height:4px;border-radius:2px;margin:1px 0}.d.b2{background:rgba(79,168,132,.5)}.d.b1{background:rgba(79,168,132,.25)}.d.bm{background:rgba(224,101,78,.35)}
+summary{cursor:pointer;color:var(--laiton);font-size:1.05rem}details.panel[open] summary{margin-bottom:.2rem}
+.hm{white-space:nowrap;font-style:normal;margin-left:.4rem}
+nav{max-height:none;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin}nav.open{display:flex;gap:.4rem;grid-template-columns:none}nav button,#chm{flex:none;white-space:nowrap;scroll-snap-align:start}@media(prefers-reduced-motion:no-preference){nav.open{animation:gl .28s ease-out}@keyframes gl{from{opacity:0;transform:translateX(-40px)}}}
+.strip{display:flex;gap:.4rem;overflow-x:auto;padding:.5rem 0 .6rem;margin-top:.6rem;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin}.strip button{flex:none;white-space:nowrap;scroll-snap-align:start;border:1px solid rgba(201,164,92,.5);background:rgba(9,32,35,.6);color:var(--nacre);border-radius:999px;padding:.45rem .95rem;font:inherit;cursor:pointer}.strip button:hover{border-color:var(--laiton)}.strip button.on{background:var(--laiton);color:#1b2a22}
+#cp{max-width:1100px;margin:0 auto;padding:1rem;text-align:center;font-size:.9rem;opacity:.85;border-top:1px solid rgba(201,164,92,.4);font-family:"Segoe UI Historic","Noto Sans Ogham","Segoe UI Symbol","Palatino Linotype",Georgia,serif}
+</style></head><body>
+<header><button id="mb" class="btn" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><h1>Jardin lunaire</h1><button class="btn main" id="pl" aria-label="Lire la musique" title="Lire la musique">▶</button><span id="pg"></span>
+<nav id="nav"><button data-p="accueil" class="on">Aujourd'hui</button><button data-p="cal">Calendrier</button><button data-p="faire">Que faire ?</button><button data-p="semis">Semis et récoltes</button><button data-p="bouturage">Bouturage</button><button data-p="greffes">Greffes</button><button data-p="potager">Plan du potager</button><button data-p="dessiner">Dessiner</button><button data-p="plantes">Plantes</button><button data-p="fiches">Fiches</button><button data-p="fleurs">Floraisons</button><button data-p="meteo">Météo</button><button data-p="outils">Outils</button><button data-p="guide">Guide</button><button data-p="beaute">Cheveux et ongles</button><button data-p="radios">Radios</button><button data-p="ident">Identifier</button><button data-p="astro">Astro-jardin</button><button id="inst" type="button" hidden>📲 Installer l'application</button><label class="btn" id="chm" style="grid-column:1/-1">🎵 Choisir des mp4 / mp3<input type="file" id="pf2" accept="video/mp4,audio/mpeg,audio/*" multiple hidden></label></nav></header>
+<main>
+<section class="page on" id="accueil">
+ <div class="hero"><div><div class="lune" id="hl"></div><p class="big" id="ht"></p><div id="hd"></div></div><img src="poster.jpg" alt="Portrait en nacre couronné de dahlias, poissons et lavande"></div>
+ <div class="grid2"><div class="panel"><h3>Conseils du jour</h3><div id="hc"></div><button class="btn main" id="hgo" style="margin-top:.6rem">Que faire aujourd'hui ?</button></div><div class="panel"><h3>Les 7 prochains jours</h3><div id="hn"></div></div><div class="panel"><h3>Alertes météo</h3><div class="bar"><select id="hwc" aria-label="Ville"></select></div><div id="hw">Chargement…</div></div></div>
+</section>
+<section class="page" id="cal"><h2>Calendrier lunaire</h2>
+ <div class="bar"><button class="btn" id="pm">◀</button><b id="mt" style="min-width:10rem;text-align:center"></b><button class="btn" id="nm">▶</button><button class="btn" id="tdy">Aujourd'hui</button><button class="btn main" id="gcb">📅 Google Agenda</button>
+ <span><span class="tag Fruit">Fruit</span><span class="tag Racine">Racine</span><span class="tag Fleur">Fleur</span><span class="tag Feuille">Feuille</span></span></div>
+ <div class="cal" id="cg"></div>
+ <div class="panel" id="gcp" style="display:none;margin-top:1rem"><h3 style="margin-top:0">Synchroniser avec Google Agenda</h3>
+ <div class="bar"><label>Période <select id="gcr"><option value="1">Mois affiché</option><option value="3">3 mois</option><option value="12">12 mois</option></select></label></div>
+ <div class="bar"><label><input type="checkbox" id="gph" checked> Phases de la lune</label><label><input type="checkbox" id="gjr" checked> Jour lunaire et signe</label><label><input type="checkbox" id="gnt" checked> Mes notes</label><label><input type="checkbox" id="gtk" checked> Mes tâches du mois</label></div>
+ <div class="bar"><button class="btn main" id="gdl">Télécharger pour Google Agenda (.ics)</button><button class="btn" id="g1">Ajouter le jour sélectionné</button></div>
+ <small style="opacity:.85">Sur ordinateur : ouvrez calendar.google.com, puis ⚙ Paramètres, Importer et exporter, Importer, et choisissez le fichier. Sur téléphone : ouvrez le fichier téléchargé avec Google Agenda. Les événements ont un identifiant fixe, donc réimporter le même mois devrait les mettre à jour sans doublon. Ce n'est pas une synchronisation automatique : il faut recommencer pour envoyer vos nouvelles notes.</small></div>
+ <div class="panel" style="margin-top:1rem"><h3 id="ct"></h3><div id="ci"></div><textarea id="cn" placeholder="Notes du jour : semis, récoltes, météo, observations…"></textarea></div>
+</section>
+<section class="page" id="potager"><h2>Plan du potager</h2>
+ <div class="panel"><div class="bar"><label>Année <select id="yr"></select></label>
+ <input id="nb" placeholder="Nouvelle parcelle" size="16"><button class="btn" id="ab">Ajouter la parcelle</button>
+ <button class="btn main" id="rot">Faire tourner vers l'année suivante</button><button class="btn" id="dpdf2">Télécharger le PDF</button></div>
+ <p style="margin:0;opacity:.85;font-size:.9rem">Les parcelles voisines (les lignes se suivent) sont contrôlées : un ⚠ signale deux plantes qui se supportent mal. Rotation : légumineuses → feuilles → fruits → racines.</p></div>
+ <div id="beds"></div></section>
+<section class="page" id="plantes"><h2>Plantes et associations</h2>
+ <div class="panel"><div class="bar"><b>Ma liste :</b><button class="btn" id="pex">Exporter</button><label class="btn">Importer<input type="file" id="pim" accept=".json" hidden></label><button class="btn" id="prs">Restaurer la liste d'avant la mise à jour</button><span style="opacity:.8;font-size:.85rem">Une mise à jour ne supprime jamais vos plantes : les nouvelles sont ajoutées à la suite.</span></div></div>
+ <div class="panel"><div class="bar"><b>Compatibilité :</b><select id="c1"></select> + <select id="c2"></select><b id="cr"></b></div></div>
+ <div class="panel"><div class="bar"><input id="q" placeholder="Rechercher…"><select id="qc"></select><span>|</span>
+ <input id="pn" placeholder="Nom" size="12"><select id="pt"><option>fruit</option><option>feuille</option><option>racine</option><option>fleur</option><option>legumineuse</option></select>
+ <input id="pf" placeholder="Amies (virgules)" size="16"><input id="po" placeholder="Ennemies" size="14"><input id="ps" placeholder="Semis" size="10">
+ <button class="btn" id="pa">Ajouter</button></div>
+ <table><thead><tr><th>Plante</th><th>Type</th><th>S'entendent avec</th><th>À éloigner de</th><th>Semis</th><th></th></tr></thead><tbody id="pb"></tbody></table></div>
+ <div class="panel" id="pix"></div>
+</section>
+<section class="page" id="meteo"><h2>Météo des jardins</h2>
+ <div class="panel"><div class="bar"><label>Ville <select id="wc"></select></label><span style="opacity:.8;font-size:.9rem">Prévisions sur 16 jours (Open-Meteo). Alerte au-delà de 5 jours de suite de pluie ou de soleil ; gel signalé aussi.</span></div><div id="ws"></div></div>
+ <div id="wa"></div>
+ <div class="panel" id="wcmp"></div>
+ <div class="panel" id="wat"></div>
+ <details class="panel"><summary>Prévisions détaillées sur 16 jours</summary><table style="margin-top:.6rem"><thead><tr><th>Jour</th><th></th><th>Min / max</th><th>Pluie</th><th>Soleil</th></tr></thead><tbody id="wdet"></tbody></table></details>
+ <details class="panel"><summary>Autres villes de la région</summary><div id="wra" style="margin-top:.6rem"></div><table><thead><tr><th>Ville (cliquez pour la choisir)</th><th>Pluie d'affilée</th><th>Soleil d'affilée</th><th>Jours de gel</th></tr></thead><tbody id="wsum"></tbody></table></details>
+ <details class="panel"><summary>Saints de glace</summary><div id="wsg" style="margin-top:.6rem"></div></details></section>
+<section class="page" id="outils"><h2>Outils du jardinier</h2><div class="grid2">
+ <div class="panel"><h3>À semer ce mois-ci</h3><select id="sm"></select><div id="sl" style="margin-top:.6rem"></div><small style="opacity:.75">Calculé d'après les périodes de semis de votre liste de plantes.</small></div>
+ <div class="panel"><h3>Tâches du jardin</h3><div class="bar"><input id="kt" placeholder="Ex. tailler les rosiers" size="20"><select id="km"><option value="">Toute l'année</option></select><button class="btn" id="ka">Ajouter</button></div><div id="kl"></div></div>
+ <div class="panel"><h3>Carnet de récolte</h3><div class="bar"><input type="date" id="hd2"><select id="hp"></select><input type="number" id="hq" min="0" step="0.1" placeholder="kg" style="width:5rem"><button class="btn" id="ha">Noter</button></div><div id="hl2"></div></div>
+ <div class="panel"><h3>Stock de graines</h3><div class="bar"><input id="gn" placeholder="Variété" size="14"><input type="number" id="gq" min="0" placeholder="Sachets" style="width:6rem"><input type="number" id="gy" placeholder="Valable jusqu'en" style="width:9rem"><button class="btn" id="ga">Ajouter</button></div><div id="gl"></div></div>
+ <div class="panel"><h3>Calculateur de semences et plants</h3><div class="bar"><select id="qp"></select><input type="number" id="qs" min="0" step=".5" placeholder="m²" style="width:6rem"><button class="btn" id="qu">Surface cultivée de mon plan</button></div><div id="qr"></div></div>
+</div></section>
+<section class="page" id="dessiner"><h2>Dessiner mon jardin</h2>
+ <div class="panel"><div class="bar"><label>Plan <select id="dpl"></select></label><button class="btn" id="dnew">Nouveau</button><button class="btn" id="dren">Renommer</button><button class="btn" id="ddup2">Dupliquer</button><button class="btn" id="ddel2">Supprimer</button><button class="btn main" id="dpdf">Télécharger le PDF</button></div>
+ <div class="bar"><label>Terrain <input type="number" id="dW" min="1" max="300" style="width:4.5rem"> × <input type="number" id="dH" min="1" max="300" style="width:4.5rem"> m</label><label>Nord <input type="number" id="dN" min="0" max="359" style="width:4.5rem">°</label><label>Zoom <input type="range" id="dz" min="15" max="90" value="40"></label><label><input type="checkbox" id="dg" checked> Aimanter (0,5 m)</label><label class="btn">Fond de plan (cadastre, photo)<input type="file" id="dbg" accept="image/*" hidden></label><button class="btn" id="dbx">Retirer le fond</button></div>
+ <div class="tb" id="dcat"></div><div class="bar" style="margin-top:.6rem"><select id="dpp"></select><button class="btn" id="dpa">+ Ajouter cette plante</button></div>
+ <div id="dst" style="opacity:.85;font-size:.9rem"></div></div>
+ <div class="panel"><div id="dcv"></div></div>
+ <div class="panel" id="dprop" style="display:none"><h3 style="margin-top:0">Élément sélectionné</h3><div class="bar"><input id="dn" placeholder="Nom"><label>Largeur <input type="number" id="dw" min=".1" step=".1" style="width:5rem"> m</label><label>Longueur <input type="number" id="dh" min=".1" step=".1" style="width:5rem"> m</label><input type="color" id="dc" aria-label="Couleur"><button class="btn" id="drot">Pivoter</button><button class="btn" id="ddp">Dupliquer</button><button class="btn" id="dfr">Devant</button><button class="btn" id="dde">Supprimer</button><span id="dsu"></span></div></div>
+ <p style="opacity:.8;font-size:.85rem">Glissez les éléments pour les placer. Vos plans sont enregistrés uniquement dans votre navigateur : chaque visiteur a les siens et ne voit ni ne modifie ceux des autres. Le PDF contient le plan, la rotation, les tâches, les récoltes et les notes.</p></section>
+<section class="page" id="fiches"><h2>Fiches des plantes</h2><div class="bar"><input id="fq" placeholder="Rechercher une plante…"></div><div class="fc" id="fg"></div></section>
+<section class="page" id="fleurs"><h2>Calendrier des floraisons</h2><div class="panel"><b>En fleur ce mois-ci :</b> <div id="fnow" style="margin-top:.4rem"></div></div>
+ <div class="panel"><div class="bar"><input id="flq" placeholder="Rechercher une fleur…"><select id="flk" aria-label="Catégorie"></select><label><input type="checkbox" id="flm"> En fleur ce mois-ci seulement</label></div></div>
+ <div class="panel" style="overflow:auto"><table class="fl"><thead id="fh"></thead><tbody id="fb"></tbody></table></div>
+ <div class="panel"><div class="bar"><b>Ajouter une fleur :</b><input id="fn" placeholder="Nom" size="14"><label>du <select id="fd"></select></label><label>au <select id="ff"></select></label><input type="color" id="fcx" value="#c93a5a"><button class="btn" id="fa">Ajouter</button></div></div></section>
+<section class="page" id="guide"><h2>Maladies et ravageurs</h2><div class="panel"><div class="bar"><input id="gq2" placeholder="Rechercher (mildiou, pucerons, tomate…)" size="30"></div><p style="margin:0;opacity:.85;font-size:.9rem">Traitez le soir, jamais en plein soleil, et testez d'abord sur quelques feuilles. Même naturels, les produits se dosent : respectez les proportions.</p></div><div class="fc" id="gg"></div></section>
+<section class="page" id="semis"><h2>Semis et récoltes</h2>
+ <div class="panel"><div class="bar"><label>Mois <select id="smm"></select></label><label>Catégorie <select id="smc"></select></label><input id="smq" placeholder="Rechercher…"></div><div id="smnow"></div></div>
+ <div class="panel"><b>Meilleurs jours lunaires du mois</b> <small style="opacity:.75">(hors nœuds lunaires)</small><div id="smd" style="margin-top:.4rem"></div></div>
+ <div class="panel" style="overflow:auto"><div class="bar"><span class="chip"><b style="color:#e0654e">■</b> Semer</span><span class="chip"><b style="color:#4ea884">■</b> Planter</span><span class="chip"><b style="color:#c9a45c">■</b> Récolter</span><span class="chip"><b style="color:#8a6fc9">■</b> Tailler</span><span style="opacity:.8;font-size:.85rem">≈ : valeurs approximatives à vérifier</span></div><table class="fl"><thead id="smh"></thead><tbody id="smb"></tbody></table></div>
+ <p style="opacity:.8;font-size:.85rem">Périodes indicatives pour la France métropolitaine, d'après les calendriers de QuandPlanter.fr et l'index de JardinLunaire.fr. Affinez selon votre région : en Picardie, attendez la fin des gelées pour les plantations sensibles.</p></section>
+<section class="page" id="beaute"><h2>Cheveux, ongles et épilation</h2>
+ <div class="panel"><div class="bar"><label>Objectif <select id="bo"><option value="pousse">Cheveux : faire pousser et épaissir</option><option value="garde">Cheveux : garder la coupe plus longtemps</option><option value="onglep">Ongles : pousse plus rapide et plus forte</option><option value="ongles">Ongles : pousse plus lente</option><option value="epil">Épilation : repousse plus lente</option></select></label></div><div id="bt"></div></div>
+ <div class="panel"><div class="bar"><button class="btn" id="bpm">◀</button><b id="bmt" style="min-width:10rem;text-align:center"></b><button class="btn" id="bnm">▶</button><span class="chip" style="background:rgba(79,168,132,.5)">très bon</span><span class="chip" style="background:rgba(79,168,132,.25)">bon</span><span class="chip" style="background:rgba(224,101,78,.35)">à éviter</span></div><div class="cal" id="bg"></div></div>
+ <div class="panel"><h3 style="margin-top:0">Prochaines périodes favorables</h3><div id="bl"></div></div>
+ <div class="panel" style="font-size:.92rem"><b>Règles retenues</b> (traditions des calendriers lunaires)<ul style="margin:.4rem 0"><li><b>Cheveux et ongles, pousse rapide et plus forte :</b> lune croissante, avec un bonus pour les jours fruit et feuille pour les cheveux.</li><li><b>Garder la coupe ou ralentir la pousse :</b> lune décroissante, surtout descendante.</li><li><b>Épilation :</b> lune décroissante et descendante, pour une repousse plus lente.</li><li><b>À éviter :</b> les jours de nœud lunaire, qui coïncident avec les éclipses.</li></ul><small style="opacity:.8">Ces pratiques relèvent de la tradition : aucun effet de la lune sur les cheveux, les ongles ou les poils n'est démontré scientifiquement. Les sources donnent parfois des jours différents ; ces calculs sont indicatifs.</small></div></section>
+<section class="page" id="radios"><h2>Radios</h2>
+ <div class="panel"><div class="bar"><button class="btn main" id="rp">▶ Écouter</button><label>Volume <input type="range" id="rv" min="0" max="1" step=".05" value=".8"></label><span id="rst">Choisissez une station · Hors ligne</span></div>
+ <div class="strip" id="rstr" role="listbox" aria-label="Stations de radio"></div></div>
+ <div class="panel"><h3 style="margin-top:0">Ajouter une station</h3><div class="bar"><input id="rn" placeholder="Nom de la station"><input id="ru" placeholder="Adresse du flux (https://…)" size="30"><button class="btn" id="ra">Ajouter</button></div><div id="rl"></div></div>
+ <p style="opacity:.8;font-size:.85rem">Stations de la liste « Top radios » de radio-en-ligne.fr. Les flux sont retrouvés à la volée dans l'annuaire libre Radio Browser. La radio se coupe quand la musique démarre, et inversement.</p></section>
+<section class="page" id="bouturage"><h2>Calendrier du bouturage</h2>
+ <div class="panel"><div class="bar"><label>Mois <select id="bmm"></select></label><label>Technique <select id="btc"></select></label><input id="bq" placeholder="Rechercher une espèce…"></div>
+ <div id="bnow"></div>
+ <div style="margin-top:.8rem"><b>Jours lunaires conseillés</b> <small style="opacity:.75">(tradition : lune descendante, hors nœuds lunaires)</small><div id="bjl"></div></div></div>
+ <div class="panel" style="overflow:auto"><div class="bar" style="font-size:.85rem;opacity:.85">Touchez une ligne pour voir le conseil de l'espèce.</div><table class="fl"><thead id="bth"></thead><tbody id="btb"></tbody></table></div>
+ <h3 style="color:var(--laiton);font-weight:400;font-size:1.5rem;margin:1.2rem 0 .6rem">Comment faire</h3><div id="bhow"></div>
+ <p style="opacity:.8;font-size:.85rem">Périodes indicatives pour le nord de la France, d'après les pratiques courantes de jardinage (bouture herbacée, semi-aoûtée de mi-juillet à mi-septembre, bois sec en hiver, conifères en châssis froid). Elles varient selon l'espèce, la variété et la météo de l'année. Les plantes de l'index de votre livre y ont été ajoutées.</p></section>
+<section class="page" id="greffes"><h2>Calendrier des greffes</h2>
+ <div class="panel"><div class="bar"><label>Mois <select id="gfm"></select></label><label>Technique <select id="gft"></select></label><input id="gfq" placeholder="Rechercher une espèce…"></div>
+ <div id="gfn"></div>
+ <div style="margin-top:.8rem"><b>Jours lunaires conseillés</b> <small style="opacity:.75">(tradition : lune montante, hors nœuds lunaires ; les avis divergent)</small><div id="gfl"></div></div></div>
+ <div class="panel" style="overflow:auto"><div class="bar" style="font-size:.85rem;opacity:.85">Touchez une ligne pour voir le porte-greffe et le conseil de l'espèce.</div><table class="fl"><thead id="gfh"></thead><tbody id="gfb"></tbody></table></div>
+ <h3 style="color:var(--laiton);font-weight:400;font-size:1.5rem;margin:1.2rem 0 .6rem">Comment greffer</h3><div id="gfw"></div>
+ <p style="opacity:.8;font-size:.85rem">Périodes indicatives pour le nord de la France, d'après les pratiques courantes : greffes en fente, à l'anglaise et en couronne de la fin de l'hiver au printemps, écusson à œil dormant de mi-juillet à début septembre. Regardez l'arbre plus que le calendrier : l'écorce doit se décoller facilement pour l'écusson, et la sève doit être prête pour les greffes de printemps. Les porte-greffes cités sont des exemples courants.</p></section>
+<section class="page" id="faire"><h2>Que faire aujourd'hui ?</h2>
+ <div class="panel"><div class="bar"><button class="btn" id="tfp" aria-label="Jour précédent">◀</button><input type="date" id="tfd"><button class="btn" id="tfx" aria-label="Jour suivant">▶</button><button class="btn" id="tft">Aujourd'hui</button><label><input type="checkbox" id="tfv"> Voir aussi les jours de nœud lunaire</label></div>
+ <div id="tfs"></div><div class="al" id="tfn" style="display:none;margin-top:.6rem">Jour de nœud lunaire : on évite de semer, planter, bouturer et greffer. Cochez la case pour voir quand même ce qui serait possible.</div></div>
+ <div id="tfg"></div>
+ <div class="panel" style="overflow:auto"><h3 style="margin-top:0">Les 7 prochains jours</h3><table><thead><tr><th>Jour</th><th>Type</th><th>🌱</th><th>🪴</th><th>✂️</th><th>🌳</th></tr></thead><tbody id="tfw"></tbody></table><small style="opacity:.75">Nombre de possibilités par jour. Touchez une ligne pour l'afficher.</small></div>
+ <details class="panel"><summary>Règles utilisées</summary><ul style="margin:.5rem 0"><li><b>Période :</b> seules les plantes dont le mois convient sont proposées, d'après les calendriers de semis, de bouturage et de greffe du site.</li><li><b>Jour lunaire :</b> on sème et on plante les plantes dont le type correspond au jour : fruit, racine, fleur ou feuille.</li><li><b>Semis</b> en lune montante ; <b>plantation et repiquage</b> en lune descendante.</li><li><b>⭐ idéal :</b> lune croissante pour les fruits, feuilles et fleurs ; lune décroissante pour les racines.</li><li><b>Bouturage :</b> lune descendante, jours racine (idéal) ou feuille.</li><li><b>Greffe :</b> lune montante, jours fruit (fruitiers, tomate) ou fleur (rosiers).</li><li><b>Nœuds lunaires :</b> jours écartés.</li></ul><small style="opacity:.8">Ce sont des traditions de jardinage, sans effet démontré. La météo reste décisive : regardez les alertes de gel et de pluie dans la page Météo. Les plantes proposées viennent de votre liste de plantes, donc les ajouts que vous y faites sont pris en compte.</small></details></section>
+<section class="page" id="ident">
+<h2>Identifier une plante</h2>
+ <div class="panel"><p style="margin-top:0">Envoyez une photo (feuille, fleur, fruit, écorce). L'identification est faite par Pl@ntNet ; il faut une clé gratuite et une connexion internet.</p>
+ <div class="bar"><input type="file" id="ph" accept="image/*"><select id="og"><option value="auto">Organe : automatique</option><option value="leaf">Feuille</option><option value="flower">Fleur</option><option value="fruit">Fruit</option><option value="bark">Écorce</option><option value="habit">Port général</option></select><button class="btn main" id="go">Identifier</button></div>
+ <div class="bar"><label>Clé API <input id="ak" type="password" size="30"></label><a href="https://my.plantnet.org" target="_blank" rel="noopener" style="color:var(--laiton)">Obtenir une clé gratuite</a></div>
+ <img id="pv" alt="Photo à identifier" style="max-width:240px;display:none;border-radius:8px;margin-bottom:.8rem"><div id="rs"></div></div></section>
+<section class="page" id="astro"><h2>Le jardin selon la lune</h2>
+ <div class="grid2"><div class="panel"><h3>Lune montante et descendante</h3><p><b>Montante</b> (du solstice d'hiver à celui d'été) : la sève monte. On sème, on greffe, on récolte fruits et graines.</p><p><b>Descendante</b> : la sève descend. On plante, on repique, on taille, on bouture, on amende.</p></div>
+ <div class="panel"><h3>Lune croissante et décroissante</h3><p><b>Croissante</b> : on sème ce qui se consomme en feuilles ou en fruits.</p><p><b>Décroissante</b> : on s'occupe des racines et des bulbes, on taille, on désherbe.</p></div></div>
+ <div class="panel"><h3>Les jours selon le signe de la lune</h3><table><thead><tr><th>Signe</th><th>Élément</th><th>Jour</th><th>À faire</th></tr></thead><tbody id="sg"></tbody></table></div>
+ <div class="panel bar"><button class="btn" id="ex">Exporter mes données</button><label class="btn">Importer<input type="file" id="im" accept=".json" hidden></label><span style="opacity:.8;font-size:.85rem">Notes, plantes et plan sont enregistrés dans ce navigateur.</span></div>
+</section></main>
+<footer id="cp">© 2026 ᚛ᚏᚐᚉᚔᚅᚓ᚜ ᚛ᚚᚐᚄᚉᚐᚂ᚜ — Tous droits réservés</footer>
+<audio id="au"></audio><audio id="ra2" preload="none"></audio>
+<script src="playlist.js" onerror="0"></script>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const ls=(k,d)=>{try{return JSON.parse(localStorage.getItem('jl_'+k))??d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem('jl_'+k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+const R=Math.PI/180,sin=x=>Math.sin(x*R);
+const DI={Fruit:'🍅',Racine:'🥕',Fleur:'🌸',Feuille:'🥬'};
+/* ---- Lune ---- */
+function astro(dt){const t=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),12),T=t/864e5+2440587.5-2451545;
+ const L=218.316+13.176396*T,M=134.963+13.064993*T,Ms=357.529+.98560028*T,D=297.850+12.190749*T,F=93.272+13.22935*T;
+ const ml=((L+6.289*sin(M)+1.274*sin(2*D-M)+.658*sin(2*D)+.214*sin(2*M)-.186*sin(Ms)-.114*sin(2*F))%360+360)%360;
+ const sl=((280.46+.9856474*T+1.915*sin(Ms)+.02*sin(2*Ms))%360+360)%360,ph=((ml-sl)%360+360)%360;
+ const sg=SIGNES[Math.floor(ml/30)];return{ph,ill:Math.round((1-Math.cos(ph*R))/2*100),sg,day:sg[2],nd:(()=>{const r=((F%180)+180)%180;return Math.min(r,180-r)<6.6})(),
+ mont:ml>=270||ml<90,cr:ph<180,em:'🌑🌒🌓🌔🌕🌖🌗🌘'.match(/./gu)[Math.round(ph/45)%8],
+ nom:['Nouvelle lune','Premier croissant','Premier quartier','Lune gibbeuse croissante','Pleine lune','Lune gibbeuse décroissante','Dernier quartier','Dernier croissant'][Math.round(ph/45)%8]}}
+const SIGNES=[['Bélier','Feu','Fruit','Semer et tuteurer les plantes à fruits, tomates, courges, haricots'],['Taureau','Terre','Racine','Carottes, radis, pommes de terre, betteraves'],['Gémeaux','Air','Fleur','Fleurs, aromatiques, brocolis, artichauts'],['Cancer','Eau','Feuille','Salades, choux, épinards, arrosage'],['Lion','Feu','Fruit','Fruits et graines : semis, récolte pour conserver'],['Vierge','Terre','Racine','Racines, bulbes, préparation du sol'],['Balance','Air','Fleur','Semis de fleurs, massifs, bordures'],['Scorpion','Eau','Feuille','Feuilles, repiquage, arrosage'],['Sagittaire','Feu','Fruit','Fruits, légumineuses, taille des arbres'],['Capricorne','Terre','Racine','Racines, plantation d\'arbres, compost'],['Verseau','Air','Fleur','Jour de repos : désherbage, observation'],['Poissons','Eau','Feuille','Repiquer, bouturer, arroser']];
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const JM=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],JS=['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
+const tag=a=>`<span class="tag ${a.day}">${DI[a.day]} Jour ${a.day.toLowerCase()}</span>`;
+function info(a){return`${tag(a)}${a.nd?'<span class="tag" style="background:#7a2f2f">Nœud lunaire : évitez de couper cheveux et ongles</span>':''}<span class="tag" style="background:#3a6d8c">Lune ${a.cr?'croissante':'décroissante'}</span><span class="tag" style="background:#6a4c8f">${a.mont?'Montante':'Descendante'}</span><p>${a.nom}, ${a.ill} % éclairée. Lune en <b>${a.sg[0]}</b> (${a.sg[1].toLowerCase()}).</p>`}
+function conseil(a){return`<p>${a.mont?'Sève montante : semis, greffes, récolte des fruits.':'Sève descendante : plantation, repiquage, taille, bouturage.'}</p><p>${a.sg[3]}.</p><p>${a.cr?'Croissante : privilégier feuilles et fruits.':'Décroissante : privilégier racines, taille et désherbage.'}</p>`}
+/* ---- Navigation ---- */
+$('#nav').onclick=e=>{const p=e.target.dataset.p;if(!p)return;$$('.page').forEach(x=>x.classList.toggle('on',x.id==p));$$('#nav button').forEach(b=>b.classList.toggle('on',b==e.target));scrollTo(0,0)};
+/* ---- Accueil ---- */
+const now=new Date(),A=astro(now);$('#hl').textContent=A.em;$('#ht').textContent=`${JS[(now.getDay()+6)%7]} ${now.getDate()} ${JM[now.getMonth()]}`;$('#ht').insertAdjacentHTML('beforeend',' <span id="hm" class="hm"></span>');$('#hd').innerHTML=info(A);$('#hc').innerHTML=conseil(A);
+$('#hn').innerHTML=[...Array(7)].map((_,i)=>{const d=new Date(now);d.setDate(d.getDate()+i);const a=astro(d);return`<div>${a.em} ${JS[(d.getDay()+6)%7].slice(0,3)} ${d.getDate()} ${tag(a)} ${a.sg[0]}</div>`}).join('');
+/* ---- Calendrier ---- */
+let cur=new Date(now.getFullYear(),now.getMonth(),1),sel=iso(now),notes=ls('notes',{});
+function drawCal(){$('#mt').textContent=JM[cur.getMonth()]+' '+cur.getFullYear();const first=(cur.getDay()+6)%7,n=new Date(cur.getFullYear(),cur.getMonth()+1,0).getDate();
+ let h=JS.map(j=>`<div class="h">${j.slice(0,3)}</div>`).join('')+'<div></div>'.repeat(first);
+ for(let i=1;i<=n;i++){const d=new Date(cur.getFullYear(),cur.getMonth(),i),k=iso(d),a=astro(d);
+ h+=`<button class="d ${a.day} ${k==iso(now)?'today':''} ${k==sel?'sel':''}" data-k="${k}"><b>${i}</b><span>${a.em}</span><small>${DI[a.day]} ${a.sg[0]} ${a.mont?'↑':'↓'}${notes[k]?' 📝':''}</small></button>`}
+ $('#cg').innerHTML=h;showDay()}
+function showDay(){const [y,m,d]=sel.split('-').map(Number),dt=new Date(y,m-1,d),a=astro(dt);$('#ct').textContent=`${d} ${JM[m-1]} ${y}`;$('#ci').innerHTML=info(a)+conseil(a);$('#cn').value=notes[sel]||''}
+$('#cg').onclick=e=>{const b=e.target.closest('.d');if(b){sel=b.dataset.k;drawCal()}};
+$('#cn').oninput=e=>{notes[sel]=e.target.value;if(!e.target.value)delete notes[sel];sv('notes',notes);const b=$(`.d[data-k="${sel}"] small`);if(b)b.textContent=b.textContent.replace(' 📝','')+(notes[sel]?' 📝':'')};
+$('#pm').onclick=()=>{cur.setMonth(cur.getMonth()-1);drawCal()};$('#nm').onclick=()=>{cur.setMonth(cur.getMonth()+1);drawCal()};$('#tdy').onclick=()=>{cur=new Date(now.getFullYear(),now.getMonth(),1);sel=iso(now);drawCal()};
+/* ---- Plantes ---- */
+const DEF='Tomate|fruit|basilic,carotte,oeillet d\'inde,persil|fenouil,pomme de terre,chou|Mars-mai sous abri\nPomme de terre|racine|haricot,chou,capucine|tomate,courgette,tournesol|Mars-avril\nCarotte|racine|poireau,oignon,radis,tomate|aneth|Mars-juillet\nOignon|racine|carotte,betterave,fraisier|pois,haricot,chou|Mars-avril\nPoireau|racine|carotte,celeri,fraisier|haricot,pois|Mars-juin\nRadis|racine|carotte,laitue,pois,capucine|chou|Mars-septembre\nBetterave|racine|oignon,chou,laitue|haricot|Avril-juin\nAil|racine|fraisier,carotte,tomate|pois,haricot,chou|Octobre-mars\nLaitue|feuille|carotte,radis,fraisier,concombre|persil,celeri|Mars-septembre\nChou|feuille|celeri,betterave,capucine|fraisier,tomate,oignon,ail|Avril-juin\nEpinard|feuille|fraisier,haricot|betterave|Mars-septembre\nCeleri|feuille|poireau,chou,tomate|laitue|Mars-mai\nPersil|feuille|tomate,radis|laitue|Mars-juillet\nBasilic|feuille|tomate,poivron||Mai-juin\nFenouil|feuille||tomate,haricot,poivron,pois|Mai-juillet\nCourgette|fruit|haricot,capucine,mais,radis|pomme de terre|Avril-mai\nConcombre|fruit|laitue,haricot,mais,radis,tournesol|pomme de terre|Avril-mai\nPoivron|fruit|basilic,carotte,oignon|fenouil|Mars-avril sous abri\nFraisier|fruit|ail,oignon,laitue,poireau,epinard|chou|Août-septembre\nMais|fruit|haricot,courgette,pois,concombre||Mai\nHaricot|legumineuse|carotte,mais,courgette,fraisier|oignon,poireau,ail,fenouil,betterave|Mai-juillet\nPois|legumineuse|carotte,radis,laitue,mais|oignon,ail,poireau|Février-mai\nCapucine|fleur|chou,courgette,pomme de terre,tomate||Avril-mai\nOeillet d\'inde|fleur|tomate,rosier,courgette||Avril-mai\nTournesol|fleur|concombre,mais|pomme de terre|Avril-mai\nLavande|fleur|rosier,thym||Mars-mai\nRosier|fleur|ail,lavande,oeillet d\'inde||Plantation novembre-mars';
+let P=ls('plantes',DEF.split('\n').map(l=>{const [n,t,f,o,s]=l.split('|');return{n,t,f:f?f.split(','):[],o:o?o.split(','):[],s:s||''}}));
+const has=(l,x)=>l.some(y=>norm(y)==norm(x)),byN=n=>P.find(p=>norm(p.n)==norm(n));
+function compat(a,b){if(!a||!b)return 0;if(has(a.o,b.n)||has(b.o,a.n))return-1;if(has(a.f,b.n)||has(b.f,a.n))return 1;return 0}
+function drawP(){sv('plantes',P);const q=norm($('#q').value);
+ $('#pb').innerHTML=P.map((p,i)=>norm(p.n+p.t).includes(q)&&(!$('#qc').value||cat(p)==$('#qc').value)?`<tr><td>${ico(p)} <b>${esc(p.n)}</b></td><td>${p.t}</td><td class="ok">${esc(p.f.join(', '))}</td><td class="ko">${esc(p.o.join(', '))}</td><td>${esc(p.s)}</td><td><button class="btn" data-e="${i}">Modifier</button> <button class="btn" data-x="${i}">Supprimer</button></td></tr>`:'').join('');
+ const o=P.map(p=>`<option>${esc(p.n)}</option>`).join('');[$('#c1'),$('#c2')].forEach(s=>{const v=s.value;s.innerHTML=o;if(v)s.value=v});verdict();drawBeds()}
+function verdict(){const c=compat(byN($('#c1').value),byN($('#c2').value));$('#cr').innerHTML=c>0?'<span class="ok">Bons voisins</span>':c<0?'<span class="ko">À séparer</span>':'<span>Neutre</span>'}
+$('#c1').onchange=$('#c2').onchange=verdict;$('#q').oninput=drawP;
+$('#pa').onclick=()=>{const n=$('#pn').value.trim();if(!n)return;const l=s=>$(s).value.split(',').map(x=>x.trim()).filter(Boolean);P.push({n,t:$('#pt').value,f:l('#pf'),o:l('#po'),s:$('#ps').value});['#pn','#pf','#po','#ps'].forEach(s=>$(s).value='');drawP()};
+$('#pb').onclick=e=>{const b=e.target;if(b.dataset.x!==undefined&&confirm('Supprimer cette plante ?')){P.splice(b.dataset.x,1);drawP()}
+ if(b.dataset.e!==undefined){const p=P[b.dataset.e],f=prompt('Amies (séparées par des virgules)',p.f.join(', '));if(f===null)return;const o=prompt('À éloigner de',p.o.join(', '));if(o===null)return;const s=prompt('Période de semis',p.s);
+ p.f=f.split(',').map(x=>x.trim()).filter(Boolean);p.o=o.split(',').map(x=>x.trim()).filter(Boolean);if(s!==null)p.s=s;drawP()}};
+/* ---- Potager ---- */
+let B=ls('beds',[{n:'Parcelle A',c:{}},{n:'Parcelle B',c:{}},{n:'Parcelle C',c:{}},{n:'Parcelle D',c:{}}]),Y=now.getFullYear();
+$('#yr').innerHTML=[-1,0,1,2,3].map(i=>`<option ${i?'':'selected'}>${Y+i}</option>`).join('');$('#yr').onchange=()=>{Y=+$('#yr').value;drawBeds()};
+function drawBeds(){sv('beds',B);Y=+$('#yr').value||Y;
+ $('#beds').innerHTML=B.map((b,i)=>{const L=b.c[Y]||[],w=[];
+ const chk=(x,y)=>x&&y&&compat(byN(x),byN(y))<0;
+ L.forEach((a,j)=>{L.slice(j+1).forEach(c=>chk(a,c)&&w.push(`${a} et ${c} dans la même parcelle`));(B[i+1]?.c[Y]||[]).forEach(c=>chk(a,c)&&w.push(`${a} et ${c} (parcelle voisine ${B[i+1].n})`))});
+ return`<div class="panel"><div class="bar"><b style="font-size:1.15rem">${esc(b.n)}</b><button class="btn" data-r="${i}">Renommer</button><button class="btn" data-u="${i}">▲</button><button class="btn" data-d="${i}">▼</button><button class="btn" data-z="${i}">Supprimer</button></div>
+ ${L.map((p,j)=>`<span class="chip">${esc(p)}<i data-k="${i},${j}">✕</i></span>`).join('')||'<span style="opacity:.7">Parcelle vide cette année</span>'}
+ <select data-a="${i}"><option value="">+ Ajouter une plante</option>${P.map(p=>`<option>${esc(p.n)}</option>`).join('')}</select>
+ ${w.map(x=>`<div class="ko">⚠ ${esc(x)}</div>`).join('')}<div style="opacity:.75;font-size:.85rem">Année précédente : ${esc((b.c[Y-1]||[]).join(', ')||'—')}</div></div>`}).join('')}
+$('#beds').onclick=e=>{const d=e.target.dataset;if(d.k){const[i,j]=d.k.split(',');B[i].c[Y].splice(j,1)}
+ else if(d.r){const n=prompt('Nom de la parcelle',B[d.r].n);if(n)B[d.r].n=n}
+ else if(d.u&&+d.u>0){const i=+d.u;[B[i-1],B[i]]=[B[i],B[i-1]]}else if(d.d&&+d.d<B.length-1){const i=+d.d;[B[i+1],B[i]]=[B[i],B[i+1]]}
+ else if(d.z){if(confirm('Supprimer cette parcelle ?'))B.splice(d.z,1)}else return;drawBeds()};
+$('#beds').onchange=e=>{const i=e.target.dataset.a;if(i===undefined||!e.target.value)return;(B[i].c[Y]=B[i].c[Y]||[]).push(e.target.value);drawBeds()};
+$('#ab').onclick=()=>{const n=$('#nb').value.trim();if(n){B.push({n,c:{}});$('#nb').value='';drawBeds()}};
+const NEXT={legumineuse:'feuille',feuille:'fruit',fruit:'racine',racine:'legumineuse',fleur:'fleur'};
+$('#rot').onclick=()=>{B.forEach((b,i)=>{const L=b.c[Y]||[];if(!L.length)return;const ty=[...new Set(L.map(x=>NEXT[byN(x)?.t]).filter(Boolean))],out=[];
+ ty.forEach(t=>{const c=P.filter(p=>p.t==t&&['potager','aromatique','fleur','annuelle'].includes(cat(p))&&!out.some(o=>compat(byN(o),p)<0)&&!(b.c[Y+1]||[]).includes(p.n)&&!L.includes(p.n));if(c.length)out.push(c[0].n)});
+ b.c[Y+1]=[...(b.c[Y+1]||[]),...out]});$('#yr').value=Y+1;drawBeds()};
+/* ---- Astro ---- */
+$('#sg').innerHTML=SIGNES.map(s=>`<tr><td>${s[0]}</td><td>${s[1]}</td><td><span class="tag ${s[2]}">${s[2]}</span></td><td>${s[3]}</td></tr>`).join('');
+$('#ex').onclick=()=>{const o={};Object.keys(localStorage).filter(k=>k.startsWith('jl_')).forEach(k=>o[k]=localStorage[k]);const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));a.download='jardin-lunaire.json';a.click()};
+$('#im').onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text());Object.entries(o).forEach(([k,v])=>k.startsWith('jl_')&&localStorage.setItem(k,v));location.reload()}catch(x){alert('Fichier illisible.')}};
+/* ---- Musique (son seul des mp4) ---- */
+const au=$('#au');let T=(window.MUSE&&window.MUSE.length?window.MUSE:['chant_de_l_immensit.mp4']).map(u=>({u,n:decodeURIComponent(u.split('/').pop()).replace(/\.\w+$/,'')})),ti=0;
+function load(){au.src=T[ti].u;$('#pl').title='♪ '+T[ti].n}
+function stop(){au.pause();$('#pl').textContent='▶';$('#pl').setAttribute('aria-label','Lire la musique')}
+$('#pl').onclick=()=>{if(!au.paused){stop();return}if(!au.src)load();au.play().then(()=>{$('#pl').textContent='■';$('#pl').setAttribute('aria-label','Arrêter la musique')}).catch(()=>alert('Aucun son trouvé : placez vos mp4 ou mp3 à côté de index.html, ou utilisez « Choisir des mp4 / mp3 » dans le menu.'))};
+au.onended=()=>{ti=(ti+1)%T.length;load();au.play()};
+$('#pf2').onchange=e=>{T=[...e.target.files].map(f=>({u:URL.createObjectURL(f),n:f.name.replace(/\.\w+$/,'')}));ti=0;load();au.play();$('#pl').textContent='■'};
+/* ---- Identification Pl@ntNet ---- */
+$('#ak').value=ls('ak','');$('#ak').onchange=e=>sv('ak',e.target.value.trim());
+$('#ph').onchange=e=>{const f=e.target.files[0];if(f){$('#pv').src=URL.createObjectURL(f);$('#pv').style.display='block'}};
+let RS=[];
+$('#go').onclick=async()=>{const f=$('#ph').files[0],k=$('#ak').value.trim(),o=$('#rs');
+ if(!f){o.textContent='Choisissez d\'abord une photo.';return}if(!k){o.textContent='Saisissez votre clé API Pl@ntNet.';return}
+ const fd=new FormData();fd.append('images',f);fd.append('organs',$('#og').value);o.textContent='Identification en cours…';
+ const q='identify/all?include-related-images=false&lang=fr&api-key='+encodeURIComponent(k);
+ try{const r=await fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?'/api/'+q:'https://my-api.plantnet.org/v2/'+q,{method:'POST',body:fd}),j=await r.json();
+ if(!r.ok)throw new Error(j.message||j.error||r.status);RS=(j.results||[]).slice(0,5);
+ o.innerHTML=RS.map((r,i)=>{const s=r.species;return`<div class="panel"><b>${esc(s.scientificNameWithoutAuthor)}</b> ${esc((s.commonNames||[])[0]||'')} <span class="ok">${Math.round(r.score*100)} %</span><div style="opacity:.8;font-size:.9rem">Famille : ${esc(s.family?.scientificNameWithoutAuthor||'—')}</div><button class="btn" data-ad="${i}">Ajouter à ma liste de plantes</button></div>`}).join('')||'Aucune plante reconnue.'}
+ catch(x){o.innerHTML=`<span class="ko">Échec : ${esc(x.message)}.</span> Vérifiez la clé et la connexion. Si le site est en ligne ou installé comme application, le navigateur peut bloquer cette requête : l'identification est alors fiable via l'application Python sur ordinateur.`}};
+$('#rs').onclick=e=>{const i=e.target.dataset.ad;if(i===undefined)return;const s=RS[i].species,n=(s.commonNames||[])[0]||s.scientificNameWithoutAuthor,t=(prompt('Type : fruit, feuille, racine, fleur ou legumineuse','fleur')||'').trim().toLowerCase();
+ if(!['fruit','feuille','racine','fleur','legumineuse'].includes(t))return;if(!byN(n))P.push({n,t,f:[],o:[],s:''});drawP();e.target.textContent='Ajoutée ✓'};
+/* ---- Météo ---- */
+const REGS={'Picardie (Somme, Oise, Aisne)':'Amiens,49.894,2.296;Abbeville,50.106,1.836;Saint-Quentin,49.848,3.287;Laon,49.564,3.620;Soissons,49.381,3.323;Beauvais,49.430,2.081;Compiègne,49.418,2.826;Creil,49.263,2.476;Péronne,49.932,2.933;Albert,50.001,2.652;Château-Thierry,49.044,3.402',
+'Nord et Pas-de-Calais':'Lille,50.629,3.057;Arras,50.291,2.777;Calais,50.951,1.858;Dunkerque,51.034,2.377',
+'Normandie':'Rouen,49.443,1.099;Caen,49.183,-0.371;Cherbourg,49.634,-1.622;Le Havre,49.494,0.107',
+'Île-de-France':'Paris,48.857,2.352;Versailles,48.801,2.130;Meaux,48.960,2.879;Fontainebleau,48.404,2.700',
+'Grand Est':'Strasbourg,48.573,7.752;Reims,49.258,4.032;Metz,49.119,6.176;Nancy,48.692,6.184;Troyes,48.297,4.074;Mulhouse,47.750,7.336',
+'Bretagne':'Rennes,48.117,-1.678;Brest,48.390,-4.486;Quimper,47.996,-4.102;Vannes,47.658,-2.760',
+'Pays de la Loire':'Nantes,47.218,-1.554;Angers,47.478,-0.563;Le Mans,48.006,0.199;La Roche-sur-Yon,46.670,-1.426',
+'Centre-Val de Loire':'Orléans,47.902,1.909;Tours,47.394,0.685;Bourges,47.081,2.399;Chartres,48.446,1.489',
+'Bourgogne-Franche-Comté':'Dijon,47.322,5.041;Besançon,47.238,6.024;Auxerre,47.798,3.573;Mâcon,46.306,4.828',
+'Nouvelle-Aquitaine':'Bordeaux,44.838,-0.579;Limoges,45.833,1.262;Poitiers,46.580,0.340;La Rochelle,46.160,-1.152;Pau,43.295,-0.371',
+'Occitanie':'Toulouse,43.605,1.444;Montpellier,43.611,3.877;Perpignan,42.699,2.895;Nîmes,43.837,4.361',
+'Auvergne-Rhône-Alpes':'Lyon,45.764,4.836;Grenoble,45.189,5.724;Clermont-Ferrand,45.777,3.087;Annecy,45.899,6.129',
+'Provence-Alpes-Côte d\'Azur':'Marseille,43.296,5.370;Nice,43.710,7.262;Avignon,43.949,4.806;Toulon,43.124,5.928',
+'Corse':'Ajaccio,41.919,8.739;Bastia,42.697,9.451'};
+const REGV=Object.fromEntries(Object.entries(REGS).map(([k,v])=>[k,v.split(';').map(c=>{const a=c.split(',');return[a[0],+a[1],+a[2]]})]));
+const ICO=c=>c==0?'☀️':c<3?'🌤️':c==3?'☁️':c<50?'🌫️':c<60?'🌦️':c<70?'🌧️':c<80?'❄️':c<83?'🌧️':c<90?'❄️':'⛈️';
+const fmtD=t=>new Date(t+'T12:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+function run(a){let b=0,s=0,c=0,bs=0;a.forEach((x,i)=>{if(x){if(!c)s=i;c++;if(c>b){b=c;bs=s}}else c=0});return[b,bs]}
+function analyse(d){const[r,rs]=run(d.precipitation_sum.map(x=>(x||0)>=1)),[s,ss]=run(d.sunshine_duration.map(x=>(x||0)>=21600)),g=d.temperature_2m_min.map(x=>x<=0);return{r,rs,s,ss,fr:g.filter(Boolean).length,f0:g.indexOf(true)}}
+function alerts(a,d,v){let o='';const p=(i,n)=>fmtD(d.time[i])+' au '+fmtD(d.time[i+n-1]);
+ if(a.r>5)o+=`<div class="al">🌧️ <b>${v}</b> : ${a.r} jours de pluie d'affilée (${p(a.rs,a.r)}). Risque de mildiou et de sols gorgés d'eau : repoussez les semis en pleine terre.</div>`;
+ if(a.s>5)o+=`<div class="al sun">☀️ <b>${v}</b> : ${a.s} jours de soleil d'affilée (${p(a.ss,a.s)}). Pensez à arroser et à pailler.</div>`;
+ if(a.fr)o+=`<div class="al gel">❄️ <b>${v}</b> : gel annoncé ${a.fr} jour(s), dès le ${fmtD(d.time[a.f0])}. Protégez les jeunes plants.</div>`;return o}
+async function meteo(c){const u=`https://api.open-meteo.com/v1/forecast?latitude=${c.map(x=>x[1]).join(',')}&longitude=${c.map(x=>x[2]).join(',')}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,sunshine_duration,et0_fao_evapotranspiration&current=temperature_2m,weather_code&timezone=Europe%2FParis&forecast_days=16`;
+ const r=await fetch(u);if(!r.ok)throw new Error('erreur '+r.status);return[].concat(await r.json()).map(x=>{x.daily.cur=x.current;return x.daily})}
+let SELW=ls('wsel',null);if(!SELW||!REGV[SELW.r]||!REGV[SELW.r][SELW.c])SELW={r:Object.keys(REGV)[0],c:0};
+const SELS=['#wc','#hwc'];
+SELS.forEach(s=>$(s).innerHTML=Object.entries(REGV).map(([k,v])=>`<optgroup label="${esc(k)}">${v.map((c,i)=>`<option value="${esc(k)}|${i}">${esc(c[0])}</option>`).join('')}</optgroup>`).join(''));
+function setSel(r,c){SELW={r,c};sv('wsel',SELW);SELS.forEach(s=>$(s).value=r+'|'+c)}
+setSel(SELW.r,SELW.c);
+let CMPT=0;
+let WD=[],WC=[],WS=0;
+async function loadW(){const o=$('#ws');o.textContent='Chargement des prévisions…';try{WC=REGV[SELW.r];WD=await meteo(WC);WS=SELW.c;o.textContent='';drawW()}catch(x){o.innerHTML=`<span class="ko">Météo indisponible : ${esc(x.message)}. Vérifiez la connexion internet.</span>`}}
+function drawW(){const A=WD.map(analyse);$('#wa').innerHTML=alerts(A[WS],WD[WS],WC[WS][0])||'<div class="panel ok">Aucune alerte à '+esc(WC[WS][0])+' : pas plus de 5 jours de suite de pluie ou de soleil annoncés.</div>';$('#wra').innerHTML=WC.map((c,i)=>i==WS?'':alerts(A[i],WD[i],c[0])).join('');
+ $('#wsum').innerHTML=WC.map((c,i)=>`<tr data-c="${i}" style="cursor:pointer;${i==WS?'background:rgba(201,164,92,.2)':''}"><td><b>${c[0]}</b></td><td class="${A[i].r>5?'ko':''}">${A[i].r} j${A[i].r>5?' ⚠':''}</td><td class="${A[i].s>5?'ko':''}">${A[i].s} j${A[i].s>5?' ⚠':''}</td><td>${A[i].fr}</td></tr>`).join('');
+ const d=WD[WS];
+ $('#wdet').innerHTML=d.time.map((t,i)=>`<tr><td>${fmtD(t)}</td><td>${ICO(d.weather_code[i])}</td><td>${Math.round(d.temperature_2m_min[i])}° / ${Math.round(d.temperature_2m_max[i])}°</td><td>${(d.precipitation_sum[i]||0).toFixed(1)} mm</td><td>${((d.sunshine_duration[i]||0)/3600).toFixed(1)} h</td></tr>`).join('')}
+$('#wsum').onclick=e=>{const r=e.target.closest('tr');if(r){setSel(SELW.r,+r.dataset.c);WS=SELW.c;drawW();homeW()}};
+$('#wc').onchange=()=>{const[r,i]=$('#wc').value.split('|');setSel(r,+i);if(WD.length&&WC===REGV[r]){WS=+i;drawW()}else loadW();homeW()};
+$('#hwc').onchange=()=>{const[r,i]=$('#hwc').value.split('|');setSel(r,+i);WD=[];homeW()};
+{let y=now.getFullYear(),g=new Date(y,4,11);if(g<new Date(y,now.getMonth(),now.getDate()))g=new Date(y+1,4,11);const n=Math.round((g-new Date(y,now.getMonth(),now.getDate()))/864e5);
+ $('#wsg').innerHTML=`<p style="margin:0">Du 11 au 13 mai, le gel tardif reste possible. ${n==0?'C\'est aujourd\'hui.':'Prochain début dans '+n+' jours.'} Attendez leur passage pour planter tomates, courgettes et haricots en pleine terre.</p>`}
+const wsym=c=>c<2?'☀️':c<4||c==45||c==48?'☁️':(c>=71&&c<=77)||c==85||c==86?'❄️':'🌧️';
+async function homeW(){const c=REGV[SELW.r][SELW.c],o=$('#hw');o.textContent='Chargement…';try{const[d]=await meteo([c]),p7=d.precipitation_sum.slice(0,7).reduce((t,x)=>t+(x||0),0);
+ {const cu=d.cur,m=$('#hm');if(m){m.innerHTML=cu?`${wsym(cu.weather_code)} ${Math.round(cu.temperature_2m)}°`:`${wsym(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°`;m.title=c[0]}}
+ o.innerHTML=(alerts(analyse(d),d,c[0])||'Aucune alerte à '+esc(c[0])+' sur 16 jours : pas plus de 5 jours de suite de pluie ou de soleil.')+`<div style="opacity:.85;margin-top:.4rem">Pluie annoncée sur 7 jours : <b>${p7.toFixed(0)} mm</b></div>`}catch(x){o.textContent='Météo indisponible (connexion internet ?).';const m=$('#hm');if(m)m.textContent=''}}
+homeW();
+/* ---- Outils ---- */
+const MOIS=['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'];
+function mois(s){const m=norm(s).match(/janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre/g);if(!m)return[];const a=MOIS.indexOf(m[0]),b=MOIS.indexOf(m[m.length-1]),r=[];for(let i=a;;i=(i+1)%12){r.push(i);if(i==b)break}return r}
+$('#sm').innerHTML=JM.map((m,i)=>`<option value="${i}" ${i==now.getMonth()?'selected':''}>${m}</option>`).join('');$('#km').innerHTML+=JM.map((m,i)=>`<option value="${i}">${m}</option>`).join('');$('#hd2').value=iso(now);
+let H=ls('recolte',[]),G=ls('graines',[]),K=ls('taches',[]);
+const rows=(a,f,k)=>a.map((x,i)=>`<div class="row"><span>${f(x)}</span><i data-x="${k},${i}" title="Supprimer">✕</i></div>`).join('')||'<span style="opacity:.7">Rien pour l\'instant</span>';
+function drawTools(){const m=+$('#sm').value,l=P.filter(p=>sowM(p).has(m+1));$('#sl').innerHTML=l.map(p=>`<span class="chip">${esc(p.n)}</span>`).join('')||'Aucune plante à semer ce mois-ci.';
+ $('#hp').innerHTML=P.map(p=>`<option>${esc(p.n)}</option>`).join('');sv('recolte',H);sv('graines',G);sv('taches',K);
+ const t={};H.forEach(x=>t[x.p]=(t[x.p]||0)+x.q);
+ $('#hl2').innerHTML=(Object.keys(t).length?'<div style="margin-bottom:.4rem">'+Object.entries(t).map(([p,q])=>`<span class="chip">${esc(p)} : ${+q.toFixed(2)} kg</span>`).join('')+'</div>':'')+rows(H.slice().reverse().slice(0,8),x=>`${x.d} · ${esc(x.p)} · ${x.q} kg`,'h');
+ $('#gl').innerHTML=rows(G,x=>`${esc(x.n)} · ${x.q} sachet(s)${x.y?` · jusqu'en ${x.y}${x.y<now.getFullYear()?' <b class="ko">périmé</b>':''}`:''}`,'g');
+ $('#kl').innerHTML=K.map((x,i)=>`<div class="row"><label><input type="checkbox" data-o="${i}" ${x.ok?'checked':''}> <span style="${x.ok?'text-decoration:line-through;opacity:.6':''}">${esc(x.t)}${x.m!==''?' <small>('+JM[x.m]+')</small>':''}</span></label><i data-x="k,${i}">✕</i></div>`).join('')||'<span style="opacity:.7">Aucune tâche</span>'}
+$('#sm').onchange=drawTools;
+$('#ha').onclick=()=>{const q=parseFloat($('#hq').value);if(!$('#hp').value||!(q>0))return;H.push({d:$('#hd2').value,p:$('#hp').value,q});$('#hq').value='';drawTools()};
+$('#ga').onclick=()=>{const n=$('#gn').value.trim();if(!n)return;G.push({n,q:+$('#gq').value||1,y:+$('#gy').value||0});['#gn','#gq','#gy'].forEach(s=>$(s).value='');drawTools()};
+$('#ka').onclick=()=>{const t=$('#kt').value.trim();if(!t)return;K.push({t,m:$('#km').value,ok:false});$('#kt').value='';drawTools()};
+$('#outils').onclick=e=>{const x=e.target.dataset.x,o=e.target.dataset.o;if(x){const[k,i]=x.split(',');({h:H,g:G,k:K})[k].splice(i,1);drawTools()}else if(o!==undefined){K[o].ok=e.target.checked;drawTools()}};
+$('#nav').addEventListener('click',e=>{const p=e.target.dataset.p;if(p=='outils')drawTools();if(p=='meteo'&&!WD.length)loadW()});
+/* ---- Calendriers semis / plantation / récolte / taille (QuandPlanter.fr, JardinLunaire.fr) ---- */
+const QC={},QL=[];`Ail|racine|potager||1-3,10-11|5-8||
+Artichaut|fleur|potager|2-4|3-5|4-9||
+Asperge|feuille|potager|3-5|4-6|3-6||
+Aubergine|fruit|potager|1-3|4-6|7-9||
+Betterave|racine|potager|3-6|3-6|7-10||
+Carotte|racine|potager|2-7,10-11||5-11||
+Chicorée|feuille|potager|2-7|5-8|7-11||
+Chou brocoli|fleur|potager|2-10|5-11|1-12||
+Chou de Bruxelles|feuille|potager|3-5|4-7|9-4||
+Chou-fleur|fleur|potager|1-9|1-10|1-12||
+Chou frisé|feuille|potager|3-7|4-8|10-4||
+Chou pommé|feuille|potager|2-6,9|3-7,10-11|1-12||
+Chou-rave|racine|potager|2-7|3-8|6-11||
+Concombre|fruit|potager|3-5|5-6|6-8||
+Courgette|fruit|potager|3-6|4-6|6-10||
+Céleri branche|feuille|potager|2-5|4-7|8-11||
+Céleri-rave|racine|potager|3-5|5-6|8-10||
+Fève|legumineuse|potager|2-4,10-11|3-5|5-8||
+Haricot|legumineuse|potager|4-8|6-7|7-10||
+Laitue|feuille|potager|2-9|3-10|1-12||
+Maïs|fruit|potager|3-6||8-10||
+Mâche|feuille|potager|7-10||10-3||
+Navet|racine|potager|1-8||4-10||
+Oignon|racine|potager|2-4,9-11|2-4,9-11|4-9||
+Poireau|racine|potager|2-5,9-10|4-7|1-12||
+Pois|legumineuse|potager|2-6,10-11||3-7||
+Pomme de terre|racine|potager||3-5|5-9||
+Radis|racine|potager|12-9||1-11||
+Rhubarbe|feuille|potager|8-9|3-4,10-11|3-7||
+Rutabaga|racine|potager|3-7|4-7|9-3||
+Salsifis|racine|potager|3-5||10-3||
+Tomate|fruit|potager|2-4|5-6|7-10||
+Topinambour|racine|potager||2-4|10-3||
+Échalote|racine|potager||2-3|7-8||
+Épinard|feuille|potager|2-9|3-5|1-12||
+Cardon|feuille|potager|3-5||10-12||1
+Courge|fruit|potager|4-6|5-6|9-11||1
+Cornichon|fruit|potager|4-6||7-9||1
+Melon|fruit|potager|3-5|5-6|7-9||1
+Pastèque|fruit|potager|3-5|5-6|7-9||1
+Piment|fruit|potager|2-4|5-6|7-10||1
+Poire-melon|fruit|potager||5-6|8-10||1
+Coqueret du Pérou|fruit|potager|2-4|5-6|8-10||1
+Panais|racine|potager|2-6||9-3||1
+Radis noir|racine|potager|6-8||10-2||1
+Endive|racine|potager|5-7||10-2||1
+Oca du Pérou|racine|potager||4-5|10-11||1
+Aneth|feuille|aromatique|3-7|4-7|4-11||
+Basilic|feuille|aromatique|2-5|5-6|6-11||
+Cerfeuil|feuille|aromatique|3-8|3-8|4-9||
+Ciboulette|feuille|aromatique|2-4|3-4|4-11||
+Cumin|feuille|aromatique|3-6|5-7|9-10||
+Estragon|feuille|aromatique||3-5|4-9||
+Laurier|feuille|aromatique|9-10|4-6|1-12||
+Marjolaine|feuille|aromatique|3-5|5-6|7-10||
+Origan|feuille|aromatique|3-5|4-6|7-10||
+Persil|feuille|aromatique|3-9|3-9|1-12||
+Romarin|feuille|aromatique|3-5|3-5,9-10|1-12||
+Sarriette|feuille|aromatique|3-5|5-6|1-12||
+Sauge|feuille|aromatique|4-5|4-5,9-10|6-9||
+Thym|feuille|aromatique|3|4-5,9-10|1-12||
+Absinthe|feuille|aromatique|3-4||7-8||
+Bourrache|fleur|aromatique|3-6||||
+Abricotier|fruit|fruitier||2-3,10-11|6-8|2-3,9-10|
+Amandier|fruit|fruitier||10-11|6-10|12-1|
+Cassissier|fruit|fruitier||10-2|7-8|2-3,10-11|
+Cerisier|fruit|fruitier||2-3,10-11|6-9|9-3|
+Figuier|fruit|fruitier||3-4,10-11|6-10|3-4|
+Framboisier|fruit|fruitier||10-3|6-10|7-12|
+Groseillier|fruit|fruitier||3,10-11|6-8|2-3|
+Myrtillier|fruit|fruitier||3-4,8-11|6-10|2-3,10-11|
+Nectarinier|fruit|fruitier||9-2|6-10|2-3|
+Noisetier|fruit|fruitier||10-3|8-10|10-11|
+Noyer|fruit|fruitier||10-11|9-10|11-2|
+Poirier|fruit|fruitier||11-2|7-10|11-2|
+Pommier|fruit|fruitier||11-2|8-10|2-4|
+Prunier|fruit|fruitier||11-2|7-10|10-11|
+Pêcher|fruit|fruitier||10-2|7-9|2-3|
+Vigne|fruit|fruitier||11-2|8-10|11-5|`.split('\n').forEach(l=>{const a=l.split('|'),q={n:a[0],t:a[1],cat:a[2],S:a[3],P:a[4],R:a[5],T:a[6],ap:a[7]=='1'};QC[norm(a[0])]=q;QL.push(q)});
+QC.celeri=QC['celeri branche'];QC.chou=QC['chou pomme'];
+const mset=s=>{const r=new Set();(s||'').split(',').filter(Boolean).forEach(x=>{const[a,b]=x.split('-').map(Number),e=b||a;for(let m=a;;m=m%12+1){r.add(m);if(m==e)break}});return r};
+const mtxt=s=>(s||'').split(',').filter(Boolean).map(x=>{const[a,b]=x.split('-').map(Number);return x=='1-12'?'toute l\'année':!b||a==b?JM[a-1]:JM[a-1]+' à '+JM[b-1]}).join(' et ');
+const sTxt=q=>[q.S&&'Semis '+mtxt(q.S),q.P&&'Plantation '+mtxt(q.P),q.T&&q.cat=='fruitier'&&'Taille '+mtxt(q.T)].filter(Boolean).join(' · ');
+function cat(p){return QC[norm(p.n)]?.cat||(p.t=='fleur'?'fleur':'potager')}
+function sowM(p){const q=QC[norm(p.n)];return q?new Set([...mset(q.S),...mset(q.P)]):new Set(mois(p.s).map(m=>m+1))}
+const EMO={tomate:'🍅','pomme de terre':'🥔',carotte:'🥕',oignon:'🧅',echalote:'🧅',ail:'🧄',betterave:'🍠',laitue:'🥬',epinard:'🥬',mache:'🥬',chicoree:'🥬','chou pomme':'🥬','chou de bruxelles':'🥬','chou frise':'🥬',chou:'🥬','chou brocoli':'🥦','chou-fleur':'🥦','celeri branche':'🥬',celeri:'🥬',concombre:'🥒',cornichon:'🥒',courgette:'🥒',aubergine:'🍆',poivron:'🫑',piment:'🌶️',mais:'🌽',haricot:'🫘',feve:'🫘',courge:'🎃',melon:'🍈',pasteque:'🍉',fraisier:'🍓',pommier:'🍎',poirier:'🍐',cerisier:'🍒',groseillier:'🍒',pecher:'🍑',abricotier:'🍑',nectarinier:'🍑',prunier:'🍑',vigne:'🍇',amandier:'🌰',noisetier:'🌰',noyer:'🌰',framboisier:'🍓',cassissier:'🫐',myrtillier:'🫐',tournesol:'🌻',rosier:'🌹',capucine:'🌼',"oeillet d'inde":'🌼'},EDEF={fruit:'🍎',feuille:'🥬',racine:'🥕',fleur:'🌸',legumineuse:'🫘'};
+const TCLX={fruit:'Fruit',feuille:'Feuille',racine:'Racine',fleur:'Fleur',legumineuse:'Fruit'};
+function ico(p){const c=cat(p);return`<span class="ic ${TCLX[p.t]||'Fleur'}" title="${esc(p.t)}">${EMO[norm(p.n)]||(c=='aromatique'?'🌿':c=='fruitier'?'🌳':EDEF[p.t]||'🌱')}</span>`}
+/* fusion sécurisée : la liste de l'utilisateur est sauvegardée puis complétée, jamais écrasée */
+if(ls('seedv',0)<2){sv('plantes_backup',P);const have=new Set(P.map(p=>norm(p.n))),ch=P.find(p=>norm(p.n)=='chou');
+ QL.forEach(q=>{if(have.has(norm(q.n)))return;const b=/^chou /.test(norm(q.n))&&ch?ch:{f:[],o:[]};P.push({n:q.n,t:q.t,f:[...b.f],o:[...b.o],s:sTxt(q)});have.add(norm(q.n))});sv('plantes',P);sv('seedv',2)}
+{const CL={'':'Toutes catégories',potager:'Potager',aromatique:'Aromatiques',fruitier:'Fruitiers',fleur:'Fleurs'};
+ $('#qc').innerHTML=Object.entries(CL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');$('#smc').innerHTML=Object.entries(CL).filter(([k])=>k!='fleur').map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+ $('#smm').innerHTML=JM.map((m,i)=>`<option value="${i}" ${i==now.getMonth()?'selected':''}>${m}</option>`).join('')}
+$('#qc').onchange=()=>drawP();
+$('#pex').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(P)],{type:'application/json'}));a.download='mes-plantes.json';a.click()};
+$('#pim').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());if(!Array.isArray(d)||!d.every(x=>x&&x.n&&x.t))throw 0;P=d.map(x=>({n:String(x.n),t:x.t,f:x.f||[],o:x.o||[],s:x.s||''}));drawP()}catch(x){alert('Fichier de plantes illisible.')}};
+$('#prs').onclick=()=>{const b=ls('plantes_backup3',null)||ls('plantes_backup',null);if(!b){alert('Aucune sauvegarde trouvée.');return}if(confirm('Remplacer la liste actuelle par la sauvegarde d\'avant la dernière mise à jour ('+b.length+' plantes) ?')){P=b;drawP()}};
+/* ---- Page Semis et récoltes ---- */
+const ACT=[['S','Semer','#e0654e'],['P','Planter','#4ea884'],['R','Récolter','#c9a45c'],['T','Tailler','#8a6fc9']];
+function drawS(){const m=+$('#smm').value,q=norm($('#smq').value),c=$('#smc').value,cm=now.getMonth()+1,ok=p=>(!c||cat(p)==c)&&norm(p.n).includes(q)&&QC[norm(p.n)];
+ $('#smh').innerHTML='<tr><th>Plante</th>'+JM.map((mm,i)=>`<th class="${i+1==cm?'cur':''}">${mm.slice(0,3)}</th>`).join('')+'</tr>';
+ $('#smb').innerHTML=P.filter(ok).map(p=>{const z=QC[norm(p.n)],ms=ACT.map(a=>mset(z[a[0]]));return`<tr><td style="white-space:nowrap">${ico(p)} ${esc(p.n)}${z.ap?' <small title="Valeurs approximatives">≈</small>':''}</td>${JM.map((_,i)=>`<td class="m">${ACT.map((a,k)=>ms[k].has(i+1)?`<span class="sb" style="background:${a[2]}" title="${a[1]}"></span>`:'').join('')}</td>`).join('')}</tr>`}).join('');
+ $('#smnow').innerHTML='<div class="grid2" style="margin-top:.8rem">'+ACT.map(a=>{const l=P.filter(p=>ok(p)&&mset(QC[norm(p.n)][a[0]]).has(m+1));return`<div><b style="color:${a[2]}">${a[1]} en ${JM[m]}</b><div>${l.map(p=>`<span class="chip">${ico(p)} ${esc(p.n)}</span>`).join('')||'<span style="opacity:.6">Rien</span>'}</div></div>`}).join('')+'</div>';
+ const y=now.getFullYear()+(m<now.getMonth()?1:0),nd=new Date(y,m+1,0).getDate(),D={Fruit:[],Racine:[],Fleur:[],Feuille:[]};
+ for(let i=1;i<=nd;i++){const a=astro(new Date(y,m,i));if(!a.nd)D[a.day].push(i)}
+ $('#smd').innerHTML=Object.entries(D).map(([k,v])=>`<div>${DI[k]} <b>Jours ${k.toLowerCase()}</b> : ${v.join(', ')||'—'}</div>`).join('')}
+$('#smm').onchange=$('#smc').onchange=$('#smq').oninput=drawS;
+/* ---- Page Cheveux, ongles, épilation ---- */
+const OBJ={pousse:a=>a.nd?-1:a.cr?(a.day=='Fruit'||a.day=='Feuille'?2:1):0,garde:a=>a.nd?-1:!a.cr?(!a.mont?2:1):0,onglep:a=>a.nd?-1:a.cr?2:0,ongles:a=>a.nd?-1:!a.cr?2:0,epil:a=>a.nd?-1:(!a.mont?1:0)+(!a.cr?1:0)};
+let bcur=new Date(now.getFullYear(),now.getMonth(),1);
+const bsc=d=>{const a=astro(d);return[OBJ[$('#bo').value](a),a]};
+function drawB(){const[s0,a0]=bsc(now),V={2:'très favorable',1:'favorable',0:'neutre','-1':'à éviter (nœud lunaire)'};
+ $('#bt').innerHTML=`<p class="big" style="font-size:1.6rem;margin:.2rem 0">${a0.em} Aujourd'hui : ${V[s0]}</p>${info(a0)}`;$('#bmt').textContent=JM[bcur.getMonth()]+' '+bcur.getFullYear();
+ const first=(bcur.getDay()+6)%7,n=new Date(bcur.getFullYear(),bcur.getMonth()+1,0).getDate();let g=JS.map(j=>`<div class="h">${j.slice(0,3)}</div>`).join('')+'<div></div>'.repeat(first);
+ for(let i=1;i<=n;i++){const d=new Date(bcur.getFullYear(),bcur.getMonth(),i),[s,a]=bsc(d);g+=`<div class="d b${s<0?'m':s}" style="cursor:default${iso(d)==iso(now)?';box-shadow:inset 0 0 0 2px var(--corail)':''}"><b>${i}</b><span>${a.em}</span><small>${s==2?'✔✔ très bon':s==1?'✔ bon':s<0?'✖ éviter':''}</small></div>`}
+ $('#bg').innerHTML=g;const rs=[];let c0=null;
+ for(let i=0;i<60;i++){const d=new Date(now);d.setDate(d.getDate()+i);const s=bsc(d)[0];if(s>=1){if(!c0)c0={a:iso(d),b:iso(d),s};else{c0.b=iso(d);c0.s=Math.max(c0.s,s)}}else if(c0){rs.push(c0);c0=null}}if(c0)rs.push(c0);
+ $('#bl').innerHTML=rs.slice(0,6).map(r=>`<div class="row"><span>${r.a==r.b?fmtD(r.a):'Du '+fmtD(r.a)+' au '+fmtD(r.b)}</span><span class="${r.s==2?'ok':''}">${r.s==2?'très favorable':'favorable'}</span></div>`).join('')||'Aucune période trouvée.'}
+$('#bo').onchange=drawB;$('#bpm').onclick=()=>{bcur.setMonth(bcur.getMonth()-1);drawB()};$('#bnm').onclick=()=>{bcur.setMonth(bcur.getMonth()+1);drawB()};
+$('#nav').addEventListener('click',e=>{const p=e.target.dataset.p;if(p=='semis')drawS();if(p=='beaute')drawB()});
+/* ---- Fiches plantes ---- */
+
+const FD={};`Tomate|1|50|80|Soleil|110|2
+Pomme de terre|8|30|70|Soleil|110|1
+Carotte|1|5|25|Soleil|90|3
+Oignon|2|10|25|Soleil|120|2
+Poireau|2|15|30|Soleil|150|2
+Radis|1|3|15|Soleil|30|2
+Betterave|2|10|30|Soleil|90|2
+Ail|3|10|25|Soleil|200|1
+Laitue|1|25|25|Mi-ombre|60|2
+Chou|1|50|60|Soleil|120|2
+Epinard|2|10|25|Mi-ombre|50|2
+Celeri|1|30|40|Soleil|150|2
+Persil|1|15|25|Mi-ombre|75|3
+Basilic|1|20|25|Soleil|60|2
+Fenouil|1|25|40|Soleil|100|2
+Courgette|2|80|100|Soleil|60|2
+Concombre|2|50|100|Soleil|70|2
+Poivron|1|45|60|Soleil|110|2
+Fraisier|0|30|40|Soleil|0|1
+Mais|3|30|60|Soleil|110|2
+Haricot|3|10|40|Soleil|70|2
+Pois|3|5|40|Soleil|80|2
+Capucine|2|30|40|Soleil|60|2
+Oeillet d'inde|1|20|30|Soleil|70|2
+Tournesol|2|40|60|Soleil|100|2
+Lavande|0.5|40|60|Soleil|0|2
+Rosier|0|100|120|Soleil|0|1
+Aubergine|1|50|70|Soleil|120|2
+Artichaut|3|80|100|Soleil|0|2
+Asperge|10|40|100|Soleil|0|1
+Chicorée|1|25|30|Soleil|90|2
+Chou brocoli|1|50|60|Soleil|100|2
+Chou de Bruxelles|1|60|70|Soleil|180|2
+Chou-fleur|1|50|60|Soleil|100|2
+Chou frisé|1|50|60|Soleil|150|2
+Chou pommé|1|50|60|Soleil|120|2
+Chou-rave|1|20|30|Soleil|80|2
+Céleri branche|1|30|40|Soleil|150|2
+Céleri-rave|1|40|50|Soleil|180|2
+Fève|4|15|40|Soleil|120|2
+Mâche|1|5|15|Mi-ombre|70|3
+Navet|1|10|25|Soleil|60|3
+Rhubarbe|0|80|100|Mi-ombre|0|1
+Rutabaga|1|20|40|Soleil|120|2
+Salsifis|2|8|30|Soleil|150|3
+Topinambour|8|40|80|Soleil|180|1
+Échalote|3|15|25|Soleil|100|1
+Absinthe|0.5|40|50|Soleil|0|2
+Bourrache|1|30|40|Soleil|60|2
+Cardon|2|80|100|Soleil|0|2
+Courge|3|100|150|Soleil|120|2
+Cornichon|2|40|100|Soleil|60|2
+Melon|2|60|120|Soleil|100|2
+Pastèque|2|100|150|Soleil|110|2
+Piment|1|40|50|Soleil|110|2
+Poire-melon|0|70|100|Soleil|0|1
+Coqueret du Pérou|1|60|80|Soleil|0|2
+Panais|1|10|30|Soleil|150|3
+Radis noir|1|10|30|Soleil|90|3
+Endive|1|10|30|Soleil|120|2
+Oca du Pérou|8|40|60|Soleil|0|1
+Aneth|1|15|25|Soleil|60|2
+Cerfeuil|1|10|25|Mi-ombre|60|2
+Ciboulette|1|15|20|Soleil|0|2
+Cumin|1|15|30|Soleil|120|2
+Estragon|0|40|50|Soleil|0|1
+Laurier|1|150|150|Soleil|0|2
+Marjolaine|1|20|25|Soleil|0|2
+Origan|1|25|30|Soleil|0|2
+Romarin|0|50|60|Soleil|0|1
+Sarriette|1|15|25|Soleil|0|2
+Sauge|1|40|50|Soleil|0|2
+Thym|1|25|30|Soleil|0|2
+Abricotier|0|400|400|Soleil|0|1
+Amandier|0|500|500|Soleil|0|1
+Cassissier|0|150|150|Soleil|0|1
+Cerisier|0|500|500|Soleil|0|1
+Figuier|0|400|400|Soleil|0|1
+Framboisier|0|50|150|Soleil|0|1
+Groseillier|0|100|150|Mi-ombre|0|1
+Myrtillier|0|100|150|Mi-ombre|0|1
+Nectarinier|0|400|400|Soleil|0|1
+Noisetier|0|300|400|Soleil|0|1
+Noyer|0|800|800|Soleil|0|1
+Poirier|0|400|400|Soleil|0|1
+Pommier|0|400|400|Soleil|0|1
+Prunier|0|400|400|Soleil|0|1
+Pêcher|0|400|400|Soleil|0|1
+Vigne|0|150|200|Soleil|0|1`.split('\n').forEach(l=>{const a=l.split('|');FD[norm(a[0])]={prof:+a[1],ep:+a[2],rg:+a[3],exp:a[4],j:+a[5],g:+a[6]}});
+let FI=ls('fiches',{});
+const fiche=n=>({prof:1,ep:30,rg:40,exp:'Soleil',j:0,g:2,...FD[norm(n)],...FI[norm(n)]});
+const TCL={fruit:'Fruit',feuille:'Feuille',racine:'Racine',fleur:'Fleur',legumineuse:'Fruit'};
+function drawF(){const q=norm($('#fq').value);$('#fg').innerHTML=P.filter(p=>norm(p.n).includes(q)).map(p=>{const f=fiche(p.n),i=P.indexOf(p);return`<div class="panel"><h3>${ico(p)} ${esc(p.n)} <span class="tag ${TCL[p.t]||'Fleur'}">${p.t}</span></h3>
+<div>☀ Exposition : <b>${esc(f.exp)}</b></div><div>Profondeur de semis : <b>${f.prof?f.prof+' cm':'collet au niveau du sol'}</b></div><div>Espacement : <b>${f.ep} cm</b> sur le rang, <b>${f.rg} cm</b> entre rangs</div><div>Semis / plantation : <b>${esc(p.s||'—')}</b></div>${f.j?`<div>Récolte : environ <b>${f.j} jours</b></div>`:''}
+<div class="ok">Amies : ${esc(p.f.join(', ')||'—')}</div><div class="ko">À éloigner : ${esc(p.o.join(', ')||'—')}</div><button class="btn" data-fe="${i}" style="margin-top:.5rem">Modifier la fiche</button></div>`}).join('')}
+$('#fq').oninput=drawF;
+$('#fg').onclick=e=>{const i=e.target.dataset.fe;if(i===undefined)return;const p=P[i],f=fiche(p.n),a=prompt('Exposition (Soleil, Mi-ombre, Ombre)',f.exp);if(a===null)return;const b=prompt('Profondeur de semis (cm)',f.prof),c=prompt('Espacement sur le rang (cm)',f.ep),d=prompt('Espacement entre rangs (cm)',f.rg),j=prompt('Jours jusqu\'à la récolte (0 si sans objet)',f.j);
+ FI[norm(p.n)]={exp:a,prof:parseFloat(b)||0,ep:parseFloat(c)||f.ep,rg:parseFloat(d)||f.rg,j:parseFloat(j)||0};sv('fiches',FI);drawF()};
+/* ---- Calculateur ---- */
+function calc(){const n=$('#qp').value,S=parseFloat($('#qs').value);if(!n||!(S>0)){$('#qr').textContent='Choisissez une plante et une surface.';return}
+ const f=fiche(n),pl=Math.floor(S/((f.ep/100)*(f.rg/100))),pm=Math.ceil(pl*1.1);
+ $('#qr').innerHTML=`<p><b>${pm} plants</b> pour ${S} m² (${pl} + 10 % de marge). Prévoir environ <b>${Math.ceil(pl*f.g)} graines</b> si vous semez.</p><p>Longueur de rangs : environ ${(S/(f.rg/100)).toFixed(1)} m (${f.rg} cm entre rangs, ${f.ep} cm sur le rang).</p><small style="opacity:.75">Valeurs indicatives, modifiables dans la fiche de la plante.</small>`}
+const _dt=drawTools;drawTools=function(){_dt();const v=$('#qp').value;$('#qp').innerHTML=P.map(p=>`<option>${esc(p.n)}</option>`).join('');if(v)$('#qp').value=v;calc()};
+$('#qp').onchange=$('#qs').oninput=calc;$('#qu').onclick=()=>{$('#qs').value=+surfCult().toFixed(1);calc()};
+/* ---- Floraisons ---- */
+const FL0=`Crocus|2|3|#9b7fd1
+Primevère|2|4|#e6c14a
+Narcisse|3|4|#f2d13a
+Tulipe|4|5|#d9435e
+Pivoine|5|6|#e88aa5
+Bourrache|5|9|#5b8fd9
+Rosier|5|10|#c93a5a
+Sauge|5|9|#7a5fc9
+Souci|5|10|#f08a24
+Lavande|6|8|#8a6fc9
+Hortensia|6|9|#7ba7e0
+Capucine|6|10|#e0654e
+Cosmos|6|10|#e879b0
+Oeillet d'inde|6|10|#e8a020
+Nénuphar|6|9|#f3c6d3
+Dahlia|7|10|#7a1f45
+Tournesol|7|9|#e6c14a
+Zinnia|7|10|#d94f4f
+Échinacée|7|9|#c95a9a
+Pensée|10|4|#7a4fb0`.split('\n').map(l=>{const a=l.split('|');return{n:a[0],a:+a[1],b:+a[2],c:a[3]}});
+let FLC=ls('fleurs',[]);const inM=(m,a,b)=>a<=b?m>=a&&m<=b:m>=a||m<=b;
+const FLK={'':'Toutes les catégories',arbre:'Arbres',arbuste:'Arbustes',grimpante:'Grimpantes',vivace:'Vivaces',annuelle:'Annuelles',bulbe:'Bulbes'};
+const FL0K={Crocus:'bulbe',Primevère:'vivace',Narcisse:'bulbe',Tulipe:'bulbe',Pivoine:'vivace',Bourrache:'annuelle',Rosier:'arbuste',Sauge:'vivace',Souci:'annuelle',Lavande:'arbuste',Hortensia:'arbuste',Capucine:'annuelle',Cosmos:'annuelle',"Oeillet d'inde":'annuelle',Nénuphar:'vivace',Dahlia:'bulbe',Tournesol:'annuelle',Zinnia:'annuelle',Échinacée:'vivace',Pensée:'annuelle'};
+const FLI=`Abélia|arbuste|7|10|#f3c6d3
+Acacia rose|arbuste|5|6|#e88aa5
+Acanthe|vivace|6|8|#d8cbd9
+Achillée|vivace|6|9|#e6c14a
+Aconit tue-loup|vivace|7|9|#e6c14a
+Actinidia|grimpante|5|6|#f3efe6
+Adonide|vivace|4|5|#e6c14a
+Agapanthe|bulbe|7|9|#5b8fd9
+Agastache|vivace|7|10|#8a6fc9
+Agérate|annuelle|6|10|#7ba7e0
+Agneau-chaste|arbuste|7|9|#8a6fc9
+Ail d'ornement|bulbe|5|7|#c95a9a
+Airelle|arbuste|5|6|#f3c6d3
+Ajonc|arbuste|3|6|#e6c14a
+Akébie|grimpante|4|5|#8a4f7a
+Albizzia (arbre de soie)|arbre|7|8|#e88aa5
+Alchémille|vivace|5|7|#c8d64a
+Alstroemère|vivace|6|9|#e0654e
+Alysse odorante|annuelle|5|10|#f3efe6
+Amarante|annuelle|7|10|#7a1f45
+Amaryllis|bulbe|8|10|#e88aa5
+Amélanchier|arbuste|4|5|#f3efe6
+Ammi|annuelle|6|9|#f3efe6
+Anagallis|annuelle|6|9|#5b8fd9
+Ancolie|vivace|5|7|#8a6fc9
+Andromède|arbuste|4|5|#f3c6d3
+Anémone du Japon|vivace|8|10|#f3c6d3
+Anthémis|vivace|6|9|#e6c14a
+Arabette|vivace|3|5|#f3efe6
+Arbre à franges (arbre de neige)|arbuste|5|6|#f3efe6
+Arbre aux mouchoirs|arbre|4|5|#f3efe6
+Arbre de Judée|arbre|4|5|#c95a9a
+Arum d'Éthiopie|bulbe|5|8|#f3efe6
+Aster|vivace|9|10|#8a6fc9
+Astilbe|vivace|6|8|#e879b0
+Astrance|vivace|6|8|#f3c6d3
+Aubépine|arbuste|4|5|#f3efe6
+Aubriète|vivace|3|5|#8a6fc9
+Azalée|arbuste|4|6|#e879b0
+Baguenaudier commun|arbuste|5|7|#e6c14a
+Balsamine|annuelle|6|10|#e879b0
+Barbe-de-bouc|vivace|6|7|#f3efe6
+Bec-de-grue|vivace|5|9|#c95a9a
+Bégonia à massifs|annuelle|6|10|#d94f4f
+Bégonia tubéreux|bulbe|6|10|#e8a020
+Belle-de-jour|annuelle|6|9|#5b8fd9
+Belle-de-nuit (merveille du Pérou)|annuelle|7|10|#e879b0
+Benoîte|vivace|5|8|#e0654e
+Berbéris|arbuste|4|5|#e6c14a
+Bergénia|vivace|3|5|#e879b0
+Bidens|annuelle|6|10|#e6c14a
+Bignone|grimpante|7|9|#e0654e
+Bleuet|annuelle|6|8|#5b8fd9
+Bougainvillée|grimpante|6|9|#c95a9a
+Bouton-d'argent|vivace|6|8|#f3efe6
+Brachyscome|annuelle|6|10|#7ba7e0
+Bruyère d'hiver|arbuste|12|4|#e879b0
+Buddleia (arbre aux papillons)|arbuste|7|10|#8a6fc9
+Buglosse|annuelle|5|9|#5b8fd9
+Buisson-ardent|arbuste|5|6|#f3efe6
+Buplèvre|arbuste|6|9|#e6c14a
+Calandrinia|annuelle|6|9|#e879b0
+Calcéolaire|annuelle|6|9|#e6c14a
+Callune|arbuste|8|10|#c95a9a
+Camélia|arbuste|2|4|#e879b0
+Campanule|vivace|6|8|#8a6fc9
+Canna|bulbe|7|10|#e0654e
+Carline|vivace|7|9|#f3efe6
+Cassia|arbuste|7|10|#e6c14a
+Catalpa|arbre|6|7|#f3efe6
+Céanothe|arbuste|6|10|#5b8fd9
+Célosie|annuelle|7|10|#e0654e
+Céraiste|vivace|5|6|#f3efe6
+Cerisier à fleurs|arbre|3|4|#f3c6d3
+Chèvrefeuille|grimpante|6|9|#f3efe6
+Chrysanthème|vivace|9|11|#e8a020
+Ciboulette|vivace|5|7|#c95a9a
+Clématite|grimpante|5|9|#8a6fc9
+Forsythia|arbuste|3|4|#e6c14a
+Fuchsia|arbuste|6|10|#c95a9a
+Géranium (pélargonium)|annuelle|5|10|#d94f4f
+Hellébore|vivace|1|4|#d8cbd9
+Hémérocalle|vivace|6|8|#e8a020
+Herbe-aux-chats|vivace|5|9|#8a6fc9
+Hibiscus|arbuste|7|10|#e879b0
+Hortensia grimpant|grimpante|6|7|#f3efe6
+Hosta|vivace|7|8|#8a6fc9
+Ibéris|vivace|4|6|#f3efe6
+Immortelle|annuelle|7|10|#e6c14a
+Impatience|annuelle|5|10|#e879b0
+Impatience de Nouvelle-Guinée|annuelle|5|10|#e0654e
+Ipomée|annuelle|7|10|#5b8fd9
+Iris rhizomateux|vivace|5|6|#8a6fc9
+Jacinthe|bulbe|3|4|#5b8fd9
+Jasmin d'été|grimpante|6|9|#f3efe6
+Jasmin d'hiver|grimpante|12|3|#e6c14a
+Jasmin étoilé|grimpante|6|7|#f3efe6
+Jonquille|bulbe|3|4|#e6c14a
+Joubarbe|vivace|7|8|#e879b0
+Lantana|annuelle|6|10|#e8a020
+Laurier-rose|arbuste|6|9|#e879b0
+Laurier-tin|arbuste|11|4|#f3efe6
+Lavande à toupet|arbuste|4|7|#8a6fc9
+Lavatère|annuelle|6|9|#e879b0
+Leucanthème|vivace|5|8|#f3efe6
+Liatris|bulbe|7|9|#8a6fc9
+Lierre terrestre|vivace|4|5|#8a6fc9
+Ligulaire|vivace|7|9|#e6c14a
+Lilas|arbuste|4|5|#8a6fc9
+Lilas des Indes|arbuste|7|9|#e879b0
+Linaire|annuelle|6|9|#8a6fc9
+Lin annuel|annuelle|6|8|#5b8fd9
+Lin vivace|vivace|5|8|#5b8fd9
+Lis|bulbe|6|8|#f3c6a0
+Lithospermum|vivace|5|8|#5b8fd9
+Lobélia|annuelle|6|9|#5b8fd9
+Lunaire (monnaie-du-pape)|annuelle|4|6|#8a6fc9
+Lupin|vivace|5|7|#8a6fc9
+Lysimaque|vivace|6|8|#e6c14a
+Magnolia|arbuste|3|5|#f3c6d3
+Mahonia du Japon|arbuste|11|3|#e6c14a
+Malope|annuelle|6|9|#e879b0
+Marguerite d'automne|vivace|9|11|#f3efe6
+Marronnier|arbre|4|5|#f3efe6
+Matricaire|annuelle|6|9|#f3efe6
+Mauve|annuelle|6|9|#c95a9a
+Merisier des oiseaux|arbre|4|5|#f3efe6
+Millepertuis|arbuste|6|9|#e6c14a
+Mimosa|arbuste|1|3|#e6c14a
+Mimulus|vivace|6|9|#e6c14a
+Monarde|vivace|6|9|#d94f4f
+Montbretia|bulbe|7|9|#e0654e
+Muflier|annuelle|6|10|#e879b0
+Muguet|vivace|4|5|#f3efe6
+Myosotis|annuelle|4|6|#7ba7e0
+Myrte|arbuste|7|9|#f3efe6
+Némésie|annuelle|6|10|#e879b0
+Nigelle|annuelle|6|8|#7ba7e0
+Œillet|vivace|6|9|#e879b0
+Œillet de poète|annuelle|5|7|#d94f4f
+Oenothère|vivace|6|9|#e6c14a
+Omphalodes|vivace|3|5|#7ba7e0
+Oreille d'ours|vivace|4|5|#e6c14a
+Orpin|vivace|8|10|#e879b0
+Panicaut|vivace|7|9|#5b8fd9
+Pâquerette|annuelle|3|6|#f3efe6
+Passiflore|grimpante|6|9|#c95a9a
+Pavot|annuelle|6|8|#d94f4f
+Pavot bleu de l'Himalaya|vivace|6|7|#5b8fd9
+Pavot de Californie|annuelle|6|9|#e8a020
+Pavot d'Orient|vivace|5|6|#d94f4f
+Penstemon|vivace|6|9|#d94f4f
+Perce-neige|bulbe|1|3|#f3efe6
+Pervenche|vivace|3|5|#5b8fd9
+Pétunia|annuelle|5|10|#e879b0
+Phacélie|annuelle|6|9|#8a6fc9
+Phlox|vivace|7|9|#e879b0
+Pied-d'alouette|annuelle|6|8|#5b8fd9
+Pois de senteur|annuelle|6|9|#e879b0
+Potentille|arbuste|6|10|#e6c14a
+Pulsatille|vivace|3|5|#8a6fc9
+Pyrèthre|vivace|5|7|#e0654e
+Reine-marguerite|annuelle|7|10|#8a6fc9
+Renoncule|bulbe|5|7|#e0654e
+Renouée|vivace|7|10|#e879b0
+Rhododendron|arbuste|4|6|#c95a9a
+Robinier|arbre|5|6|#f3efe6
+Rodgersia|vivace|6|8|#f3efe6
+Spirée|arbuste|5|7|#f3efe6
+Troène|arbuste|6|7|#f3efe6
+Verveine|annuelle|6|10|#8a6fc9
+Weigela|arbuste|5|6|#e879b0`.split('\n').filter(Boolean).map(l=>{const a=l.split('|');return{n:a[0],k:a[1],a:+a[2],b:+a[3],c:a[4]}});
+$('#flk').innerHTML=Object.entries(FLK).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+function drawFl(){const cm=now.getMonth()+1,q=norm($('#flq').value),k=$('#flk').value,only=$('#flm').checked,
+ all=[...FL0.map(f=>({...f,k:FL0K[f.n]||'vivace'})),...FLI,...FLC.map(x=>({...x,k:x.k||'',u:1}))],
+ rows=all.filter(f=>(!k||f.k==k)&&norm(f.n).includes(q)&&(!only||inM(cm,f.a,f.b))).sort((x,y)=>x.a-y.a||x.n.localeCompare(y.n,'fr'));
+ $('#fh').innerHTML='<tr><th>Fleur</th>'+JM.map((m,i)=>`<th class="${i+1==cm?'cur':''}">${m.slice(0,3)}</th>`).join('')+'<th></th></tr>';
+ $('#fb').innerHTML=rows.map(f=>`<tr><td style="white-space:nowrap"><b>${esc(f.n)}</b><br><small style="opacity:.75">${FLK[f.k]||'Autre'}</small></td>${JM.map((m,j)=>`<td class="m">${inM(j+1,f.a,f.b)?`<span style="background:${f.c}"></span>`:''}</td>`).join('')}<td>${f.u?`<i class="row" data-fx="${FLC.findIndex(z=>z.n==f.n&&z.a==f.a)}" style="cursor:pointer;color:var(--corail);font-style:normal;border:0">✕</i>`:''}</td></tr>`).join('')||'<tr><td colspan="14" style="opacity:.8">Aucune fleur trouvée.</td></tr>';
+ const now2=all.filter(f=>inM(cm,f.a,f.b)),ch=now2.map(f=>`<span class="chip" style="border-color:${f.c}">${esc(f.n)}</span>`).join('');
+ $('#fnow').innerHTML=!now2.length?'Rien de prévu.':now2.length>25?`<details><summary>${now2.length} fleurs (touchez pour les voir)</summary><div style="margin-top:.4rem">${ch}</div></details>`:ch}
+$('#flq').oninput=$('#flk').onchange=$('#flm').onchange=drawFl;
+$('#fd').innerHTML=$('#ff').innerHTML=JM.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+$('#fa').onclick=()=>{const n=$('#fn').value.trim();if(!n)return;FLC.push({n,a:+$('#fd').value,b:+$('#ff').value,c:$('#fcx').value});sv('fleurs',FLC);$('#fn').value='';drawFl()};
+$('#fb').onclick=e=>{const i=e.target.dataset.fx;if(i!==undefined&&i>=0){FLC.splice(i,1);sv('fleurs',FLC);drawFl()}};
+/* ---- Guide maladies et ravageurs ---- */
+const GD=[
+['Mildiou','Tomate, pomme de terre','Taches brunes sur les feuilles, duvet blanc dessous, fruits qui pourrissent. Apparaît par temps humide et doux.','Espacer les plants, arroser au pied sans mouiller le feuillage, tuteurer, planter sous abri, rotation de 3 ans.','Retirer et brûler les feuilles atteintes. Pulvériser du purin de prêle dilué à 10 %. En dernier recours, la bouillie bordelaise (cuivre) est admise en bio à dose limitée.'],
+['Oïdium','Courgette, rosier, pois, vigne','Feutrage blanc comme de la farine sur les feuilles, qui jaunissent et sèchent. Fréquent en été quand les nuits sont humides.','Aérer, éviter l\'excès d\'azote, arroser au pied le matin, choisir des variétés résistantes.','Pulvériser du lait dilué (1 volume pour 9 d\'eau) ou 1 cuillère à café de bicarbonate par litre d\'eau, ou du purin de prêle. Supprimer les feuilles très touchées.'],
+['Pucerons','Rosier, haricot, chou, fève, arbres fruitiers','Colonies serrées sous les feuilles et sur les jeunes pousses, feuilles enroulées, miellat collant.','Attirer les coccinelles et chrysopes (fleurs, haies), planter capucines et œillets d\'Inde, éviter les fourmis qui « élèvent » les pucerons.','Jet d\'eau puissant, puis savon noir dilué (1 cuillère à soupe par litre), ou purin d\'ortie dilué à 10 %. Les coccinelles font l\'essentiel du travail.'],
+['Limaces et escargots','Laitue, jeune plant, fraisier, haricot','Feuilles rongées avec des trous irréguliers, traces de bave luisante, jeunes semis disparus.','Arroser le matin plutôt que le soir, aérer et éclaircir, accueillir hérissons, crapauds et oiseaux, éviter les paillis humides près des jeunes plants.','Ramassage le soir à la lampe, pièges à bière enterrés, planches posées au sol à relever chaque matin, phosphate de fer (autorisé en bio). Semer en godets et planter des plants déjà robustes.'],
+['Doryphore','Pomme de terre, aubergine','Adultes rayés jaune et noir, larves rouge orangé qui dévorent le feuillage.','Rotation, paillage épais, butter, planter des rangs de haricots à proximité.','Ramassage manuel des adultes, des larves et des pontes orange sous les feuilles, dès le printemps.'],
+['Altises','Radis, chou, roquette, navet','Petits trous ronds « en cible » dans les feuilles, surtout au printemps sec. Petits insectes sauteurs.','Garder le sol frais, arroser régulièrement, pailler, poser un voile anti-insectes dès le semis.','Arrosage fréquent, binage léger, pulvérisation de purin de tanaisie ou de tomate. Semer plus tard pour éviter les pics d\'attaque.'],
+['Piéride du chou','Chou, brocoli, navet','Chenilles vertes et jaunes qui dévorent les feuilles, œufs jaunes en groupe sous les feuilles.','Filet anti-insectes posé dès la plantation, thym, sauge et tomates à proximité.','Retirer à la main les œufs et les chenilles. Favoriser les mésanges et les guêpes parasites.'],
+['Mouche de la carotte','Carotte, panais, persil, céleri','Galeries brunes dans les racines, feuillage qui rougit, plants qui se flétrissent.','Voile anti-insectes, semis clair pour éviter d\'éclaircir, association avec poireau ou oignon, éclaircir le soir et évacuer les plants arrachés.','Aucun traitement curatif efficace : la prévention est la clé. Arracher et jeter les racines touchées, changer de parcelle l\'année suivante.'],
+['Rouille','Poireau, rosier, haricot, ail','Pustules orange ou brunes sur les feuilles, qui jaunissent puis se dessèchent.','Rotation longue, espacer, limiter l\'azote, arroser au pied, choisir des variétés résistantes.','Supprimer les feuilles atteintes, purin de prêle en pulvérisation dès les premiers signes, éviter de composter les déchets touchés.'],
+['Pourriture grise (botrytis)','Fraisier, tomate, laitue, vigne','Moisissure grise et duveteuse sur les fruits et les tiges, surtout après des périodes pluvieuses.','Aérer, pailler les fraisiers avec de la paille, espacer, ne pas mouiller les fruits.','Cueillir les fruits mûrs, retirer aussitôt les fruits atteints et les éliminer hors du jardin, purin de prêle en prévention.'],
+['Escargots de pot et cochenilles','Plantes en pot, agrumes, laurier','Boucliers ou amas cotonneux sur les tiges, miellat et fumagine (suie noire).','Inspecter les plantes neuves, aérer, éviter l\'excès d\'engrais.','Frotter à l\'eau savonneuse avec un chiffon, pulvériser du savon noir dilué, supprimer les branches très atteintes.']];
+function drawG(){const q=norm($('#gq2').value);$('#gg').innerHTML=GD.filter(g=>norm(g.join(' ')).includes(q)).map(g=>`<div class="panel"><h3>${g[0]}</h3><div style="opacity:.85;font-size:.9rem">Touche : ${g[1]}</div><p><b>Signes :</b> ${g[2]}</p><p><b>Prévention :</b> ${g[3]}</p><p class="ok"><b>Remèdes naturels :</b> ${g[4]}</p></div>`).join('')||'Aucun résultat.'}
+$('#gq2').oninput=drawG;
+/* ---- Arrosage ---- */
+function surfCult(){return curP().items.filter(i=>i.k=='planche'||i.k=='potager').reduce((a,i)=>a+i.w*i.h,0)}
+function arrosage(){const d=WD[WS];if(!d||!d.et0_fao_evapotranspiration){$('#wat').innerHTML='';return}
+ const ar=n=>{let pl=0,et=0;for(let i=0;i<n;i++){pl+=d.precipitation_sum[i]||0;et+=d.et0_fao_evapotranspiration[i]||0}return{pl,df:Math.max(0,et-pl)}},a7=ar(7),a16=ar(16),S=surfCult();
+ $('#wat').innerHTML=`<h3 style="margin-top:0">Compteur de pluie et arrosage : ${esc(WC[WS][0])}</h3><div class="grid2"><div><div class="big">${a7.pl.toFixed(0)} mm</div>de pluie sur 7 jours (${a16.pl.toFixed(0)} mm sur 16 jours)</div><div><div class="big">${a7.df.toFixed(0)} L/m²</div>à apporter cette semaine (${a16.df.toFixed(0)} L/m² sur 16 jours)</div></div>
+ <p>${a7.df<5?'Pas d\'arrosage nécessaire : la pluie couvre les besoins.':a7.df<15?'Un arrosage copieux dans la semaine suffit, de préférence le matin et au pied des plants.':'Prévoyez deux arrosages copieux dans la semaine, au pied des plants.'}</p>
+ ${S?`<p>Pour vos ${S.toFixed(1)} m² de planches dessinées : environ <b>${Math.round(a7.df*S)} litres</b> cette semaine.</p>`:'<p style="opacity:.75">Dessinez des planches dans « Dessiner » pour obtenir un volume d\'eau pour votre potager.</p>'}<small style="opacity:.75">Estimation : évapotranspiration de référence moins pluie prévue, sans tenir compte du sol ni du stade des cultures.</small>`}
+async function comparer(){const el=$('#wcmp'),c=WC[WS],tok=++CMPT,tt='<h3 style="margin-top:0">Pluie tombée et pluie annoncée : '+esc(c[0])+'</h3>';el.innerHTML=tt+'Chargement…';
+ try{const r=await fetch(`https://previous-runs-api.open-meteo.com/v1/forecast?latitude=${c[1]}&longitude=${c[2]}&hourly=precipitation,precipitation_previous_day1&past_days=7&forecast_days=1&timezone=Europe%2FParis`);if(!r.ok)throw new Error('erreur '+r.status);
+ const j=await r.json(),Hh=j.hourly,D={};if(tok!=CMPT)return;
+ Hh.time.forEach((t,i)=>{const k=t.slice(0,10);D[k]=D[k]||{a:0,p:0,n:0};D[k].a+=Hh.precipitation[i]||0;if(Hh.precipitation_previous_day1&&Hh.precipitation_previous_day1[i]!=null){D[k].p+=Hh.precipitation_previous_day1[i];D[k].n++}});
+ const days=Object.keys(D).filter(k=>k<iso(now)).slice(-7),T=days.reduce((s,k)=>s+D[k].a,0),A=days.reduce((s,k)=>s+D[k].p,0),ok=days.length&&days.every(k=>D[k].n>=20),f7=WD[WS].precipitation_sum.slice(0,7).reduce((s,x)=>s+(x||0),0),g=T-A;
+ el.innerHTML=tt+`<div class="grid2"><div><div class="big">${T.toFixed(0)} mm</div>tombés ces 7 derniers jours</div>${ok?`<div><div class="big">${A.toFixed(0)} mm</div>annoncés la veille pour ces mêmes jours</div>`:'<div><div class="big">—</div>prévisions passées indisponibles</div>'}</div>`
+ +(ok?`<p>${Math.abs(g)<2?'Les prévisions se sont révélées justes.':g>0?`Il est tombé <b>${g.toFixed(0)} mm de plus</b> que prévu.`:`Il est tombé <b>${(-g).toFixed(0)} mm de moins</b> que prévu.`}</p>`:'')
+ +`<p>À venir : <b>${f7.toFixed(0)} mm</b> annoncés sur les 7 prochains jours.</p><details><summary>Voir jour par jour</summary><table><thead><tr><th>Jour</th><th>Tombée</th><th>Annoncée la veille</th><th>Écart</th></tr></thead><tbody>${days.map(k=>`<tr><td>${fmtD(k)}</td><td>${D[k].a.toFixed(1)} mm</td><td>${D[k].n>=20?D[k].p.toFixed(1)+' mm':'—'}</td><td>${D[k].n>=20?((D[k].a-D[k].p>=0?'+':'')+(D[k].a-D[k].p).toFixed(1)):'—'}</td></tr>`).join('')}</tbody></table></details><small style="opacity:.75">La pluie « tombée » vient de l'analyse météo Open-Meteo, pas d'un pluviomètre : elle peut s'écarter un peu de votre jardin.</small>`}
+ catch(x){if(tok==CMPT)el.innerHTML=tt+`Comparaison indisponible (${esc(x.message)}). Vérifiez la connexion internet.`}}
+const _dw=drawW;drawW=function(){_dw();arrosage();comparer()};
+/* ---- Dessiner ---- */
+const CAT=[['planche','Planche',1.2,3,'#7a5230','r'],['potager','Carré potager',1,1,'#8a6a3a','r'],['allee','Allée',1,5,'#c9b68a','r'],['maison','Maison',8,6,'#b9a48c','r'],['terrasse','Terrasse',4,3,'#d8cbb0','r'],['serre','Serre',3,4,'#9fd0c8','r'],['cabanon','Cabanon',2,2,'#a07850','r'],['poulailler','Poulailler',2,2,'#c97a4a','r'],['compost','Compost',1,1,'#5a4630','r'],['bassin','Bassin',3,2,'#4f9fbf','e'],['arbre','Arbre',4,4,'#3f7a4a','e'],['arbuste','Arbuste',1.5,1.5,'#5a9a5a','e'],['haie','Haie',6,.8,'#2f6b3a','r'],['pelouse','Pelouse',6,5,'#7fbf6a','r'],['fleurs','Massif de fleurs',2,2,'#c25a7a','e']];
+const TCC={fruit:'#e0654e',feuille:'#4ea884',racine:'#a9713a',fleur:'#b0417a',legumineuse:'#c9a45c'},uid=()=>Math.random().toString(36).slice(2,9);
+const mkI=(k,n,x,y,w,h,c,s)=>({id:uid(),k,n,x,y,w,h,c,s});
+const kI=(k,x,y)=>{const c=CAT.find(z=>z[0]==k);return mkI(k,c[1],x,y,c[2],c[3],c[4],c[5])};
+function demo(){return{id:uid(),n:'Mon jardin',W:20,H:12,rot:0,bg:'',items:[kI('maison',1,1),kI('terrasse',1,7.2),kI('serre',14,1),{...kI('planche',7,7),h:4},{...kI('planche',9.2,7),h:4},{...kI('planche',11.4,7),h:4},{...kI('arbre',15.5,7.5)},kI('compost',13.5,10)]}}
+let PL=ls('plans',null);if(!Array.isArray(PL)||!PL.length)PL=[demo()];let AP=ls('planactif',PL[0].id),SEL=null,DR=null;
+const curP=()=>PL.find(p=>p.id==AP)||PL[0],selI=()=>curP().items.find(i=>i.id==SEL);
+const savePl=()=>{sv('plans',PL);sv('planactif',curP().id)};
+function planSel(){$('#dpl').innerHTML=PL.map(p=>`<option value="${p.id}" ${p.id==curP().id?'selected':''}>${esc(p.n)}</option>`).join('');const p=curP();$('#dW').value=p.W;$('#dH').value=p.H;$('#dN').value=p.rot}
+function drawPlan(np){const p=curP(),s=+$('#dz').value;let g=`<svg viewBox="0 0 ${p.W} ${p.H}" width="${p.W*s}" height="${p.H*s}"><defs><pattern id="gr" width="1" height="1" patternUnits="userSpaceOnUse"><path d="M1 0H0V1" fill="none" stroke="rgba(255,255,255,.22)" stroke-width=".02"/></pattern></defs><rect width="${p.W}" height="${p.H}" fill="#6f9c57"/>${p.bg?`<image href="${p.bg}" width="${p.W}" height="${p.H}" preserveAspectRatio="xMidYMid slice" opacity=".7"/>`:''}<rect width="${p.W}" height="${p.H}" fill="url(#gr)"/>`;
+ p.items.forEach(it=>{const sh=it.s=='e'?`<ellipse cx="${it.x+it.w/2}" cy="${it.y+it.h/2}" rx="${it.w/2}" ry="${it.h/2}" fill="${it.c}" stroke="${it.id==SEL?'#e0654e':'#0007'}" stroke-width="${it.id==SEL?.1:.04}"/>`:`<rect x="${it.x}" y="${it.y}" width="${it.w}" height="${it.h}" rx=".08" fill="${it.c}" stroke="${it.id==SEL?'#e0654e':'#0007'}" stroke-width="${it.id==SEL?.1:.04}"/>`,fs=Math.max(.22,Math.min(.5,it.w/Math.max(4,it.n.length)*1.5));
+ g+=`<g data-id="${it.id}" style="cursor:move">${sh}<text x="${it.x+it.w/2}" y="${it.y+it.h/2+fs/3}" font-size="${fs}" text-anchor="middle" fill="#fff" style="paint-order:stroke;stroke:#000a;stroke-width:.07px;pointer-events:none">${esc(it.n)}</text></g>`});
+ g+=`<g transform="translate(${p.W-1.3},1.5) rotate(${p.rot})" style="pointer-events:none"><circle r=".85" fill="rgba(0,0,0,.4)"/><path d="M0-.75L.28 .3L0 .1L-.28 .3Z" fill="#e0654e"/><text y="-1" font-size=".55" text-anchor="middle" fill="#fff">N</text></g></svg>`;
+ $('#dcv').innerHTML=g;const cu=p.items.filter(i=>i.k=='planche'||i.k=='potager').reduce((a,i)=>a+i.w*i.h,0);$('#dst').textContent=`Terrain ${p.W} × ${p.H} m = ${(p.W*p.H).toFixed(0)} m² · Surface cultivée ${cu.toFixed(1)} m² · ${p.items.length} élément(s)`;if(!np)showProps()}
+function showProps(){const it=selI();$('#dprop').style.display=it?'block':'none';if(!it)return;$('#dn').value=it.n;$('#dw').value=+it.w.toFixed(2);$('#dh').value=+it.h.toFixed(2);$('#dc').value=it.c;$('#dsu').textContent=`Surface : ${(it.w*it.h).toFixed(2)} m²`}
+$('#dcat').innerHTML=CAT.map(c=>`<button class="btn" data-k="${c[0]}">+ ${c[1]}</button>`).join('');
+$('#dcat').onclick=e=>{const k=e.target.dataset.k;if(!k)return;const p=curP(),n=p.items.length%6*.5,it=kI(k,1+n,1+n);p.items.push(it);SEL=it.id;savePl();drawPlan()};
+$('#dpa').onclick=()=>{const nm=$('#dpp').value;if(!nm)return;const pl=byN(nm),f=fiche(nm),d=Math.max(.3,Math.round(f.ep/10)/10),p=curP(),it=mkI('plante',nm,1,1,d,d,TCC[pl?.t]||'#4ea884','e');p.items.push(it);SEL=it.id;savePl();drawPlan()};
+const cv=$('#dcv');
+cv.addEventListener('pointerdown',e=>{const g=e.target.closest('[data-id]');if(!g){SEL=null;drawPlan();return}SEL=g.dataset.id;const it=selI();DR={sx:e.clientX,sy:e.clientY,ox:it.x,oy:it.y,it};cv.setPointerCapture(e.pointerId);drawPlan()});
+cv.addEventListener('pointermove',e=>{if(!DR)return;const s=+$('#dz').value,sn=$('#dg').checked?.5:.1,p=curP(),it=DR.it,q=(v,m)=>Math.min(Math.max(0,Math.round(v/sn)*sn),Math.max(0,m));it.x=q(DR.ox+(e.clientX-DR.sx)/s,p.W-it.w);it.y=q(DR.oy+(e.clientY-DR.sy)/s,p.H-it.h);drawPlan(1)});
+cv.addEventListener('pointerup',()=>{if(DR){DR=null;savePl();showProps()}});
+const chg=(id,f)=>$(id).addEventListener('input',e=>{const it=selI();if(it){f(it,e.target);savePl();drawPlan(1);$('#dsu').textContent=`Surface : ${(it.w*it.h).toFixed(2)} m²`}});
+chg('#dn',(it,t)=>it.n=t.value||' ');chg('#dw',(it,t)=>it.w=Math.max(.1,+t.value||.1));chg('#dh',(it,t)=>it.h=Math.max(.1,+t.value||.1));chg('#dc',(it,t)=>it.c=t.value);
+$('#drot').onclick=()=>{const it=selI();if(it){[it.w,it.h]=[it.h,it.w];savePl();drawPlan()}};
+$('#ddp').onclick=()=>{const it=selI();if(it){const c={...it,id:uid(),x:Math.min(it.x+.5,curP().W-it.w),y:Math.min(it.y+.5,curP().H-it.h)};curP().items.push(c);SEL=c.id;savePl();drawPlan()}};
+$('#dfr').onclick=()=>{const p=curP(),it=selI();if(it){p.items=p.items.filter(i=>i!=it);p.items.push(it);savePl();drawPlan()}};
+const delI=()=>{const p=curP();p.items=p.items.filter(i=>i.id!=SEL);SEL=null;savePl();drawPlan()};$('#dde').onclick=delI;
+document.addEventListener('keydown',e=>{if(e.key=='Delete'&&SEL&&$('#dessiner').classList.contains('on')&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))delI()});
+$('#dz').oninput=()=>drawPlan(1);
+$('#dpl').onchange=e=>{AP=e.target.value;SEL=null;savePl();planSel();drawPlan()};
+$('#dnew').onclick=()=>{const n=prompt('Nom du nouveau plan','Nouveau plan');if(!n)return;const p={id:uid(),n,W:20,H:12,rot:0,bg:'',items:[]};PL.push(p);AP=p.id;SEL=null;savePl();planSel();drawPlan()};
+$('#dren').onclick=()=>{const n=prompt('Nom du plan',curP().n);if(n){curP().n=n;savePl();planSel()}};
+$('#ddup2').onclick=()=>{const c=JSON.parse(JSON.stringify(curP()));c.id=uid();c.n+=' (copie)';c.items.forEach(i=>i.id=uid());PL.push(c);AP=c.id;SEL=null;savePl();planSel();drawPlan()};
+$('#ddel2').onclick=()=>{if(PL.length<2){alert('Gardez au moins un plan.');return}if(confirm('Supprimer le plan « '+curP().n+' » ?')){PL=PL.filter(p=>p.id!=curP().id);AP=PL[0].id;SEL=null;savePl();planSel();drawPlan()}};
+$('#dW').onchange=$('#dH').onchange=()=>{const p=curP();p.W=Math.min(300,Math.max(1,+$('#dW').value||p.W));p.H=Math.min(300,Math.max(1,+$('#dH').value||p.H));savePl();planSel();drawPlan()};
+$('#dN').onchange=()=>{curP().rot=((+$('#dN').value||0)%360+360)%360;savePl();drawPlan(1)};
+$('#dbg').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);curP().bg=c.toDataURL('image/jpeg',.7);savePl();drawPlan(1)};im.src=URL.createObjectURL(f)};
+$('#dbx').onclick=()=>{curP().bg='';savePl();drawPlan(1)};
+/* ---- PDF (généré dans le navigateur, sans envoi de données) ---- */
+const rgb=h=>[1,3,5].map(i=>(parseInt(h.slice(i,i+2),16)/255).toFixed(3)).join(' ');
+const pe=t=>String(t).replace(/œ/g,'oe').replace(/Œ/g,'OE').replace(/[’‘]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,'-').replace(/…/g,'...').replace(/[^\x20-\x7e\xa0-\xff]/g,'').replace(/([()\\])/g,'\\$1');
+function pdfBlob(pg){const o=[],add=s=>o.push(s);add('<< /Type /Catalog /Pages 2 0 R >>');add('');add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');const kids=[];
+ pg.forEach(c=>{kids.push(o.length+1);add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${o.length+2} 0 R >>`);add(`<< /Length ${c.length} >>\nstream\n${c}\nendstream`)});
+ o[1]=`<< /Type /Pages /Kids [${kids.map(k=>k+' 0 R').join(' ')}] /Count ${kids.length} >>`;let s='%PDF-1.4\n';const off=[];o.forEach((b,i)=>{off.push(s.length);s+=`${i+1} 0 obj\n${b}\nendobj\n`});const x=s.length;
+ s+=`xref\n0 ${o.length+1}\n0000000000 65535 f \n`+off.map(v=>String(v).padStart(10,'0')+' 00000 n \n').join('')+`trailer\n<< /Size ${o.length+1} /Root 1 0 R >>\nstartxref\n${x}\n%%EOF`;
+ return new Blob([Uint8Array.from(s,ch=>ch.charCodeAt(0)&255)],{type:'application/pdf'})}
+function exportPDF(){const p=curP(),pages=[];let c='',y=40;
+ const tx=(x,yy,t,sz=10,b=0,col='#222222')=>{c+=`BT /F${b?2:1} ${sz} Tf ${rgb(col)} rg ${x.toFixed(1)} ${(595-yy).toFixed(1)} Td (${pe(t)}) Tj ET\n`},
+ rc=(x,yy,w,h,f,s='#333333')=>{c+=`${rgb(f)} rg ${rgb(s)} RG 0.5 w ${x.toFixed(2)} ${(595-yy-h).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re B\n`},
+ el=(cx,cy,rx,ry,f,s='#333333')=>{const k=.5523,X=cx,Y=595-cy;c+=`${rgb(f)} rg ${rgb(s)} RG 0.5 w ${X+rx} ${Y} m ${X+rx} ${Y+k*ry} ${X+k*rx} ${Y+ry} ${X} ${Y+ry} c ${X-k*rx} ${Y+ry} ${X-rx} ${Y+k*ry} ${X-rx} ${Y} c ${X-rx} ${Y-k*ry} ${X-k*rx} ${Y-ry} ${X} ${Y-ry} c ${X+k*rx} ${Y-ry} ${X+rx} ${Y-k*ry} ${X+rx} ${Y} c B\n`},
+ np=()=>{pages.push(c);c='';y=40},L=(t,b=0,sz=10)=>{if(y>555)np();tx(30,y,String(t).slice(0,140),sz,b,b?'#123c40':'#222222');y+=sz+4};
+ tx(30,34,'Jardin lunaire - '+p.n,18,1,'#123c40');tx(30,50,`Terrain ${p.W} x ${p.H} m - imprimé le ${now.toLocaleDateString('fr-FR')}`,9,0,'#555555');
+ const x0=30,y0=62,sc=Math.min(782/p.W,470/p.H);rc(x0,y0,p.W*sc,p.H*sc,'#a9cf8e','#123c40');
+ p.items.forEach(it=>{const X=x0+it.x*sc,Y=y0+it.y*sc,w=it.w*sc,h=it.h*sc;it.s=='e'?el(X+w/2,Y+h/2,w/2,h/2,it.c):rc(X,Y,w,h,it.c);const sz=Math.max(4.5,Math.min(9,w/Math.max(3,it.n.length)*1.8));tx(X+w/2-it.n.length*sz*.26,Y+h/2+sz/3,it.n,sz,0,'#000000')});
+ {const nx=x0+p.W*sc-22,ny=y0+24,a=p.rot*Math.PI/180,pt=[[0,14],[-6,-9],[6,-9]].map(([u,v])=>[nx+u*Math.cos(a)+v*Math.sin(a),595-ny+(-u*Math.sin(a)+v*Math.cos(a))]);c+=`${rgb('#e0654e')} rg ${pt[0][0].toFixed(1)} ${pt[0][1].toFixed(1)} m ${pt[1][0].toFixed(1)} ${pt[1][1].toFixed(1)} l ${pt[2][0].toFixed(1)} ${pt[2][1].toFixed(1)} l f\n`;tx(nx-3,ny-16,'N',9,1,'#123c40')}
+ tx(30,585,`Echelle environ 1/${Math.round(1000/(sc*.3528))} (A4 paysage) - un carreau de quadrillage = 1 m sur le site`,8,0,'#555555');
+ np();L('Éléments du plan',1,14);p.items.forEach(i=>L(`- ${i.n} (${(CAT.find(z=>z[0]==i.k)||[0,'Plante'])[1]}) : ${(+i.w).toFixed(2)} x ${(+i.h).toFixed(2)} m = ${(i.w*i.h).toFixed(1)} m2`));
+ y+=8;L(`Parcelles et rotation - année ${Y}`,1,14);B.forEach(b=>L(`- ${b.n} : ${(b.c[Y]||[]).join(', ')||'vide'}   (année précédente : ${(b.c[Y-1]||[]).join(', ')||'-'})`));
+ y+=8;L('Tâches du jardin',1,14);K.forEach(t=>L(`${t.ok?'[x]':'[ ]'} ${t.t}${t.m!==''?' ('+JM[t.m]+')':''}`));if(!K.length)L('Aucune tâche');
+ y+=8;L('Récoltes (totaux)',1,14);{const t={};H.forEach(x=>t[x.p]=(t[x.p]||0)+x.q);Object.entries(t).forEach(([k,v])=>L(`- ${k} : ${+v.toFixed(2)} kg`));if(!H.length)L('Aucune récolte notée')}
+ y+=8;L('Stock de graines',1,14);G.forEach(x=>L(`- ${x.n} : ${x.q} sachet(s)${x.y?' - valable jusqu\'en '+x.y:''}`));if(!G.length)L('Aucun stock');
+ y+=8;L('Notes du calendrier',1,14);Object.keys(notes).sort().slice(-40).forEach(k=>L(`${k} : ${String(notes[k]).replace(/\s+/g,' ')}`));if(!Object.keys(notes).length)L('Aucune note');
+ pages.push(c);const a=document.createElement('a');a.href=URL.createObjectURL(pdfBlob(pages));a.download='jardin-lunaire-'+(norm(p.n).replace(/[^a-z0-9]+/g,'-')||'plan')+'.pdf';document.body.appendChild(a);a.click();a.remove()}
+$('#dpdf').onclick=$('#dpdf2').onclick=exportPDF;
+$('#nav').addEventListener('click',e=>{const p=e.target.dataset.p;if(p=='dessiner'){$('#dpp').innerHTML=P.map(x=>`<option>${esc(x.n)}</option>`).join('');planSel();drawPlan()}if(p=='fiches')drawF();if(p=='fleurs')drawFl();if(p=='guide')drawG()});
+planSel();drawPlan();drawF();drawFl();drawG();
+drawCal();drawP();
+/* ---- Menu déroulant (hamburger) ---- */
+{const mb=$('#mb'),nv=$('#nav'),setM=o=>{nv.classList.toggle('open',o);mb.setAttribute('aria-expanded',o);mb.textContent=o?'✕':'☰'};
+ $('#pg').textContent="Aujourd'hui";
+ mb.onclick=e=>{e.stopPropagation();setM(!nv.classList.contains('open'))};
+ nv.addEventListener('click',e=>{const b=e.target.closest('button[data-p]');if(b){$('#pg').textContent=b.textContent;setM(false)}});
+ document.addEventListener('click',e=>{if(!e.target.closest('header'))setM(false)});
+ document.addEventListener('keydown',e=>{if(e.key=='Escape')setM(false)});$('#pf2').addEventListener('change',()=>setM(false))}
+/* ---- Radios (liste « Top radios » de radio-en-ligne.fr, flux via Radio Browser) ---- */
+const RF='https://icecast.radiofrance.fr/';
+const RD=[['France Info','France Info',RF+'franceinfo-midfi.mp3'],['France Inter','France Inter',RF+'franceinter-midfi.mp3'],['RTL','RTL'],['RMC','RMC'],['Nostalgie','Nostalgie'],['Europe 1','Europe 1'],['RTL 2','RTL 2'],['RFM','RFM'],['NRJ','NRJ'],['Chérie FM','Chérie FM'],['Skyrock','Skyrock'],['Fun Radio','Fun Radio'],['Rire & Chansons','Rire et Chansons'],['Europe 2','Europe 2'],['FIP','FIP',RF+'fip-midfi.mp3'],['Radio Nova','Radio Nova'],['Radio Classique','Radio Classique'],['France Culture','France Culture',RF+'franceculture-midfi.mp3'],['M Radio','M Radio'],['Chante France','Chante France'],['BFM Business','BFM Business'],['FG','Radio FG'],['Jazz Radio','Jazz Radio'],['France Musique','France Musique',RF+'francemusique-midfi.mp3'],['Latina','Latina'],['OUI FM','OUI FM'],['TSF Jazz','TSF Jazz'],['Sud Radio','Sud Radio'],['Mouv\'','Mouv',RF+'mouv-midfi.mp3'],['Alouette','Alouette'],['Radio Bonheur','Radio Bonheur'],['RFI','RFI Monde'],['Contact FM','Contact FM'],['Impact FM 80','Impact FM'],['Skyrock Klassiks','Skyrock Klassiks'],['Melody','Melody'],['Hit West','Hit West'],['Tropiques FM','Tropiques FM'],['Radio Orient','Radio Orient']];
+let RC=ls('radios',[]).map(x=>x.length==3?x:[x[0],'',x[1]]),RT=0;const RA=$('#ra2'),setSt=t=>$('#rst').textContent=t,allR=()=>[...RD,...RC];
+let RSEL=Math.min(ls('rsel',0),allR().length-1);
+function drawR(){$('#rstr').innerHTML=allR().map((s,i)=>`<button role="option" aria-selected="${i==RSEL}" class="${i==RSEL?'on':''}" data-i="${i}">${esc(s[0])}</button>`).join('');
+ $('#rl').innerHTML=RC.map((s,i)=>`<div class="row"><span>${esc(s[0])}</span><i data-rx="${i}" title="Supprimer">✕</i></div>`).join('')}
+function radioOff(t){RT++;RA.dataset.ok='0';RA.pause();RA.removeAttribute('src');RA.load();$('#rp').textContent='▶ Écouter';setSt(t||'Hors ligne')}
+const okP=u=>location.protocol!='https:'||/^https:/.test(u);
+async function lookup(q,fresh){const c=ls('rcache',{});if(!fresh&&c[q])return c[q];
+ const r=await fetch(`https://de1.api.radio-browser.info/json/stations/search?name=${encodeURIComponent(q)}&countrycode=FR&hidebroken=true&order=clickcount&reverse=true&limit=10`);if(!r.ok)throw new Error('annuaire '+r.status);
+ const m=(await r.json()).filter(x=>x.url_resolved&&okP(x.url_resolved)),n=norm(q),b=m.find(x=>norm(x.name)==n)||m.find(x=>norm(x.name).startsWith(n))||m[0];if(!b)throw new Error('introuvable');
+ c[q]=b.url_resolved;sv('rcache',c);return b.url_resolved}
+async function playR(i){const s=allR()[i];if(!s)return;RSEL=i;sv('rsel',i);drawR();setSt('Connexion… '+s[0]);RA.pause();const tok=++RT,tries=[];
+ if(s[2])tries.push(async()=>s[2]);if(s[1]){tries.push(()=>lookup(s[1]));tries.push(()=>lookup(s[1],true))}
+ for(const t of tries){try{const u=await t();if(tok!=RT)return;RA.src=u;RA.volume=+$('#rv').value;await RA.play();if(tok!=RT)return;RA.dataset.ok='1';$('#rp').textContent='■ Arrêter';setSt('En lecture : '+s[0]);return}catch(e){if(tok!=RT)return}}
+ radioOff('Hors ligne : flux introuvable pour '+s[0])}
+$('#rp').onclick=()=>{if(RA.getAttribute('src')&&!RA.paused)radioOff();else playR(RSEL)};
+$('#rstr').onclick=e=>{const b=e.target.closest('button[data-i]');if(b){playR(+b.dataset.i);setTimeout(()=>$('#rstr .on')?.scrollIntoView({inline:'center',block:'nearest'}),0)}};
+$('#rstr').addEventListener('wheel',e=>{const s=$('#rstr');if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){s.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
+RA.addEventListener('error',()=>{if(RA.dataset.ok=='1')radioOff('Hors ligne : flux interrompu')});
+RA.addEventListener('play',()=>{if(!au.paused)stop()});au.addEventListener('play',()=>{if(RA.getAttribute('src'))radioOff()});
+$('#rv').oninput=()=>RA.volume=+$('#rv').value;
+$('#ra').onclick=()=>{const n=$('#rn').value.trim(),u=$('#ru').value.trim();if(!n||!/^https?:\/\//.test(u)){alert('Indiquez un nom et une adresse de flux commençant par https://');return}RC.push([n,'',u]);sv('radios',RC);$('#rn').value=$('#ru').value='';drawR()};
+$('#rl').onclick=e=>{const i=e.target.dataset.rx;if(i!==undefined){RC.splice(i,1);sv('radios',RC);RSEL=Math.min(RSEL,allR().length-1);drawR()}};
+drawR();
+/* ---- Menu horizontal : molette et ouverture centrée sur la page active ---- */
+{const nv=$('#nav');nv.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){nv.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
+ $('#mb').addEventListener('click',()=>{if(nv.classList.contains('open'))setTimeout(()=>nv.querySelector('button.on')?.scrollIntoView({inline:'center',block:'nearest'}),0)})}
+/* ---- Synchronisation avec Google Agenda (fichier .ics + lien d'ajout d'un jour) ---- */
+const icsEsc=s=>String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
+function fold(l){const te=new TextEncoder();let o='',n=0;for(const ch of l){const b=te.encode(ch).length;if(n+b>73){o+='\r\n ';n=1}o+=ch;n+=b}return o}
+const ymd=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+function buildICS(start,end,o){const ev=[],stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+ const add=(uid,d,sum,desc)=>{const e=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);ev.push(['BEGIN:VEVENT','UID:'+uid+'@jardinlunaire','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+ymd(d),'DTEND;VALUE=DATE:'+ymd(e),'SUMMARY:'+icsEsc(sum),'DESCRIPTION:'+icsEsc(desc||''),'TRANSP:TRANSPARENT','END:VEVENT'].map(fold).join('\r\n'))};
+ for(let d=new Date(start);d<end;d.setDate(d.getDate()+1)){const k=iso(d),a=astro(d),pv=astro(new Date(d.getFullYear(),d.getMonth(),d.getDate()-1));
+  if(o.ph&&Math.floor(a.ph/90)!=Math.floor(pv.ph/90))add('phase-'+k,d,['🌑 Nouvelle lune','🌓 Premier quartier','🌕 Pleine lune','🌗 Dernier quartier'][Math.floor(a.ph/90)],`${a.ill} % éclairée. Lune en ${a.sg[0]}.`);
+  if(o.jr)add('jour-'+k,d,`${DI[a.day]} Jour ${a.day.toLowerCase()} · Lune en ${a.sg[0]} ${a.mont?'↑':'↓'}`,`${a.nom}, ${a.ill} % éclairée.\nLune ${a.cr?'croissante':'décroissante'}, ${a.mont?'montante':'descendante'}.\n${a.sg[3]}.${a.nd?'\nNœud lunaire : évitez de couper cheveux et ongles.':''}`);
+  if(o.nt&&notes[k])add('note-'+k,d,'📝 '+String(notes[k]).split('\n')[0].slice(0,60),notes[k]);
+  if(o.tk&&d.getDate()==1)K.filter(t=>t.m!==''&&+t.m==d.getMonth()).forEach(t=>add('tache-'+k+'-'+norm(t.t).replace(/\W+/g,'').slice(0,20),d,(t.ok?'✅ ':'🌱 ')+t.t,'Tâche du jardin ('+JM[d.getMonth()]+')'))}
+ return['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jardin lunaire//FR','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Jardin lunaire',...ev,'END:VCALENDAR'].join('\r\n')+'\r\n'}
+$('#gcb').onclick=()=>{const p=$('#gcp');p.style.display=p.style.display=='none'?'block':'none'};
+$('#gdl').onclick=()=>{const s=new Date(cur.getFullYear(),cur.getMonth(),1),e=new Date(s.getFullYear(),s.getMonth()+(+$('#gcr').value),1),
+ t=buildICS(s,e,{ph:$('#gph').checked,jr:$('#gjr').checked,nt:$('#gnt').checked,tk:$('#gtk').checked}),a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([t],{type:'text/calendar;charset=utf-8'}));a.download='jardin-lunaire-'+s.getFullYear()+'-'+String(s.getMonth()+1).padStart(2,'0')+'.ics';document.body.appendChild(a);a.click();a.remove()};
+$('#g1').onclick=()=>{const[y,m,d]=sel.split('-').map(Number),dt=new Date(y,m-1,d),a=astro(dt),n=new Date(y,m-1,d+1),
+ det=`${a.nom}, ${a.ill} % éclairée. Lune en ${a.sg[0]}.\n${a.sg[3]}.${notes[sel]?'\n\nNotes : '+notes[sel]:''}`;
+ window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(`${a.em} Jour ${a.day.toLowerCase()} · Lune en ${a.sg[0]}`)+'&dates='+ymd(dt)+'/'+ymd(n)+'&details='+encodeURIComponent(det),'_blank','noopener')};
+/* ---- Bouturage : calendrier, espèces, comment faire ---- */
+const BT={hb:['Herbacée (tige tendre)','#4ea884'],sa:['Semi-aoûtée','#c9a45c'],bs:['Bois sec (hiver)','#a9713a'],cf:['Conifères','#3a6d8c'],fe:['Feuille','#b0417a'],ra:['Racine','#e0654e'],ec:['Éclat de souche','#8a6fc9'],ea:["Dans l'eau",'#5b8fd9']};
+const BD=`Géranium (pélargonium)|hb|fleur|4-9|Tige non fleurie de 8 à 10 cm, coupée sous un nœud. Laissez cicatriser la coupe quelques heures et gardez le substrat léger, sans étouffée. À rentrer avant les gelées.
+Fuchsia|hb|fleur|3-5,8-9|Extrémité de pousse non fleurie avec 2 à 3 paires de feuilles. Une étouffée aérée aide la reprise.
+Chrysanthème|hb|fleur|4-6|Rejets de base de 8 cm environ, prélevés au printemps.
+Dahlia|hb|fleur|3-5|Rejets prélevés sur les tubercules mis en végétation, avec un petit morceau de talon.
+Verveine|hb|fleur|5-9|Pousse tendre non fleurie. À protéger du gel pendant l'hiver.
+Coléus|hb|intérieur|5-9|Extrémité de tige de 8 à 10 cm. Enracine aussi dans l'eau. À rentrer avant le gel.
+Menthe|hb|aromatique|4-9|Extrémité de pousse. S'enracine très vite, même dans l'eau, et se divise aussi.
+Basilic|hb|aromatique|5-9|Pousse tendre de 10 cm sans fleur. À rentrer avant le froid.
+Sauge|hb|aromatique|5-9|Pousse tendre non fleurie. À protéger du gel.
+Thym|hb|aromatique|5-8|Brins de 5 à 8 cm sans fleurs, dans un substrat drainant.
+Tomate (gourmands)|hb|potager|6-8|Gourmand de 10 cm, en terreau ou dans l'eau. Il s'enracine en une à deux semaines.
+Lierre|hb|grimpante|5-9|Tige de 10 cm avec ses racines aériennes. Très facile, aussi dans l'eau.
+Clématite|sa|grimpante|5-7|Tige coupée entre deux nœuds, avec une paire de feuilles réduites de moitié.
+Chèvrefeuille|sa|grimpante|6-9|Tige de l'année de 10 à 15 cm, étouffée aérée.
+Jasmin d'hiver|sa|grimpante|7-9|Pousse de l'année dont la base commence à durcir.
+Hortensia|sa|arbuste|6-9|Pousse non fleurie de l'année, 10 cm, avec 2 feuilles gardées et coupées de moitié.
+Buddleia (arbre à papillons)|sa|arbuste|7-9|Pousse de l'année, à abriter du gel en hiver.
+Laurier-rose|sa|arbuste|7-9|Jeune rameau, à garder hors gel. Plante toxique : portez des gants.
+Troène|sa|arbuste|7-9|Très facile, tige de l'année.
+Lavande|sa|aromatique|7-10|Pousse non fleurie de 8 à 10 cm, dans un substrat très drainant.
+Romarin|sa|aromatique|7-10|Pousse de l'année, substrat drainant, à l'abri du gel.
+Laurier-sauce|sa|aromatique|7-9|Lent à s'enraciner : comptez plusieurs mois et gardez-le hors gel.
+Photinia|sa|arbuste|7-9|Pousse de l'année de 10 à 15 cm.
+Laurier-tin (viorne)|sa|arbuste|7-9|Pousse de l'année, à abriter l'hiver.
+Weigela|sa|arbuste|6-7|Pousse de l'année encore tendre au sommet.
+Spirée|sa|arbuste|6-8|Tige de l'année, facile.
+Fusain du Japon|sa|arbuste|7-9|Pousse de l'année, 10 cm.
+Rosier|bs|fleur|10-12|Rameau aoûté de la grosseur d'un crayon, 20 cm, planté aux deux tiers en terre abritée.
+Vigne|bs|fruitier|11-3|Sarment de 30 cm avec 3 à 4 yeux, enterré aux deux tiers avant le débourrement.
+Figuier|bs|fruitier|11-3|Rameau de 2 ans, 20 à 30 cm. Se bouture facilement sans hormone.
+Cassissier|bs|fruitier|11-3|Rameau d'un an de 20 cm. Très facile.
+Groseillier|bs|fruitier|11-3|Rameau d'un an de 20 cm, planté aux deux tiers.
+Groseillier à maquereau|bs|fruitier|11-3|Rameau d'un an, reprise un peu moins sûre que pour le cassissier.
+Saule|bs|arbuste|11-3|L'espèce la plus facile : une branche plantée en sol frais reprend presque toujours.
+Cornouiller sanguin|bs|arbuste|11-3|Rameau d'un an de 20 cm.
+Sureau|bs|arbuste|11-3|Rameau d'un an de 20 cm, en sol frais.
+Forsythia|bs|arbuste|11-3|S'enracine bien sans hormone.
+If|cf|arbuste|10-2|Bouture à talon de 10 à 15 cm, en châssis froid. Enracinement lent.
+Thuya|cf|arbuste|10-2|Bouture à talon, en châssis froid ou serre froide.
+Framboisier|ra|fruitier|11-3|Drageons ou morceaux de racine prélevés en dormance.
+Anémone du Japon|ra|fleur|11-2|Tronçons de racine de 5 cm posés à plat dans le terreau.
+Phlox paniculé|ra|fleur|11-2|Tronçons de racine de 5 cm, en repos de végétation.
+Pavot d'Orient|ra|fleur|11-2|Tronçons de racine charnue, en châssis froid.
+Bégonia rex|fe|intérieur|4-9|Feuille entaillée aux nervures, posée sur un terreau humide.
+Saintpaulia|fe|intérieur|4-9|Feuille avec 3 à 4 cm de pétiole, dans une atmosphère humide.
+Sansevieria|fe|intérieur|4-9|Tronçons de feuille plantés dans le sens de la pousse.
+Succulentes (échevéria, sedum)|fe|intérieur|4-9|Feuille détachée proprement et séchée 2 à 3 jours avant de la poser sur du terreau sec.
+Rhubarbe|ec|potager|10-3|Divisez la souche en morceaux portant au moins un bourgeon.
+Ciboulette|ec|aromatique|3-4,9-10|Divisez la touffe et replantez aussitôt.
+Estragon|ec|aromatique|3-4|Divisez la souche ou prélevez des tiges déjà racinées.
+Artichaut (œilletons)|ec|potager|3-4|Œilletons détachés avec un morceau de racine.
+Hémérocalle|ec|fleur|9-10,3-4|Divisez la touffe en éclats avec feuillage et racines.
+Hosta|ec|fleur|3-4,9-10|Divisez la touffe à la bêche.
+Iris des jardins|ec|fleur|7-9|Divisez les rhizomes après la floraison.
+Basilic|ea|aromatique|5-9|Tige de 10 cm, feuilles hors de l'eau, à rempoter quand les racines mesurent 2 à 3 cm.
+Menthe|ea|aromatique|4-9|Tige de 10 cm dans un verre d'eau, très rapide.
+Coléus|ea|intérieur|5-9|Extrémité de tige dans l'eau, lumière vive sans soleil direct.
+Lierre|ea|grimpante|5-9|Tige de 10 à 15 cm dans l'eau, enracinement facile.
+Tomate (gourmands)|ea|potager|6-8|Gourmand de 10 cm dans l'eau, à planter dès que les racines sont visibles.
+Pothos|ea|intérieur|4-9|Tige avec un nœud immergé, changer l'eau tous les 2 à 3 jours.`.split('\n').map(l=>{const a=l.split('|');return{n:a[0],t:a[1],c:a[2],m:a[3],tip:a[4]}});
+const BH=[
+['Avant de commencer','Toute l\'année, selon le type de bouture','<li>Utilisez un sécateur ou un couteau propre et bien affûté, désinfecté à l\'alcool.</li><li>Prélevez sur une plante saine, de préférence le matin, quand les tiges sont gorgées d\'eau.</li><li>Étiquetez chaque pot avec le nom et la date.</li><li>Les plantes à latex sont plus difficiles à bouturer.</li><li>L\'hormone de bouturage est facultative : saule, figuier ou forsythia s\'en passent très bien.</li>','Une tige à bouturer doit compter au moins 3 nœuds.'],
+['Bouture herbacée (tige tendre)','Printemps et été, sur des tiges non fleuries ; fin d\'été pour les plantes à rentrer','<li>Coupez net l\'extrémité d\'une tige saine de 8 à 12 cm, juste sous un nœud.</li><li>Retirez les feuilles du bas et gardez 2 à 3 feuilles, coupées de moitié si elles sont grandes.</li><li>Facultatif : trempez la base dans de l\'hormone de bouturage.</li><li>Humidifiez un godet de terreau léger mêlé de sable ou de perlite et faites un trou au doigt.</li><li>Enfoncez la bouture sans que les feuilles touchent le sol, puis serrez légèrement autour de la tige.</li><li>Placez à la lumière, sans soleil direct, au chaud, et gardez humide. Une étouffée (sac transparent aéré) aide les plantes qui aiment l\'humidité.</li><li>Quand de nouvelles feuilles poussent, l\'enracinement est en cours. Rempotez quand les racines sortent du godet.</li>','Supprimez les boutons floraux : l\'énergie doit aller aux racines.'],
+['Bouture semi-aoûtée','De mi-juillet à mi-septembre, sur la pousse de l\'année dont la base est dure et la pointe encore tendre','<li>Prélevez un rameau de 10 à 15 cm, coupé sous un nœud.</li><li>Retirez les feuilles de la moitié basse, gardez la pointe.</li><li>Trempez la base dans de l\'hormone, surtout pour les espèces difficiles.</li><li>Piquez dans un mélange de terreau et de sable, bien drainant.</li><li>Couvrez d\'une étouffée aérée, à l\'ombre légère.</li><li>Gardez à l\'abri du gel l\'hiver : certaines boutures ne s\'enracinent qu\'après l\'hiver.</li>','Pour les arbustes à feuillage persistant, c\'est la période la plus sûre.'],
+['Bouture à bois sec (aoûtée)','De la fin de l\'automne à la fin de l\'hiver, sur rameaux dormants, hors gel et avant le débourrement','<li>Choisissez un rameau d\'un an, de la grosseur d\'un crayon, bien aoûté.</li><li>Coupez 20 à 30 cm : coupe droite sous un nœud en bas, coupe en biseau au-dessus d\'un bourgeon en haut.</li><li>Retirez les feuilles restantes.</li><li>Plantez aux deux tiers de la longueur, dans une tranchée sableuse ou un pot profond, en lieu abrité.</li><li>Arrosez, paillez et attendez le printemps.</li><li>Ne déplacez pas la bouture avant l\'automne suivant.</li>','Idéal pour vigne, figuier, cassissier, groseillier, saule.'],
+['Bouture de conifères','Fin d\'automne et hiver, en châssis froid','<li>Prélevez une pousse de 10 à 15 cm avec un talon (petit morceau d\'écorce de la branche mère).</li><li>Retirez les aiguilles du bas.</li><li>Piquez dans un mélange de terreau et de sable.</li><li>Gardez en châssis froid ou en serre froide, sans laisser sécher.</li>','L\'enracinement est lent : soyez patient.'],
+['Bouture dans l\'eau','Printemps et été, pour les plantes qui s\'enracinent facilement','<li>Coupez une tige de 10 à 15 cm sous un nœud et retirez les feuilles du bas.</li><li>Plongez-la dans un verre d\'eau, feuilles hors de l\'eau.</li><li>Placez en lumière vive sans soleil direct.</li><li>Changez l\'eau tous les 2 à 3 jours.</li><li>Quand les racines mesurent 2 à 3 cm, rempotez en terreau humide.</li>','Basilic, menthe, coléus, lierre, gourmands de tomate.'],
+['Bouture de feuille','Printemps et été, surtout pour les plantes d\'intérieur','<li>Détachez une feuille saine, avec son pétiole selon la plante.</li><li>Bégonia rex : entaillez les nervures et posez à plat. Saintpaulia : gardez 3 à 4 cm de pétiole. Sansevieria : coupez en tronçons en gardant le sens de la pousse. Succulentes : laissez sécher 2 à 3 jours.</li><li>Posez ou piquez dans un terreau léger, humide sans excès.</li><li>Placez en lumière vive. De petites plantes apparaissent à la base.</li>','Patience : l\'enracinement peut prendre plusieurs semaines.'],
+['Bouture de racine','En repos de végétation, de novembre à février','<li>Dégagez la plante et prélevez des racines charnues de la grosseur d\'un crayon.</li><li>Coupez des tronçons de 5 à 8 cm : coupe droite en haut, oblique en bas pour repérer le sens.</li><li>Plantez à la verticale, ou posez à plat, sous 1 cm de terreau.</li><li>Gardez en châssis froid. Les pousses apparaissent au printemps.</li>','Convient à l\'anémone du Japon, au phlox, au pavot d\'Orient.'],
+['Éclat de souche (division)','Début de printemps ou automne, hors gel','<li>Arrachez la touffe à la bêche ou à la fourche.</li><li>Séparez-la en morceaux comportant chacun des racines et des bourgeons.</li><li>Replantez aussitôt à la même profondeur et arrosez.</li>','Le plus simple pour ciboulette, rhubarbe, hosta, hémérocalle.']];
+/* ---- Schémas du bouturage (SVG) ---- */
+const SC={leaf:'#4ea884',leaf2:'#7fbf6a',wood:'#a9713a',soil:'#6b4423',pot:'#c97a4a',water:'#5b8fd9',red:'#e0654e',gold:'#c9a45c',ink:'#f3efe6',root:'#e8d9b0'};
+const d_svg=(c,l)=>`<svg viewBox="0 0 340 190" role="img" aria-label="${l}" style="width:100%;max-width:560px;height:auto;display:block;margin:.5rem 0;background:rgba(9,32,35,.45);border-radius:8px" font-family="Georgia,serif" font-size="11" fill="${SC.ink}">${c}</svg>`;
+const d_t=(x,y,s,a='middle',z=11,c=SC.ink)=>`<text x="${x}" y="${y}" text-anchor="${a}" font-size="${z}" fill="${c}">${s}</text>`;
+const d_c=(x,y,a)=>a.map((s,i)=>d_t(x,y+i*12,s)).join('');
+const d_l=(x1,y1,x2,y2,c=SC.ink,w=1.5,dsh)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${dsh?' stroke-dasharray="4 3"':''}/>`;
+const d_leaf=(x,y,a,s=14,c=SC.leaf)=>`<ellipse cx="${x}" cy="${y}" rx="${s}" ry="${(s*.45).toFixed(1)}" fill="${c}" transform="rotate(${a} ${x} ${y})"/>`;
+const d_ghost=(x,y,a,s=14)=>`<ellipse cx="${x}" cy="${y}" rx="${s}" ry="${(s*.45).toFixed(1)}" fill="none" stroke="${SC.ink}" stroke-opacity=".55" stroke-dasharray="3 3" transform="rotate(${a} ${x} ${y})"/>`;
+const d_pot=(x,y,w,h)=>`<path d="M${x} ${y} h${w} l-7 ${h} h${-(w-14)} z" fill="${SC.pot}"/><path d="M${x+3} ${y+3} h${w-6} l-5 ${h-8} h${-(w-16)} z" fill="${SC.soil}"/>`;
+const d_n=(x,y,n)=>`<circle cx="${x}" cy="${y}" r="8" fill="${SC.gold}"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="11" font-weight="700" fill="#1b2a22">${n}</text>`;
+const d_fan=(x,y,n=5,c=SC.leaf)=>[...Array(n)].map((_,i)=>{const dg=-50+i*(100/(n-1)),r=dg*Math.PI/180;return d_leaf((x+Math.sin(r)*20).toFixed(1),(y-Math.cos(r)*20).toFixed(1),dg-90,16,c)}).join('');
+const d_ex=s=>d_t(170,184,s,'middle',10,SC.gold);
+const d_br=(x,y1,y2,s)=>d_l(x,y1,x,y2,SC.gold,1)+d_l(x-4,y1,x+4,y1,SC.gold,1)+d_l(x-4,y2,x+4,y2,SC.gold,1)+`<text transform="rotate(-90 ${x-6} ${(y1+y2)/2})" x="${x-6}" y="${(y1+y2)/2}" text-anchor="middle" font-size="10" fill="${SC.gold}">${s}</text>`;
+const SCH=[
+/* 0 anatomie d'une bouture */
+d_svg(d_l(90,40,90,165,SC.leaf2,4)+[150,112,70].map(y=>`<circle cx="90" cy="${y}" r="3.5" fill="${SC.wood}"/>`).join('')+d_leaf(75,70,-30,16)+d_leaf(105,70,30,16)+d_leaf(78,44,-40,12)+d_leaf(102,44,40,12)+d_ghost(72,150,-25)+d_ghost(108,130,25)+d_l(80,170,100,160,SC.red,3)+d_br(130,40,165,'8 à 12 cm')
+ +d_t(120,153,'← nœud','start',10)+d_t(120,114,'← nœud','start',10)+d_t(120,72,'← nœud','start',10)+d_t(14,152,'feuilles','start',10)+d_t(14,163,'retirées','start',10)+d_t(150,174,'coupe nette sous un nœud','start',10,SC.red)
+ +d_t(200,50,'Exemple : géranium','start',12,SC.gold)+d_t(200,68,'• 3 nœuds au minimum','start',10)+d_t(200,82,'• 2 à 3 feuilles gardées,','start',10)+d_t(206,94,'coupées de moitié','start',10)+d_t(200,108,'• tige saine, non fleurie','start',10),'Schéma d’une bouture de tige'),
+/* 1 herbacée */
+d_svg([42,127].map((c,i)=>d_n(c-30,16,i+1)).join('')+d_n(182,16,3)+d_n(267,16,4)
+ +d_l(42,150,42,62,SC.leaf2,4)+d_leaf(30,100,-30,13)+d_leaf(54,100,30,13)+d_leaf(30,125,-30,13)+d_leaf(54,125,30,13)+`<circle cx="42" cy="55" r="5" fill="${SC.red}"/>`+d_l(26,142,58,142,SC.red,2,1)+d_t(42,40,'bouton à retirer','middle',9)
+ +d_l(127,150,127,62,SC.leaf2,4)+d_leaf(115,78,-30,13)+d_leaf(139,78,30,13)+d_ghost(113,118,-25,13)+d_ghost(141,118,25,13)+d_ghost(113,136,-25,13)
+ +d_pot(187,100,50,45)+d_l(212,64,212,132,SC.leaf2,4)+d_leaf(200,75,-30,13)+d_leaf(224,75,30,13)+d_leaf(200,92,-20,10)+d_leaf(224,92,20,10)
+ +d_pot(272,100,50,45)+d_l(297,64,297,132,SC.leaf2,4)+d_leaf(286,78,-30,12)+d_leaf(308,78,30,12)+`<path d="M266 100 C260 30, 334 30, 328 100" fill="rgba(255,255,255,.14)" stroke="${SC.ink}" stroke-opacity=".7"/>`
+ +d_c(42,162,['Couper sous','un nœud'])+d_c(127,162,['Retirer les','feuilles du bas'])+d_c(212,162,['Planter : feuilles','hors du sol'])+d_c(297,162,['Étouffée,','lumière douce'])+d_ex('Exemple : géranium, menthe, basilic — avril à septembre'),'Bouture herbacée en 4 étapes'),
+/* 2 semi-aoûtée */
+d_svg(`<defs><linearGradient id="gSA" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${SC.wood}"/><stop offset="1" stop-color="${SC.leaf2}"/></linearGradient></defs><rect x="67" y="40" width="7" height="120" rx="3" fill="url(#gSA)"/>`+d_leaf(55,48,-35,13)+d_leaf(86,48,35,13)+d_leaf(55,70,-25,12)+d_leaf(86,70,25,12)+d_br(40,40,160,'10 à 15 cm')
+ +d_t(100,100,'← pointe tendre','start',10)+d_t(100,152,'← base dure (aoûtée)','start',10)
+ +d_pot(215,100,70,50)+d_l(250,72,250,130,SC.leaf2,4)+d_leaf(238,78,-30,12)+d_leaf(262,78,30,12)+`<path d="M210 100 C205 40, 295 40, 290 100" fill="rgba(255,255,255,.14)" stroke="${SC.ink}" stroke-opacity=".7"/>`
+ +d_t(250,164,'terreau + sable, étouffée','middle',10)+d_ex('Hortensia, lavande, laurier-rose · mi-juil. à mi-sept.'),'Bouture semi-aoûtée'),
+/* 3 bois sec */
+d_svg(`<rect x="60" y="30" width="8" height="130" fill="${SC.wood}"/>`+[[70,50],[58,80],[70,110],[58,140]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${SC.leaf2}"/>`).join('')+d_l(56,36,70,26,SC.red,3)+d_l(55,160,73,160,SC.red,3)+d_br(32,30,160,'20 à 30 cm')
+ +d_t(82,32,'biseau au-dessus','start',10,SC.red)+d_t(82,44,'d’un bourgeon','start',10,SC.red)+d_t(82,156,'coupe droite','start',10,SC.red)+d_t(82,168,'sous un nœud','start',10,SC.red)
+ +`<rect x="185" y="70" width="145" height="100" fill="${SC.soil}"/>`+d_l(185,70,330,70,SC.leaf2,2)+`<rect x="251" y="30" width="8" height="120" fill="${SC.wood}"/>`+[[259,42],[251,58]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${SC.leaf2}"/>`).join('')
+ +d_t(270,40,'1/3 hors sol','start',10)+d_t(270,52,'(2 à 3 yeux)','start',10)+d_t(270,120,'2/3 enterrés','start',10)+d_t(192,100,'sol frais, abrité','start',10)+d_ex('Exemples : vigne, cassissier, figuier, saule — novembre à mars'),'Bouture à bois sec'),
+/* 4 conifères */
+d_svg(d_l(10,45,160,45,SC.wood,9)+d_l(90,45,122,118,SC.leaf,4)+[...Array(6)].map((_,i)=>{const t=(i+1)/7,x=90+32*t,y=45+73*t;return d_l(x,y,x-9,y+4,SC.leaf,1.5)+d_l(x,y,x+9,y+4,SC.leaf,1.5)}).join('')+`<circle cx="91" cy="49" r="9" fill="none" stroke="${SC.red}" stroke-width="2"/>`+d_t(105,22,'talon : petit morceau','middle',10,SC.red)+d_t(105,34,'d’écorce de la branche mère','middle',10,SC.red)+d_t(40,70,'branche mère','middle',10)+d_t(135,100,'pousse','start',10)+d_t(135,112,'de 10 à 15 cm','start',10)
+ +`<path d="M195 105 L212 70 H316 L333 105 Z" fill="rgba(255,255,255,.12)" stroke="${SC.ink}" stroke-opacity=".7"/>`+d_pot(222,105,86,45)+[240,265,290].map(x=>d_l(x,118,x,92,SC.leaf,4)+d_l(x,100,x-6,104,SC.leaf,1.5)+d_l(x,100,x+6,104,SC.leaf,1.5)).join('')+d_t(265,60,'châssis froid','middle',10)+d_t(265,164,'terreau + sable, humide','middle',10)+d_ex('Exemples : if, thuya — octobre à février, enracinement lent'),'Bouture de conifère à talon'),
+/* 5 eau */
+d_svg(`<rect x="132" y="100" width="76" height="58" fill="${SC.water}" fill-opacity=".45"/><rect x="130" y="70" width="80" height="90" rx="8" fill="none" stroke="${SC.ink}" stroke-width="2"/>`+d_l(170,40,170,150,SC.leaf2,4)+d_leaf(155,52,-30,14)+d_leaf(185,52,30,14)+d_leaf(156,80,-20,12)+d_leaf(184,80,20,12)+[[155,158],[162,162],[170,164],[178,162],[185,158]].map(p=>d_l(170,148,p[0],p[1],SC.ink,1)).join('')+d_l(130,100,210,100,SC.ink,1,1)
+ +d_t(122,50,'feuilles','end',10)+d_t(122,62,'hors de l’eau →','end',10)+d_t(220,98,'eau changée tous','start',10)+d_t(220,110,'les 2 à 3 jours','start',10)+d_t(220,152,'← racines de 2 à 3 cm','start',10)+d_t(220,164,'= à rempoter','start',10)+d_ex('Exemples : basilic, menthe, coléus, lierre, gourmand de tomate'),'Bouture dans l’eau'),
+/* 6 feuille */
+d_svg(`<rect x="15" y="118" width="84" height="16" fill="${SC.soil}"/><ellipse cx="57" cy="88" rx="36" ry="26" fill="${SC.leaf}"/>`+[[30,76],[44,66],[57,62],[70,66],[84,76]].map(p=>d_l(57,110,p[0],p[1],'#2f6b57',1.5)).join('')+[[38,90],[57,80],[76,90]].map(p=>d_l(p[0]-6,p[1]-6,p[0]+6,p[1]+6,SC.red,2)).join('')
+ +d_pot(145,92,50,44)+d_l(170,70,170,118,SC.leaf2,3)+`<ellipse cx="170" cy="64" rx="26" ry="17" fill="${SC.leaf}"/>`
+ +[[283,32,64],[283,72,102],[283,110,138]].map(s=>`<rect x="271" y="${s[1]}" width="24" height="${s[2]-s[1]}" rx="4" fill="${SC.leaf}"/>${d_l(283,s[2]-4,283,s[1]+6,SC.ink,1.5)}${d_t(300,s[1]+16,'↑','start',11,SC.gold)}`).join('')
+ +d_c(57,150,['Bégonia rex :','entailler nervures'])+d_c(170,150,['Saintpaulia :','3 à 4 cm de pétiole'])+d_c(283,150,['Sansevieria :','garder le sens ↑'])+d_ex('Feuilles : avril à septembre, terreau léger, lumière vive'),'Bouture de feuille de trois plantes'),
+/* 7 racine */
+d_svg(`<rect x="55" y="40" width="10" height="100" fill="${SC.root}"/>`+d_l(53,40,67,40,SC.red,3)+d_l(53,146,67,134,SC.red,3)+d_br(30,40,140,'5 à 8 cm')+d_t(76,44,'haut : coupe droite','start',10,SC.red)+d_t(76,150,'bas : coupe oblique','start',10,SC.red)
+ +d_pot(180,80,120,66)+[205,240,275].map(x=>`<rect x="${x}" y="90" width="8" height="38" fill="${SC.root}"/>`+d_l(x+4,90,x+4,66,SC.leaf2,2)+d_leaf(x+4,64,-30,7)).join('')+d_l(180,84,300,84,SC.ink,1,1)+d_t(240,166,'à la verticale, sous 1 cm de terreau','middle',10)+d_t(240,60,'pousses au printemps','middle',10)+d_ex('Anémone, phlox, pavot d’Orient · nov. à févr.'),'Bouture de racine'),
+/* 8 éclat */
+d_svg(d_fan(80,125,7)+[-30,-12,6,24].map(x=>d_l(80+x/3,125,80+x,150,SC.root,1.5)).join('')+d_l(80,38,80,152,SC.red,2,1)+d_t(80,32,'bêche : couper la touffe','middle',10,SC.red)+d_t(80,168,'touffe à diviser','middle',10)+d_t(170,100,'→','middle',24,SC.gold)
+ +[235,300].map(x=>d_fan(x,125,4)+[-18,0,18].map(o=>d_l(x+o/3,125,x+o,150,SC.root,1.5)).join('')+`<circle cx="${x-5}" cy="124" r="3" fill="${SC.gold}"/><circle cx="${x+6}" cy="124" r="3" fill="${SC.gold}"/>`).join('')+d_c(268,164,['racines + bourgeons','dans chaque morceau'])+d_ex('Exemples : hosta, ciboulette, rhubarbe, hémérocalle'),'Division d’une touffe')
+];
+
+$('#bmm').innerHTML=JM.map((m,i)=>`<option value="${i}" ${i==now.getMonth()?'selected':''}>${m}</option>`).join('');
+$('#btc').innerHTML='<option value="">Toutes les techniques</option>'+Object.entries(BT).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('');
+$('#bhow').innerHTML=BH.map((b,i)=>`<details class="panel"${i==1?' open':''}><summary>${b[0]}</summary>${SCH[i]||''}<p style="margin:.5rem 0"><b>Quand :</b> ${b[1]}.</p><ol style="margin:.2rem 0 .5rem;padding-left:1.2rem">${b[2]}</ol><p style="margin:0">💡 ${b[3]}</p></details>`).join('');
+const BOPEN=new Set();
+function drawBt(){const m=+$('#bmm').value,tc=$('#btc').value,q=norm($('#bq').value),cm=now.getMonth()+1,ok=r=>(!tc||r.t==tc)&&norm(r.n).includes(q);
+ $('#bth').innerHTML='<tr><th>Espèce</th>'+JM.map((mm,i)=>`<th class="${i+1==cm?'cur':''}">${mm.slice(0,3)}</th>`).join('')+'</tr>';
+ $('#btb').innerHTML=BD.map((r,i)=>ok(r)?`<tr data-i="${i}" style="cursor:pointer"><td style="white-space:nowrap"><b>${esc(r.n)}</b><br><small style="color:${BT[r.t][1]}">● ${BT[r.t][0]}</small></td>${JM.map((_,k)=>`<td class="m">${mset(r.m).has(k+1)?`<span style="background:${BT[r.t][1]}"></span>`:''}</td>`).join('')}</tr>${BOPEN.has(i)?`<tr><td colspan="13" style="white-space:normal;background:rgba(243,239,230,.08)">💡 ${esc(r.tip)}</td></tr>`:''}`:'').join('');
+ const g={};BD.filter(r=>ok(r)&&mset(r.m).has(m+1)).forEach(r=>(g[r.t]=g[r.t]||[]).push(r));
+ $('#bnow').innerHTML=Object.keys(g).length?Object.entries(g).map(([k,l])=>`<div style="margin-top:.5rem"><b style="color:${BT[k][1]}">${BT[k][0]}</b> : ${l.map(r=>`<span class="chip">${esc(r.n)}</span>`).join('')}</div>`).join(''):'<div style="margin-top:.5rem;opacity:.8">Rien à bouturer en '+JM[m]+' avec ces critères.</div>';
+ const y=now.getFullYear()+(m<now.getMonth()?1:0),nd=new Date(y,m+1,0).getDate(),I=[],B=[];
+ for(let i=1;i<=nd;i++){const a=astro(new Date(y,m,i));if(!a.nd&&!a.mont){if(a.day=='Racine')I.push(i);else if(a.day=='Feuille')B.push(i)}}
+ $('#bjl').innerHTML=`<div>🥕 Idéal (lune descendante, jour racine) : ${I.join(', ')||'—'}</div><div>🥬 Correct (lune descendante, jour feuille) : ${B.join(', ')||'—'}</div>`}
+$('#bmm').onchange=$('#btc').onchange=$('#bq').oninput=drawBt;
+$('#btb').onclick=e=>{const tr=e.target.closest('tr[data-i]');if(tr){const i=+tr.dataset.i;BOPEN.has(i)?BOPEN.delete(i):BOPEN.add(i);drawBt()}};
+$('#nav').addEventListener('click',e=>{if(e.target.dataset.p=='bouturage')drawBt()});
+/* ---- Greffes : calendrier, espèces, méthodes, schémas ---- */
+const GT={fe:['Fente','#e0654e'],an:['Anglaise','#c9a45c'],co:['Couronne','#8a6fc9'],ed:['Écusson (œil dormant)','#4ea884']};
+const GFD=`Pommier|fe|2-4|Franc (grand arbre) ou M9 / M27 (arbre nain)|Greffons prélevés en janvier-février et gardés au frais. Cambiums alignés, mastic sur toutes les plaies.
+Pommier|an|2-3|Franc ou M9 / M27|Porte-greffe et greffon doivent avoir le même diamètre.
+Pommier|co|4-5|Vieux arbre ou branche de gros diamètre|Surgreffage : changer de variété sur un arbre adulte.
+Pommier|ed|7-9|Franc ou M9 / M27|L'écorce du porte-greffe doit se décoller facilement. Pas de mastic.
+Poirier|fe|2-4|Cognassier (arbre réduit) ou franc (grand arbre)|Certaines variétés sont incompatibles avec le cognassier : passez par une greffe intermédiaire.
+Poirier|an|2-3|Cognassier ou franc|Même diamètre pour le greffon et le porte-greffe.
+Poirier|ed|7-9|Cognassier ou franc|Ligature retirée quand l'écusson est soudé.
+Cerisier|fe|3-4|Merisier ou Sainte-Lucie (Prunus mahaleb)|Le cerisier se greffe tôt, dès le début de la montée de sève.
+Cerisier|an|3-4|Merisier ou Sainte-Lucie|Coupe franche d'un seul geste, lame bien affûtée.
+Cerisier|ed|7-8|Merisier ou Sainte-Lucie|Écusson en été, quand l'écorce se décolle bien.
+Prunier|fe|3-4|Myrobolan ou Saint-Julien|Avec le cerisier, un des premiers arbres à greffer au printemps.
+Prunier|ed|7-9|Myrobolan ou Saint-Julien|Écusson posé sur une tige lisse, près du sol.
+Pêcher|ed|7-9|Franc de pêcher, amandier ou prunier Saint-Julien|Se greffe surtout en écusson, en été.
+Abricotier|ed|7-9|Prunier Saint-Julien ou myrobolan|Écusson en été sur un porte-greffe en sève.
+Rosier|ed|7-9|Églantier (Rosa canina)|Écusson au collet du porte-greffe. Ligature retirée après 3 à 4 semaines, sans mastic.
+Cerisier à fleurs|ed|7-8|Merisier|Même méthode que le cerisier à fruits.
+Vigne|fe|3-4|Cep en place ou porte-greffe américain|Greffon d'un an de 2 à 3 yeux. Butter la greffe pour la protéger.
+Tomate|an|2-4|Porte-greffe hybride vigoureux (type Maxifort)|Technique avancée : plantules de même diamètre, assemblées avec un petit clip, en atmosphère humide.`.split('\n').map(l=>{const a=l.split('|');return{n:a[0],t:a[1],m:a[2],pg:a[3],tip:a[4]}});
+const GSCH=[
+/* principes : le cambium */
+d_svg(`<circle cx="90" cy="95" r="58" fill="#6b4423"/><circle cx="90" cy="95" r="50" fill="none" stroke="${SC.leaf2}" stroke-width="5"/><circle cx="90" cy="95" r="46" fill="${SC.root}"/><circle cx="90" cy="95" r="5" fill="${SC.wood}"/>`
+ +d_l(125,54,180,45)+d_l(135,79,180,75)+d_l(115,95,180,105)+d_t(185,48,'écorce','start')+d_t(185,78,'cambium (couche verte)','start')+d_t(185,108,'bois','start')
+ +d_c(250,135,['La greffe prend quand les','cambiums du greffon et','du porte-greffe se touchent.'])+d_ex('Cambiums alignés = greffe réussie'),'Coupe d’une tige : écorce, cambium, bois'),
+/* écusson */
+d_svg(d_n(12,16,1)+d_n(97,16,2)+d_n(182,16,3)+d_n(267,16,4)
+ +d_l(42,150,42,40,SC.wood,5)+`<circle cx="42" cy="92" r="4" fill="${SC.leaf2}"/>`+d_l(42,92,52,84,SC.leaf2,2)+`<path d="M42 72 C50 78 50 106 42 114 C34 106 34 78 42 72 Z" fill="none" stroke="${SC.red}" stroke-width="1.8" stroke-dasharray="3 2"/>`
+ +d_l(127,150,127,40,SC.wood,12)+`<rect x="121" y="82" width="12" height="34" fill="${SC.root}"/><path d="M121 82 l-6 3 v28 l6 3 z M133 82 l6 3 v28 l-6 3 z" fill="#8a5a2b"/>`+d_l(116,80,138,80,SC.red,2)+d_l(127,80,127,118,SC.red,2)
+ +d_l(212,150,212,40,SC.wood,12)+`<path d="M212 84 C219 90 219 108 212 114 C205 108 205 90 212 84 Z" fill="${SC.leaf}"/><circle cx="212" cy="98" r="3" fill="${SC.leaf2}" stroke="${SC.ink}"/>`
+ +d_l(297,150,297,40,SC.wood,12)+[78,83,88,108,113,118].map(y=>d_l(288,y,306,y+2,SC.gold,2)).join('')+`<circle cx="297" cy="98" r="4" fill="${SC.leaf2}" stroke="${SC.ink}"/>`+d_t(312,101,'œil','start',9)
+ +d_c(42,162,['Prélever','un œil'])+d_c(127,162,['Inciser en T,','soulever l’écorce'])+d_c(212,162,['Glisser l’écusson','sous l’écorce'])+d_c(297,162,['Ligaturer sans','couvrir l’œil'])+d_ex('Rosier, pêcher, prunier, pommier · juillet à septembre'),'Greffe en écusson en 4 étapes'),
+/* fente */
+d_svg(d_n(12,16,1)+d_n(125,16,2)+d_n(238,16,3)
+ +`<rect x="47" y="70" width="20" height="80" fill="${SC.wood}"/>`+d_l(57,70,57,108,'#2b1a0e',2)+`<polygon points="50,70 64,70 57,88" fill="#cfd8dc"/>`
+ +`<rect x="165" y="36" width="8" height="78" fill="${SC.wood}"/><polygon points="163,114 175,114 169,140" fill="${SC.wood}"/>`+d_l(163,114,169,140,SC.red,1.5)+d_l(175,114,169,140,SC.red,1.5)+`<circle cx="175" cy="50" r="3" fill="${SC.leaf2}"/><circle cx="163" cy="76" r="3" fill="${SC.leaf2}"/>`
+ +`<rect x="273" y="84" width="20" height="66" fill="${SC.wood}"/><rect x="279" y="36" width="8" height="52" fill="${SC.wood}"/><ellipse cx="283" cy="84" rx="17" ry="7" fill="#b9a48c"/>`+d_l(272,100,294,100,SC.gold,2)+d_l(272,105,294,105,SC.gold,2)+`<circle cx="287" cy="50" r="3" fill="${SC.leaf2}"/><circle cx="279" cy="68" r="3" fill="${SC.leaf2}"/>`
+ +d_c(57,162,['Fendre','le porte-greffe'])+d_c(170,162,['Tailler le greffon','en biseau double'])+d_c(283,162,['Insérer, ligaturer','et mastiquer'])+d_ex('Pommier, poirier, cerisier, prunier · mars à avril'),'Greffe en fente en 3 étapes'),
+/* anglaise */
+d_svg(d_n(12,16,1)+d_n(125,16,2)+d_n(238,16,3)
+ +`<polygon points="45,145 69,145 69,100 45,120" fill="${SC.wood}"/><polygon points="45,30 69,30 69,70 45,90" fill="${SC.wood}"/>`+d_l(45,120,69,100,SC.red,2)+d_l(45,90,69,70,SC.red,2)+`<circle cx="47" cy="50" r="3" fill="${SC.leaf2}"/>`
+ +`<polygon points="158,145 182,145 182,100 158,120" fill="${SC.wood}"/><polygon points="158,50 182,50 182,100 158,120" fill="#8a5a2b"/>`+d_l(158,120,182,100,SC.leaf2,2.5)+`<circle cx="160" cy="70" r="3" fill="${SC.leaf2}"/>`
+ +`<polygon points="271,145 295,145 295,100 271,120" fill="${SC.wood}"/><polygon points="271,50 295,50 295,100 271,120" fill="#8a5a2b"/><ellipse cx="283" cy="110" rx="18" ry="16" fill="#b9a48c" fill-opacity=".45"/>`+[98,106,114,122].map(y=>d_l(268,y,298,y,SC.gold,2)).join('')+`<circle cx="273" cy="70" r="3" fill="${SC.leaf2}"/>`
+ +d_c(57,160,['Deux coupes','obliques identiques'])+d_c(170,160,['Emboîter :','cambiums alignés'])+d_c(283,160,['Ligaturer','et mastiquer'])+d_ex('Pommier, poirier, cerisier · février à mars'),'Greffe à l’anglaise en 3 étapes'),
+/* couronne */
+d_svg(`<rect x="95" y="85" width="130" height="75" fill="${SC.wood}"/><ellipse cx="160" cy="85" rx="65" ry="14" fill="${SC.root}" stroke="#6b4423" stroke-width="4"/>`
+ +[[112,92,-6],[140,98,-3],[180,98,3],[208,92,6]].map(p=>d_l(p[0],p[1],p[0]+p[2],42,SC.wood,4)+`<circle cx="${p[0]+p[2]*.7}" cy="62" r="3" fill="${SC.leaf2}"/>`).join('')
+ +d_t(88,66,'greffons glissés','end',10)+d_t(88,78,'sous l’écorce','end',10)+d_t(234,92,'branche sciée','start',10)+d_t(234,104,'+ mastic','start',10)
+ +d_t(160,172,'3 à 4 greffons taillés en biseau, côté bois vers l’intérieur','middle',10)+d_ex('Surgreffage : pommier, poirier · avril à mai'),'Greffe en couronne sur une branche sciée'),
+/* approche */
+d_svg(d_pot(40,110,60,45)+d_pot(140,110,60,45)+d_l(70,112,112,72,SC.leaf2,5)+d_l(112,72,112,34,SC.leaf2,5)+d_leaf(100,40,-30,13)+d_leaf(124,40,30,13)+d_l(170,112,128,72,SC.leaf2,5)
+ +`<rect x="108" y="64" width="24" height="14" rx="3" fill="${SC.gold}" fill-opacity=".85"/>`+d_l(143,98,157,88,SC.red,2.5)
+ +d_t(70,172,'porte-greffe','middle',10)+d_t(170,172,'greffon enraciné','middle',10)+d_t(215,66,'← zone greffée','start',10)+d_t(215,100,'← sevrage après soudure','start',10)+d_ex('Approche : deux plantes enracinées, soudure en quelques semaines'),'Greffe par approche'),
+/* tomate */
+d_svg(d_n(12,16,1)+d_n(182,16,2)
+ +d_l(55,150,55,100,SC.leaf2,6)+d_leaf(42,118,-20,10)+d_leaf(68,118,20,10)+d_l(50,102,60,92,SC.red,2.5)+d_l(115,60,115,100,SC.leaf2,6)+d_leaf(102,58,-30,12)+d_leaf(128,58,30,12)+d_l(110,102,120,92,SC.red,2.5)
+ +d_t(55,142,'porte-greffe','middle',9)+d_t(115,118,'greffon','middle',9)
+ +`<path d="M218 110 C212 30, 298 30, 292 110" fill="rgba(255,255,255,.14)" stroke="${SC.ink}" stroke-opacity=".7"/>`+d_pot(225,110,60,40)+d_l(255,112,255,86,SC.leaf2,6)+`<rect x="248" y="78" width="14" height="14" rx="3" fill="${SC.gold}"/>`+d_l(255,78,255,50,SC.leaf2,5)+d_leaf(243,48,-30,12)+d_leaf(267,48,30,12)+d_t(300,84,'clip','start',10)
+ +d_c(85,162,['Couper les deux','plantules à 45°'])+d_c(255,162,['Assembler avec un clip,','garder humide et à l’ombre'])+d_ex('Tomate · porte-greffe vigoureux · février à avril'),'Greffe de la tomate')
+];
+const GH=[
+['Avant de commencer','Selon la technique, de la fin de l\'hiver à la fin de l\'été',`<li>Greffez deux plantes compatibles, en général de la même espèce ou du même genre.</li><li>Utilisez un greffoir ou un couteau très affûté, désinfecté à l'alcool.</li><li>Les cambiums (couche verte sous l'écorce) du greffon et du porte-greffe doivent se toucher.</li><li>Ligaturez avec du raphia ou un lien élastique, et protégez les plaies avec du mastic à greffer, sauf pour l'écusson.</li><li>Évitez de greffer par grand froid, par vent fort ou par forte chaleur.</li><li>Étiquetez la greffe et supprimez régulièrement les rejets du porte-greffe.</li>`,'Les greffons d\'hiver se récoltent en janvier-février : rameaux d\'un an de la grosseur d\'un crayon, gardés au frais jusqu\'à la greffe.'],
+['Greffe en écusson (œil dormant)','De mi-juillet à début septembre, quand l\'écorce du porte-greffe se décolle facilement',`<li>Choisissez un porte-greffe en sève, à tige lisse, et vérifiez que l'écorce se décolle bien.</li><li>Prélevez un rameau de l'année et retirez les feuilles en gardant un bout de pétiole.</li><li>Découpez un écusson : un œil avec une languette d'écorce de 2,5 à 3 cm.</li><li>Faites une incision en T sur le porte-greffe, près du sol pour un rosier, et soulevez l'écorce.</li><li>Glissez l'écusson sous l'écorce en ajustant son entaille sur celle du porte-greffe.</li><li>Ligaturez sans couvrir l'œil. Pas de mastic.</li><li>Retirez le lien après 3 à 4 semaines si la greffe a pris, puis coupez le porte-greffe au-dessus de l'écusson au printemps suivant.</li>`,'Si le pétiole tombe au toucher et que l\'œil reste vert, la greffe a pris. L\'écusson à œil poussant se fait au printemps, sur un porte-greffe en activité.'],
+['Greffe en fente','Fin d\'hiver et début de printemps : mars-avril, d\'abord cerisier et prunier, puis poirier et pommier',`<li>Coupez la tête du porte-greffe net, à angle droit.</li><li>Fendez-la en son milieu sur 4 à 5 cm et maintenez la fente ouverte avec un coin.</li><li>Taillez le greffon, avec 2 à 3 yeux, en biseau double sur 4 à 5 cm.</li><li>Insérez-le en alignant les cambiums, du côté de l'écorce.</li><li>Retirez le coin, ligaturez, puis couvrez toutes les plaies de mastic.</li>`,'Si le porte-greffe est plus gros que le greffon, placez-en deux, un de chaque côté.'],
+['Greffe à l\'anglaise (simple ou compliquée)','Février à mars, avant le démarrage de la végétation',`<li>Choisissez un porte-greffe et un greffon de même diamètre.</li><li>Faites sur chacun une coupe oblique de 3 à 4 cm, d'un seul geste franc.</li><li>Anglaise compliquée : ajoutez une petite fente en languette au milieu de chaque coupe pour les verrouiller l'une dans l'autre.</li><li>Emboîtez en alignant les cambiums.</li><li>Ligaturez fermement, puis mastiquez.</li>`,'La lame doit être très affûtée : une coupe lisse assure un meilleur contact.'],
+['Greffe en couronne','Avril à mai, quand la sève monte et que l\'écorce se décolle',`<li>Sciez la branche ou le tronc à angle droit et nettoyez la coupe.</li><li>Prélevez des greffons d'hiver et taillez-les en biseau sur 4 à 5 cm.</li><li>Incisez l'écorce du porte-greffe de haut en bas sur 3 à 4 cm, puis décollez-la doucement.</li><li>Glissez 3 à 4 greffons entre l'écorce et le bois, biseau côté bois, répartis autour de la section.</li><li>Ligaturez et couvrez toute la section de mastic.</li><li>Tuteurez les greffons pour les protéger du vent.</li>`,'Idéale pour changer la variété d\'un arbre adulte (surgreffage).'],
+['Greffe par approche','Printemps ou été, sur deux plantes enracinées',`<li>Placez deux plantes en pot côte à côte, tiges en contact.</li><li>Retirez sur chaque tige une fine lamelle d'écorce à l'endroit du contact.</li><li>Appliquez les deux plaies l'une contre l'autre et ligaturez.</li><li>Quand la soudure est faite (quelques semaines), sevrez la plante greffon en la coupant sous la greffe.</li>`,'Pratique pour les arbustes difficiles à greffer autrement.'],
+['Greffe de la tomate (potager)','Février à avril, sur plantules',`<li>Semez le porte-greffe 2 à 3 jours avant la variété à greffer.</li><li>Quand les plantules ont 2 à 3 feuilles et la même épaisseur de tige, coupez-les en biseau à 45°.</li><li>Assemblez-les avec un petit clip de greffage.</li><li>Gardez à l'ombre et en atmosphère très humide environ une semaine, puis aérez peu à peu.</li><li>Plantez en veillant à garder la greffe au-dessus du sol.</li>`,'Technique avancée, surtout utile contre les maladies du sol et pour gagner en vigueur.']];
+$('#gfm').innerHTML=JM.map((m,i)=>`<option value="${i}" ${i==now.getMonth()?'selected':''}>${m}</option>`).join('');
+$('#gft').innerHTML='<option value="">Toutes les techniques</option>'+Object.entries(GT).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('');
+$('#gfw').innerHTML=GH.map((b,i)=>`<details class="panel"${i==1?' open':''}><summary>${b[0]}</summary>${GSCH[i]||''}<p style="margin:.5rem 0"><b>Quand :</b> ${b[1]}.</p><ol style="margin:.2rem 0 .5rem;padding-left:1.2rem">${b[2]}</ol><p style="margin:0">💡 ${b[3]}</p></details>`).join('');
+const GOPEN=new Set();
+function drawGf(){const m=+$('#gfm').value,tc=$('#gft').value,q=norm($('#gfq').value),cm=now.getMonth()+1,ok=r=>(!tc||r.t==tc)&&norm(r.n).includes(q);
+ $('#gfh').innerHTML='<tr><th>Espèce</th>'+JM.map((mm,i)=>`<th class="${i+1==cm?'cur':''}">${mm.slice(0,3)}</th>`).join('')+'</tr>';
+ $('#gfb').innerHTML=GFD.map((r,i)=>ok(r)?`<tr data-i="${i}" style="cursor:pointer"><td style="white-space:nowrap"><b>${esc(r.n)}</b><br><small style="color:${GT[r.t][1]}">● ${GT[r.t][0]}</small></td>${JM.map((_,k)=>`<td class="m">${mset(r.m).has(k+1)?`<span style="background:${GT[r.t][1]}"></span>`:''}</td>`).join('')}</tr>${GOPEN.has(i)?`<tr><td colspan="13" style="white-space:normal;background:rgba(243,239,230,.08)"><b>Porte-greffe :</b> ${esc(r.pg)}<br>💡 ${esc(r.tip)}</td></tr>`:''}`:'').join('');
+ const g={};GFD.filter(r=>ok(r)&&mset(r.m).has(m+1)).forEach(r=>(g[r.t]=g[r.t]||[]).push(r));
+ $('#gfn').innerHTML=Object.keys(g).length?Object.entries(g).map(([k,l])=>`<div style="margin-top:.5rem"><b style="color:${GT[k][1]}">${GT[k][0]}</b> : ${l.map(r=>`<span class="chip">${esc(r.n)}</span>`).join('')}</div>`).join(''):'<div style="margin-top:.5rem;opacity:.8">Aucune greffe conseillée en '+JM[m]+' avec ces critères.</div>';
+ const y=now.getFullYear()+(m<now.getMonth()?1:0),nd=new Date(y,m+1,0).getDate(),F=[],R=[];
+ for(let i=1;i<=nd;i++){const a=astro(new Date(y,m,i));if(!a.nd&&a.mont){if(a.day=='Fruit')F.push(i);else if(a.day=='Fleur')R.push(i)}}
+ $('#gfl').innerHTML=`<div>🍅 Fruitiers (lune montante, jour fruit) : ${F.join(', ')||'—'}</div><div>🌸 Rosiers (lune montante, jour fleur) : ${R.join(', ')||'—'}</div>`}
+$('#gfm').onchange=$('#gft').onchange=$('#gfq').oninput=drawGf;
+$('#gfb').onclick=e=>{const tr=e.target.closest('tr[data-i]');if(tr){const i=+tr.dataset.i;GOPEN.has(i)?GOPEN.delete(i):GOPEN.add(i);drawGf()}};
+$('#nav').addEventListener('click',e=>{if(e.target.dataset.p=='greffes')drawGf()});
+/* ---- Que faire aujourd'hui ? semis, plantation, bouturage, greffe selon le jour, la lune et le mois ---- */
+function todo(d,force){const a=astro(d),m=d.getMonth()+1,g={sem:[],pla:[],bou:[],gre:[]};
+ if(a.nd&&!force)return{a,g,nd:true};
+ P.forEach(p=>{const q=QC[norm(p.n)],t=TCLX[p.t]||'Fleur';if(t!=a.day)return;const want=t=='Racine'?!a.cr:a.cr,
+  inS=q?mset(q.S).has(m):mois(p.s).includes(m-1),inP=q?mset(q.P).has(m):false;
+  if(inS&&a.mont)g.sem.push({p,n:p.n,id:want});if(inP&&!a.mont)g.pla.push({p,n:p.n,id:want})});
+ BD.forEach(r=>{if(mset(r.m).has(m)&&!a.mont&&(a.day=='Racine'||a.day=='Feuille'))g.bou.push({n:r.n,tag:BT[r.t][0],id:a.day=='Racine'})});
+ GFD.forEach(r=>{const o=r.n=='Rosier'||r.n=='Cerisier à fleurs';if(mset(r.m).has(m)&&a.mont&&a.day==(o?'Fleur':'Fruit'))g.gre.push({n:r.n,tag:GT[r.t][0],id:false})});
+ return{a,g}}
+function tfMerge(l){const o=new Map();l.forEach(x=>{const k=x.n;if(!o.has(k))o.set(k,{...x,tags:[]});const e=o.get(k);if(x.tag&&!e.tags.includes(x.tag))e.tags.push(x.tag);e.id=e.id||x.id});return[...o.values()].sort((a,b)=>(b.id-a.id)||a.n.localeCompare(b.n,'fr'))}
+const TFS=[['sem','🌱 Semer'],['pla','🪴 Planter et repiquer'],['bou','✂️ Bouturer'],['gre','🌳 Greffer']];
+function tfWhy(k,a,m){const mm=JM[m-1],jt=a.day.toLowerCase();
+ if(k=='sem')return a.mont?`Aucune plante de type ${jt} à semer en ${mm}.`:'Lune descendante : les semis attendent la lune montante.';
+ if(k=='pla')return !a.mont?`Aucune plante de type ${jt} à planter en ${mm}.`:'Lune montante : les plantations se font en lune descendante.';
+ if(k=='bou')return a.mont?'Lune montante : on bouture en lune descendante.':(a.day=='Racine'||a.day=='Feuille')?`Rien à bouturer en ${mm}.`:`Jour ${jt} : on bouture les jours racine ou feuille.`;
+ return !a.mont?'Lune descendante : on greffe en lune montante.':(a.day=='Fruit'||a.day=='Fleur')?`Aucune greffe conseillée en ${mm}.`:`Jour ${jt} : on greffe les jours fruit (fruitiers) ou fleur (rosiers).`}
+let tfD=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+function drawTf(){const force=$('#tfv').checked,r=todo(tfD,force),a=r.a,m=tfD.getMonth()+1;$('#tfd').value=iso(tfD);
+ $('#tfs').innerHTML=`<p class="big" style="font-size:1.7rem;margin:.1rem 0">${a.em} ${DI[a.day]} Jour ${a.day.toLowerCase()}</p>${info(a)}`;
+ $('#tfn').style.display=r.nd?'block':'none';
+ $('#tfg').innerHTML=TFS.map(([k,t])=>{const l=tfMerge(r.g[k]);return`<details class="panel" ${l.length?'open':''}><summary>${t} <small style="opacity:.75">(${l.length})</small></summary><div style="margin-top:.5rem">${l.length?l.map(x=>`<span class="chip" style="${x.id?'border-color:var(--laiton)':''}">${x.id?'⭐ ':''}${x.p?ico(x.p)+' ':''}${esc(x.n)}${x.tags&&x.tags.length?` <small style="opacity:.75">(${esc(x.tags.join(' · '))})</small>`:''}</span>`).join(''):`<span style="opacity:.8">${r.nd?'Jour de nœud lunaire : rien de conseillé.':tfWhy(k,a,m)}</span>`}</div></details>`}).join('');
+ let w='';for(let i=0;i<7;i++){const d=new Date(tfD.getFullYear(),tfD.getMonth(),tfD.getDate()+i),x=todo(d,force),c=k=>tfMerge(x.g[k]).length;
+  w+=`<tr data-d="${iso(d)}" style="cursor:pointer${i==0?';background:rgba(201,164,92,.2)':''}"><td>${fmtD(iso(d))}</td><td>${x.a.em} ${DI[x.a.day]}</td>${x.nd?'<td colspan="4" style="opacity:.8">nœud lunaire : repos</td>':`<td>${c('sem')}</td><td>${c('pla')}</td><td>${c('bou')}</td><td>${c('gre')}</td>`}</tr>`}
+ $('#tfw').innerHTML=w}
+$('#tfd').onchange=e=>{const v=e.target.value;if(v){const[y,mo,da]=v.split('-').map(Number);tfD=new Date(y,mo-1,da);drawTf()}};
+$('#tfp').onclick=()=>{tfD.setDate(tfD.getDate()-1);drawTf()};$('#tfx').onclick=()=>{tfD.setDate(tfD.getDate()+1);drawTf()};
+$('#tft').onclick=()=>{tfD=new Date(now.getFullYear(),now.getMonth(),now.getDate());drawTf()};$('#tfv').onchange=drawTf;
+$('#tfw').onclick=e=>{const tr=e.target.closest('tr[data-d]');if(tr){const[y,mo,da]=tr.dataset.d.split('-').map(Number);tfD=new Date(y,mo-1,da);drawTf()}};
+$('#hgo').onclick=()=>document.querySelector('#nav button[data-p="faire"]').click();
+$('#nav').addEventListener('click',e=>{if(e.target.dataset.p=='faire')drawTf()});
+/* ---- Index de plantes (livre) : trouvées par la recherche, ajoutées en un clic ---- */
+const IXC={ar:['Arbre','arbre','10-3',''],as:['Arbuste','arbuste','10-3',''],co:['Conifère','conifere','9-11,3-4',''],vi:['Vivace','vivace','3-5,9-10',''],an:['Annuelle','annuelle','5-6','3-5'],gr:['Grimpante','grimpante','10-3',''],bu:['Bulbe d\'automne','bulbe','9-11',''],bp:['Bulbe de printemps','bulbe','3-5',''],po:['Potager','potager','',''],ao:['Aromatique','aromatique','',''],fr:['Fruitier','fruitier','11-3','']};
+const IXF={ar:[0,500,500],as:[0,120,150],co:[0,250,250],vi:[1,40,50],an:[1,25,30],gr:[0,200,200],bu:[10,10,15],bp:[8,15,20],po:[1,30,40],ao:[1,25,30],fr:[0,400,400]};
+const IXD=`Abélia|as|fleur|||22
+Acacia rose|as|fleur|||270
+Acaena|vi|feuille|||22
+Acanthe|vi|fleur|||22
+Achillée|vi|fleur|||22
+Aconit tue-loup|vi|fleur|||22
+Actinidia|gr|fruit|||23
+Adonide|vi|fleur|||23
+Agapanthe|bp|fleur|||23
+Agastache|vi|fleur|||23
+Agérate|an|fleur|||23
+Agneau-chaste|as|fleur|||23
+Ail d'ornement|bu|fleur|||24
+Ailante|ar|feuille|||24
+Airelle|as|fruit|||24
+Ajonc|as|fleur|||24
+Akébie|gr|fleur|||24
+Albizzia|ar|fleur|||24
+Alchémille|vi|fleur|||25
+Alisier blanc|ar|feuille|||25
+Alstroemère|vi|fleur|||26
+Alysse odorante|an|fleur|||26
+Amarante|an|fleur|||26
+Amaryllis|bp|fleur|||26
+Amélanchier|as|fruit|||26
+Ammi|an|fleur|||27
+Anagallis|an|fleur|||27
+Ancolie|vi|fleur|||27
+Andromède|as|fleur|||27
+Anémone du Japon|vi|fleur|||27
+Anthémis|vi|fleur|||27
+Arabette|vi|fleur|||28
+Aralia élevé|as|feuille|||28
+Arbousier|as|fruit|||28
+Arbre à franges|as|fleur|||30
+Arbre à papier|ar|feuille|||28
+Arbre à perruques|as|feuille|||61
+Arbre aux fraises|as|fruit|||28
+Arbre aux mouchoirs|ar|fleur|||28
+Arbre aux papillons|as|fleur|||37
+Arbre aux quarante écus|ar|feuille|||63
+Arbre de Judée|ar|fleur|||28
+Arbre de neige|as|fleur|||30
+Arbre de soie|ar|fleur|||24
+Argousier|as|fruit|||30
+Aristoloche|gr|feuille|||30
+Armoise|ao|feuille|||30
+Arroche|po|feuille|3-7||30
+Arum d'Éthiopie|bp|fleur|||31
+Aster|vi|fleur|||31
+Astilbe|vi|fleur|||31
+Astrance|vi|fleur|||31
+Aubépine|as|fleur|||31
+Aubriète|vi|fleur|||32
+Aucuba du Japon|as|feuille|||32
+Aulne|ar|feuille|||32
+Azalée|as|fleur|||32
+Baguenaudier commun|as|fleur|||32
+Balsamine|an|fleur|||33
+Bambou|vi|feuille|||33
+Barbe-de-bouc|vi|fleur|||33
+Bec-de-grue|vi|fleur|||62
+Bégonia à massifs|an|fleur|||33
+Bégonia tubéreux|bp|fleur|||33
+Belle-de-jour|an|fleur|||34
+Belle-de-nuit|an|fleur|||34
+Benoîte|vi|fleur|||35
+Berbéris|as|fleur|||35
+Bergénia|vi|fleur|||35
+Bette à cardes|po|feuille|4-7||93
+Bidens|an|fleur|||35
+Bignone|gr|fleur|||35
+Bleuet|an|fleur|||36
+Bougainvillée|gr|fleur||5-6|36
+Bouleau|ar|feuille|||36
+Bouton-d'argent|vi|fleur|||36
+Brachyscome|an|fleur|||36
+Bruyère|as|fleur|||36
+Buddleia|as|fleur|||37
+Buglosse|an|fleur|||37
+Buis|as|feuille|||37
+Buisson-ardent|as|fruit|||37
+Buplèvre|as|fleur|||37
+Calandrinia|an|fleur|||37
+Calcéolaire|an|fleur|||38
+Callune|as|fleur|||38
+Camélia|as|fleur|||38
+Campanule|vi|fleur|||38
+Canna|bp|fleur|||38
+Carline|vi|fleur|||40
+Cassia|as|fleur|||40
+Catalpa|ar|fleur|||41
+Céanothe|as|fleur|||41
+Cèdre|co|feuille|||41
+Célastre|gr|fruit|||41
+Céleri à côtes|po|feuille|2-5|4-7|41
+Célosie|an|fleur|||41
+Céraiste|vi|fleur|||42
+Cerisier acide|fr|fruit|||43
+Hellébore|vi|fleur|||66
+Hémérocalle|vi|fleur|||66
+Herbe-aux-chats|vi|fleur|||67
+Hêtre|ar|feuille|||67
+Hêtre austral|ar|feuille|||67
+Heuchère|vi|feuille|||67
+Hibiscus|as|fleur|||67
+Hortensia|as|fleur|||67
+Hortensia grimpant|gr|fleur|||68
+Hosta|vi|feuille|||68
+Houx commun|as|feuille|||68
+Ibéris|vi|fleur|||68
+If|co|feuille|||68
+If commun|co|feuille|||228
+If d'Irlande|co|feuille|||229
+Immortelle|an|fleur|||68
+Impatience|an|fleur|||70
+Impatience de Nouvelle-Guinée|an|fleur|||70
+Ipomée|an|fleur|||70
+Iris rhizomateux|vi|fleur||7-9|70
+Jacinthe|bu|fleur|||70
+Jasmin|gr|fleur|||70
+Jasmin étoilé|gr|fleur|||71
+Jonquille|bu|fleur|||71
+Joubarbe|vi|feuille|||71
+Kaki|fr|fruit|||71
+Kiwi|gr|fruit|||23
+Kochia|an|feuille|||71
+Lantana|an|fleur|||72
+Laurier d'Alexandrie|as|feuille|||72
+Laurier-cerise|as|feuille|||73
+Laurier-rose|as|fleur|||73
+Laurier-tin|as|fleur|||73
+Lavande à toupet|as|fleur|||234
+Lavatère|an|fleur|||73
+Lentille|po|legumineuse|3-4||73
+Leucanthème|vi|fleur|||74
+Liatris|bp|fleur|||74
+Libocèdre|co|feuille|||74
+Lierre|gr|feuille|||74
+Lierre terrestre|vi|feuille|||74
+Ligulaire|vi|fleur|||74
+Lilas|as|fleur|||75
+Lilas des Indes|as|fleur|||75
+Linaire|an|fleur|||75
+Lin annuel|an|fleur|||75
+Lin de Nouvelle-Zélande|vi|feuille|||75
+Lin vivace|vi|fleur|||75
+Lis|bu|fleur||10-11,3-4|76
+Lithospermum|vi|fleur|||76
+Lobélia|an|fleur|||76
+Lunaire|an|fleur|||76
+Lupin|vi|fleur|||76
+Lysimaque|vi|fleur|||76
+Magnolia|as|fleur|||77
+Mahonia du Japon|as|fleur|||77
+Malope|an|fleur|||77
+Marguerite d'automne|vi|fleur|||77
+Marronnier|ar|fleur|||78
+Matricaire|an|fleur|||78
+Mauve|an|fleur|||78
+Mélèze|co|feuille|||78
+Merisier des oiseaux|ar|fleur|||79
+Merveille du Pérou|an|fleur|||34
+Micocoulier|ar|feuille|||79
+Millepertuis|as|fleur|||80
+Mimosa|as|fleur|||80
+Mimulus|vi|fleur|||80
+Misère|vi|feuille|||80
+Monarde|vi|fleur|||80
+Monnaie-du-pape|an|fleur|||80
+Montbretia|bp|fleur|||81
+Muflier|an|fleur|||81
+Muguet|vi|fleur|||81
+Mûrier|ar|fruit|||81
+Myosotis|an|fleur|||81
+Myrte|as|fleur|||81
+Myrtille|fr|fruit|||82
+Narcisse|bu|fleur|||82
+Néflier commun|fr|fruit|||82
+Némésie|an|fleur|||82
+Nigelle|an|fleur|||82
+Noisetier de Byzance|ar|fruit|||83
+Œillet|vi|fleur|||83
+Œillet de poète|an|fleur|||83
+Oenothère|vi|fleur|||83
+Olivier|as|fruit|||84
+Omphalodes|vi|fleur|||84
+Oranger|as|fruit||4-5|84
+Oranger des Osages|ar|feuille|||84
+Oreille d'ours|vi|fleur|||84
+Orme|ar|feuille|||85
+Orme de Sibérie|ar|feuille|||86
+Orpin|vi|fleur|||86
+Oseille|po|feuille|3-5,8-9||86
+Osier des vanniers|as|feuille|||86
+Osmonde royale|vi|feuille|||86
+Ostrya d'Amérique|ar|feuille|||86
+Panicaut|vi|fleur|||43
+Pâquerette|an|fleur|6-7|9-10|87
+Parrotie|ar|feuille|||87
+Passiflore|gr|fleur|||87
+Patate douce|po|racine||5-6|87
+Pâtisson|po|fruit|4-5|5-6|50
+Pavot|an|fleur|||87
+Pavot bleu de l'Himalaya|vi|fleur|||88
+Pavot de Californie|an|fleur|||88
+Pélargonium|an|fleur|-|5-6|88
+Pensée|an|fleur|6-7|9-10|88
+Penstemon|vi|fleur|||88
+Perce-neige|bu|fleur|||89
+Périlla de Nankin|an|feuille|||89
+Pervenche|vi|fleur|||89
+Petit houx|as|feuille|||89
+Pétunia|an|fleur|||89
+Peuplier|ar|feuille|||91
+Peuplier blanc de Hollande|ar|feuille|||250
+Phacélie|an|fleur|3-9||91
+Phlox|vi|fleur|||91
+Pied-d'alouette|an|fleur|||
+Pimprenelle|ao|feuille|3-8||92
+Pin|co|feuille|||92
+Pissenlit|po|feuille|3-8||92
+Pivoine|vi|fleur||9-10|92
+Platane|ar|feuille|||92
+Poirée|po|feuille|4-7||93
+Pois de senteur|an|fleur|3-4,10-11||
+Potentille|as|fleur|||
+Pourpier|po|feuille|5-7||
+Primevère|vi|fleur|||
+Pulsatille|vi|fleur|||
+Pyrèthre|vi|fleur|||
+Raifort|po|racine||3-4,10-11|
+Reine-marguerite|an|fleur|3-5|5-6|
+Renoncule|bp|fleur|||
+Renouée|vi|fleur|||
+Rhododendron|as|fleur|||
+Ricin|an|feuille|3-4|5-6|
+Robinier|ar|fleur|||
+Rodgersia|vi|feuille|||
+Ronce|as|fruit|||
+Roquette|po|feuille|3-9||`.split('\n').filter(Boolean).map(l=>{const a=l.split('|'),c=IXC[a[1]]||IXC.vi;return{n:a[0],k:a[1],t:a[2],S:a[3]=='-'?'':(a[3]||c[3]),P:a[4]=='-'?'':(a[4]||c[2]),pg:a[5]||''}});
+Object.values(ls('idxadd',{})).forEach(q=>{const k=norm(q.n);if(!QC[k])QC[k]={n:q.n,t:q.t,cat:q.cat,S:q.S||'',P:q.P||'',R:'',T:'',ap:true}});
+{const CL2={'':'Toutes catégories',potager:'Potager',aromatique:'Aromatiques',fruitier:'Fruitiers',fleur:'Fleurs',arbre:'Arbres',arbuste:'Arbustes',conifere:'Conifères',vivace:'Vivaces',annuelle:'Annuelles',grimpante:'Grimpantes',bulbe:'Bulbes'},o=Object.entries(CL2).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');$('#qc').innerHTML=o;$('#smc').innerHTML=o}
+function ixPool(){const have=new Set(P.map(p=>norm(p.n))),qc=$('#qc').value;return IXD.filter(x=>!have.has(norm(x.n))&&(!qc||IXC[x.k][1]==qc))}
+function ixMatch(){const q=norm($('#q').value);return q?ixPool().filter(x=>norm(x.n).includes(q)):[]}
+let IA=ls('idxadd',{});
+function addIx(x,quiet){const k=norm(x.n);if(P.some(p=>norm(p.n)==k))return;const c=IXC[x.k],f=IXF[x.k]||IXF.vi;
+ QC[k]={n:x.n,t:x.t,cat:c[1],S:x.S,P:x.P,R:'',T:'',ap:true};IA[k]={n:x.n,t:x.t,cat:c[1],S:x.S,P:x.P};
+ if(!FI[k])FI[k]={exp:'Soleil',prof:f[0],ep:f[1],rg:f[2],j:0};
+ if(!quiet){sv('idxadd',IA);sv('fiches',FI)}
+ P.push({n:x.n,t:x.t,f:[],o:[],s:sTxt(QC[k])})}
+const ixSave=()=>{sv('idxadd',IA);sv('fiches',FI)};
+function drawIx(){const el=$('#pix'),q=norm($('#q').value);if(!q){const n=ixPool().length;el.innerHTML=n?`<b>Index de plantes</b> : ${n} autres plantes à ajouter à votre liste. Tapez un nom dans la recherche pour les trouver.`:'<b>Index de plantes</b> : toutes les plantes de l\'index sont dans votre liste.';return}
+ const m=ixMatch();el.innerHTML=`<b>Dans l'index, pas encore dans votre liste</b> (${m.length})${m.length?` <button class="btn" id="pixall" style="margin-left:.5rem">Tout ajouter (${Math.min(m.length,60)})</button>`:''}<div style="margin-top:.5rem">`
+ +(m.slice(0,40).map(x=>`<div class="row"><span><b>${esc(x.n)}</b> <small style="opacity:.8">${IXC[x.k][0]} · ${x.t}${x.pg?' · livre p. '+x.pg:''}</small></span><button class="btn" data-ix="${esc(x.n)}">Ajouter</button></div>`).join('')||'<span style="opacity:.8">Aucun résultat dans l\'index. Créez cette plante avec le formulaire « Ajouter » plus haut.</span>')
+ +(m.length>40?`<div style="opacity:.8;margin-top:.4rem">… et ${m.length-40} autres : précisez la recherche.</div>`:'')+'</div>'}
+$('#pix').onclick=e=>{const b=e.target;if(b.dataset.ix){const x=IXD.find(z=>z.n==b.dataset.ix);if(x){addIx(x);drawP()}}else if(b.id=='pixall'){const l=ixMatch().slice(0,60);if(l.length&&confirm('Ajouter '+l.length+' plantes à votre liste ?')){l.forEach(x=>addIx(x,true));ixSave();drawP()}}};
+if(ls('seedv',0)<3){sv('plantes_backup3',P);IXD.forEach(x=>addIx(x,true));ixSave();sv('seedv',3)}
+const _dp=drawP;drawP=function(){_dp();drawIx()};
+$('#q').oninput=()=>drawP();
+drawP();
+/* ---- Bouturage : plantes de l'index du livre ---- */
+const BDX=`Achillée|ec|vivace|3-4,9-10|Divisez la touffe tous les 3 à 4 ans.
+Acaena|ec|vivace|3-4,9-10|Séparez les rosettes déjà enracinées.
+Alchémille|ec|vivace|3-4,9-10|Divisez les touffes.
+Alstroemère|ec|vivace|3-4|Divisez les rhizomes avec précaution, sans casser les racines.
+Aster|ec|vivace|3-4,9-10|Divisez les touffes, de préférence au printemps.
+Astilbe|ec|vivace|3-4,9-10|Divisez la souche tous les 3 à 4 ans.
+Astrance|ec|vivace|3-4,9-10|Divisez la touffe en éclats munis de racines.
+Barbe-de-bouc|ec|vivace|3-4,9-10|Divisez la souche à la bêche, chaque morceau avec des bourgeons.
+Bec-de-grue|ec|vivace|3-4,9-10|Divisez la touffe ou séparez des éclats de rhizome.
+Benoîte|ec|vivace|3-4,9-10|Divisez la touffe tous les 3 ans.
+Bergénia|ec|vivace|4-5,9-10|Divisez les rhizomes après la floraison.
+Bouton-d'argent|ec|vivace|3-4|Divisez la touffe au printemps.
+Bambou|ec|vivace|3-4|Divisez la touffe à la bêche ou à la hache.
+Heuchère|ec|vivace|3-4,9-10|Divisez la touffe et replantez un peu plus profond.
+Joubarbe|ec|vivace|4-9|Détachez les rosettes filles : elles s'enracinent facilement.
+Leucanthème|ec|vivace|3-4,9-10|Divisez les touffes.
+Lin de Nouvelle-Zélande|ec|vivace|3-4|Divisez la souche à la bêche et raccourcissez le feuillage.
+Lysimaque|ec|vivace|3-4,9-10|Divisez les rhizomes, souvent envahissants.
+Marguerite d'automne|ec|vivace|3-4|Divisez la touffe au printemps.
+Monarde|ec|vivace|3-4,9-10|Divisez les touffes tous les 3 ans.
+Muguet|ec|vivace|9-10|Divisez les rhizomes (les pieds) et replantez aussitôt.
+Oenothère|ec|vivace|3-4|Divisez la touffe au printemps.
+Omphalodes|ec|vivace|3-4,9-10|Divisez la touffe.
+Oreille d'ours|ec|vivace|4-5|Détachez les rejets après la floraison.
+Osmonde royale|ec|vivace|3-4|Divisez la souche en préservant les racines.
+Pâquerette|ec|annuelle|5-6|Divisez les touffes après la floraison.
+Pivoine|ec|vivace|9-10|Divisez la souche à l'automne, chaque éclat avec 3 à 5 yeux.
+Primevère|ec|vivace|5-6|Divisez les touffes après la floraison.
+Pyrèthre|ec|vivace|3-4,9-10|Divisez la touffe.
+Renouée|ec|vivace|3-4,9-10|Divisez les touffes au printemps ou à l'automne.
+Rodgersia|ec|vivace|3-4|Divisez les rhizomes.
+Arum d'Éthiopie|ec|bulbe|3-4|Divisez les rhizomes en gardant un œil par morceau.
+Agapanthe|ec|bulbe|3-4|Divisez en gros morceaux, tous les 4 à 5 ans.
+Canna|ec|bulbe|3-4|Coupez le rhizome en morceaux portant chacun un œil.
+Montbretia|ec|bulbe|3-4|Séparez les cormes et les cormeaux.
+Liatris|ec|bulbe|3-4|Divisez les cormes.
+Jonquille|ec|bulbe|6-7|Soulevez les touffes quand le feuillage jaunit et séparez les bulbes.
+Narcisse|ec|bulbe|6-7|Soulevez et séparez les bulbes après la fanaison du feuillage.
+Perce-neige|ec|bulbe|3-4|Divisez en végétation, juste après la floraison.
+Petit houx|ec|arbuste|3-4|Divisez la touffe à la bêche.
+Pimprenelle|ec|aromatique|3-4|Divisez la touffe.
+Oseille|ec|potager|3-4,9-10|Divisez la touffe.
+Agastache|hb|vivace|5-7|Pousse non fleurie de 8 à 10 cm.
+Anthémis|hb|vivace|4-6|Rejet de base prélevé au printemps.
+Arabette|hb|vivace|5-7|Tiges non fleuries, après la floraison.
+Aubriète|hb|vivace|5-7|Tiges non fleuries, après la floraison.
+Campanule|hb|vivace|4-6|Rejets de base de 5 à 8 cm.
+Herbe-aux-chats|hb|vivace|5-7|Tiges de 8 à 10 cm.
+Lierre terrestre|hb|vivace|5-9|Tiges rampantes déjà racinées.
+Lin vivace|hb|vivace|5-7|Pousses tendres non fleuries.
+Lupin|hb|vivace|4-5|Rejets de base de 8 cm, avec un petit morceau de souche.
+Mimulus|hb|vivace|5-8|Tiges tendres, très faciles.
+Orpin|hb|vivace|5-8|Tiges de 8 à 10 cm : elles s'enracinent très facilement.
+Pervenche|hb|vivace|5-9|Tiges rampantes déjà racinées au sol.
+Phlox paniculé|hb|vivace|4-6|Tiges de 8 cm sur de jeunes pousses de printemps.
+Armoise|hb|aromatique|5-8|Tiges de 10 cm sans fleurs.
+Patate douce|hb|potager|4-6|Faites germer un tubercule, détachez les pousses et enracinez-les dans l'eau.
+Bégonia à massifs|hb|fleur|5-8|Extrémité de tige avec 2 feuilles.
+Bégonia tubéreux|hb|fleur|4-5|Jeunes pousses de 5 cm prélevées sur le tubercule.
+Bidens|hb|fleur|5-8|Tige tendre non fleurie.
+Brachyscome|hb|fleur|5-8|Tige tendre non fleurie.
+Impatience|hb|fleur|5-8|Extrémité de tige de 8 cm : s'enracine aussi dans l'eau.
+Impatience de Nouvelle-Guinée|hb|fleur|5-8|Extrémité de tige de 8 cm, en atmosphère chaude.
+Lantana|hb|fleur|5-8|Tige non fleurie, à rentrer l'hiver.
+Pétunia|hb|fleur|5-8|Extrémité de tige, surtout pour les variétés retombantes.
+Némésie|hb|fleur|5-8|Tige tendre non fleurie.
+Lobélia|hb|fleur|5-7|Tiges tendres des variétés vivaces.
+Passiflore|hb|grimpante|5-8|Tige avec 2 à 3 nœuds, au chaud.
+Abélia|sa|arbuste|7-9|Pousse de l'année de 10 cm.
+Agneau-chaste|sa|arbuste|7-9|Pousse de l'année avec 2 paires de feuilles.
+Airelle|sa|arbuste|7-9|Pousse de l'année, en terre de bruyère.
+Andromède|sa|arbuste|7-9|Pousse de l'année, en terre de bruyère.
+Arbre à perruques|sa|arbuste|6-8|Pousse tendre de l'année.
+Argousier|bs|arbuste|11-3|Rameau d'un an de 20 cm.
+Aucuba du Japon|sa|arbuste|7-9|Pousse de l'année avec quelques feuilles.
+Azalée|sa|arbuste|7-9|Pousse de l'année de 8 cm, en terre de bruyère.
+Baguenaudier commun|sa|arbuste|6-8|Pousse de l'année encore tendre.
+Berbéris|sa|arbuste|7-9|Pousse de l'année de 10 cm.
+Bruyère|sa|arbuste|7-9|Brins de 4 à 5 cm, en terre de bruyère.
+Buis|sa|arbuste|7-9|Rameaux de 8 à 10 cm ; possible aussi en septembre-octobre.
+Buisson-ardent|sa|arbuste|7-9|Pousse de l'année de 10 cm.
+Buplèvre|sa|arbuste|7-9|Pousse de l'année.
+Callune|sa|arbuste|7-9|Brins de 4 à 5 cm, en terre de bruyère.
+Camélia|sa|arbuste|7-9|Pousse de l'année de 8 à 10 cm, sous étouffée aérée.
+Céanothe|sa|arbuste|7-9|Pousse de l'année.
+Hibiscus|sa|arbuste|6-8|Pousse de l'année ; possible aussi à bois sec en hiver.
+Houx commun|sa|arbuste|8-10|Rameau de l'année : enracinement lent.
+Laurier-cerise|sa|arbuste|7-9|Pousse de l'année de 10 à 15 cm.
+Lavande à toupet|sa|arbuste|7-10|Pousse non fleurie, substrat très drainant.
+Lilas des Indes|sa|arbuste|6-8|Pousse tendre ; possible aussi à bois sec en hiver.
+Mahonia du Japon|sa|arbuste|8-10|Tronçon de tige avec un œil, en châssis.
+Millepertuis|sa|arbuste|6-9|Pousse de l'année.
+Myrte|sa|arbuste|7-9|Pousse de l'année, à garder hors gel.
+Olivier|sa|arbuste|7-9|Rameau de l'année : enracinement lent et difficile.
+Osier des vanniers|bs|arbuste|11-3|Rameau d'un an planté en sol frais.
+Potentille|sa|arbuste|6-8|Pousse de l'année.
+Rhododendron|sa|arbuste|7-9|Pousse de l'année en terre de bruyère : assez difficile.
+Aralia élevé|ra|arbuste|11-2|Tronçons de racine en repos de végétation.
+Myrtille|sa|fruitier|7-9|Pousse de l'année, en terre de bruyère.
+Mûrier|bs|fruitier|11-3|Rameau d'un an.
+Peuplier|bs|arbre|11-3|Rameau d'un an planté en sol frais.
+Peuplier blanc de Hollande|bs|arbre|11-3|Rameau d'un an planté en sol frais.
+Platane|bs|arbre|11-2|Rameau d'un an planté en sol frais.
+Actinidia|sa|grimpante|6-8|Tige de l'année avec 2 à 3 nœuds.
+Kiwi|sa|grimpante|6-8|Tige de l'année ; possible aussi à bois sec en hiver.
+Bignone|sa|grimpante|7-9|Tige de l'année.
+Bougainvillée|sa|grimpante|5-8|Tige semi-aoûtée, au chaud, sous étouffée.
+Hortensia grimpant|sa|grimpante|6-8|Pousse de l'année avec un nœud.
+Jasmin|sa|grimpante|7-9|Tige de l'année.
+Jasmin étoilé|sa|grimpante|7-9|Tige de l'année.
+Œillet|sa|vivace|6-8|Rameau latéral de 8 cm non fleuri.
+Penstemon|sa|vivace|7-9|Pousse non fleurie de 8 cm : à abriter l'hiver.
+Ibéris|sa|vivace|6-8|Rameaux non fleuris, après la floraison.
+Lithospermum|sa|vivace|6-8|Pousse de 5 à 8 cm, en terre sans calcaire.
+If commun|cf|conifere|10-2|Bouture à talon de 10 à 15 cm, en châssis froid.
+If d'Irlande|cf|conifere|10-2|Bouture à talon de 10 à 15 cm, en châssis froid.
+Raifort|ra|potager|11-3|Tronçons de racine de 15 cm plantés en biais.`.split('\n').filter(Boolean).map(l=>{const a=l.split('|');return{n:a[0],t:a[1],c:a[2],m:a[3],tip:a[4]}});
+BDX.forEach(r=>{if(!BD.some(b=>b.n==r.n&&b.t==r.t))BD.push(r)});
+/* ---- Application installable (PWA) : hors ligne et icône sur l'écran d'accueil ---- */
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+{let ip=null;const b=$('#inst');
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();ip=e;b.hidden=false});
+ window.addEventListener('appinstalled',()=>{b.hidden=true;ip=null});
+ b.onclick=async()=>{$('#nav').classList.remove('open');$('#mb').textContent='☰';$('#mb').setAttribute('aria-expanded',false);if(ip){ip.prompt();await ip.userChoice.catch(()=>{});ip=null;b.hidden=true}}}
+</script></body></html>
