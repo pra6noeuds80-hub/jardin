@@ -66,12 +66,12 @@ nav{max-height:none;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scroll-
  <div class="grid2"><div class="panel"><h3>Conseils du jour</h3><div id="hc"></div><button class="btn main" id="hgo" style="margin-top:.6rem">Que faire aujourd'hui ?</button></div><div class="panel"><h3>Les 7 prochains jours</h3><div id="hn"></div></div><div class="panel"><h3>Alertes météo</h3><div class="bar"><select id="hwc" aria-label="Ville"></select></div><div id="hw">Chargement…</div></div></div>
 </section>
 <section class="page" id="cal"><h2>Calendrier lunaire</h2>
- <div class="bar"><button class="btn" id="pm">◀</button><b id="mt" style="min-width:10rem;text-align:center"></b><button class="btn" id="nm">▶</button><button class="btn" id="tdy">Aujourd'hui</button><button class="btn main" id="gcb">📅 Google Agenda</button>
+ <div class="bar"><button class="btn" id="pm">◀</button><b id="mt" style="min-width:10rem;text-align:center"></b><button class="btn" id="nm">▶</button><button class="btn" id="tdy">Aujourd'hui</button><button class="btn main" id="gcb">📅 Google Agenda</button><button class="btn" id="pdm">📄 PDF du mois</button><button class="btn" id="pda">📄 PDF de l'année</button>
  <span><span class="tag Fruit">Fruit</span><span class="tag Racine">Racine</span><span class="tag Fleur">Fleur</span><span class="tag Feuille">Feuille</span></span></div>
  <div class="cal" id="cg"></div>
  <div class="panel" id="gcp" style="display:none;margin-top:1rem"><h3 style="margin-top:0">Synchroniser avec Google Agenda</h3>
  <div class="bar"><label>Période <select id="gcr"><option value="1">Mois affiché</option><option value="3">3 mois</option><option value="12">12 mois</option></select></label></div>
- <div class="bar"><label><input type="checkbox" id="gph" checked> Phases de la lune</label><label><input type="checkbox" id="gjr" checked> Jour lunaire et signe</label><label><input type="checkbox" id="gnt" checked> Mes notes</label><label><input type="checkbox" id="gtk" checked> Mes tâches du mois</label></div>
+ <div class="bar"><label><input type="checkbox" id="gph" checked> Phases de la lune</label><label><input type="checkbox" id="gjr" checked> Jour lunaire et signe</label><label><input type="checkbox" id="gqf" checked> Que faire (semis, plantation, bouturage, greffe)</label><label><input type="checkbox" id="gnt" checked> Mes notes</label><label><input type="checkbox" id="gtk" checked> Mes tâches du mois</label></div>
  <div class="bar"><button class="btn main" id="gdl">Télécharger pour Google Agenda (.ics)</button><button class="btn" id="g1">Ajouter le jour sélectionné</button></div>
  <small style="opacity:.85">Sur ordinateur : ouvrez calendar.google.com, puis ⚙ Paramètres, Importer et exporter, Importer, et choisissez le fichier. Sur téléphone : ouvrez le fichier téléchargé avec Google Agenda. Les événements ont un identifiant fixe, donc réimporter le même mois devrait les mettre à jour sans doublon. Ce n'est pas une synchronisation automatique : il faut recommencer pour envoyer vos nouvelles notes.</small></div>
  <div class="panel" style="margin-top:1rem"><h3 id="ct"></h3><div id="ci"></div><textarea id="cn" placeholder="Notes du jour : semis, récoltes, météo, observations…"></textarea></div>
@@ -911,20 +911,23 @@ drawR();
 const icsEsc=s=>String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
 function fold(l){const te=new TextEncoder();let o='',n=0;for(const ch of l){const b=te.encode(ch).length;if(n+b>73){o+='\r\n ';n=1}o+=ch;n+=b}return o}
 const ymd=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+function qfInfo(d){const r=todo(d);if(r.nd)return null;const L=TFS.map(([k,t])=>[t,tfMerge(r.g[k])]).filter(x=>x[1].length);if(!L.length)return null;
+ return{title:'Au jardin : '+L.map(([t,l])=>t.split(' ')[0]+' '+l.length).join(' · '),text:L.map(([t,l])=>t+' ('+l.length+') : '+l.slice(0,40).map(x=>(x.id?'⭐ ':'')+x.n+(x.tags&&x.tags.length?' ['+x.tags.join(', ')+']':'')).join(', ')+(l.length>40?' …':'')).join('\n\n')+'\n\n⭐ = idéal. Traditions de jardinage : la météo reste décisive.'}}
 function buildICS(start,end,o){const ev=[],stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
  const add=(uid,d,sum,desc)=>{const e=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);ev.push(['BEGIN:VEVENT','UID:'+uid+'@jardinlunaire','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+ymd(d),'DTEND;VALUE=DATE:'+ymd(e),'SUMMARY:'+icsEsc(sum),'DESCRIPTION:'+icsEsc(desc||''),'TRANSP:TRANSPARENT','END:VEVENT'].map(fold).join('\r\n'))};
  for(let d=new Date(start);d<end;d.setDate(d.getDate()+1)){const k=iso(d),a=astro(d),pv=astro(new Date(d.getFullYear(),d.getMonth(),d.getDate()-1));
   if(o.ph&&Math.floor(a.ph/90)!=Math.floor(pv.ph/90))add('phase-'+k,d,['🌑 Nouvelle lune','🌓 Premier quartier','🌕 Pleine lune','🌗 Dernier quartier'][Math.floor(a.ph/90)],`${a.ill} % éclairée. Lune en ${a.sg[0]}.`);
   if(o.jr)add('jour-'+k,d,`${DI[a.day]} Jour ${a.day.toLowerCase()} · Lune en ${a.sg[0]} ${a.mont?'↑':'↓'}`,`${a.nom}, ${a.ill} % éclairée.\nLune ${a.cr?'croissante':'décroissante'}, ${a.mont?'montante':'descendante'}.\n${a.sg[3]}.${a.nd?'\nNœud lunaire : évitez de couper cheveux et ongles.':''}`);
+  if(o.qf){const q=qfInfo(d);if(q)add('faire-'+k,d,q.title,q.text)}
   if(o.nt&&notes[k])add('note-'+k,d,'📝 '+String(notes[k]).split('\n')[0].slice(0,60),notes[k]);
   if(o.tk&&d.getDate()==1)K.filter(t=>t.m!==''&&+t.m==d.getMonth()).forEach(t=>add('tache-'+k+'-'+norm(t.t).replace(/\W+/g,'').slice(0,20),d,(t.ok?'✅ ':'🌱 ')+t.t,'Tâche du jardin ('+JM[d.getMonth()]+')'))}
  return['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jardin lunaire//FR','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Jardin lunaire',...ev,'END:VCALENDAR'].join('\r\n')+'\r\n'}
 $('#gcb').onclick=()=>{const p=$('#gcp');p.style.display=p.style.display=='none'?'block':'none'};
 $('#gdl').onclick=()=>{const s=new Date(cur.getFullYear(),cur.getMonth(),1),e=new Date(s.getFullYear(),s.getMonth()+(+$('#gcr').value),1),
- t=buildICS(s,e,{ph:$('#gph').checked,jr:$('#gjr').checked,nt:$('#gnt').checked,tk:$('#gtk').checked}),a=document.createElement('a');
+ t=buildICS(s,e,{ph:$('#gph').checked,jr:$('#gjr').checked,nt:$('#gnt').checked,tk:$('#gtk').checked,qf:$('#gqf').checked}),a=document.createElement('a');
  a.href=URL.createObjectURL(new Blob([t],{type:'text/calendar;charset=utf-8'}));a.download='jardin-lunaire-'+s.getFullYear()+'-'+String(s.getMonth()+1).padStart(2,'0')+'.ics';document.body.appendChild(a);a.click();a.remove()};
 $('#g1').onclick=()=>{const[y,m,d]=sel.split('-').map(Number),dt=new Date(y,m-1,d),a=astro(dt),n=new Date(y,m-1,d+1),
- det=`${a.nom}, ${a.ill} % éclairée. Lune en ${a.sg[0]}.\n${a.sg[3]}.${notes[sel]?'\n\nNotes : '+notes[sel]:''}`;
+ q=qfInfo(dt),det=`${a.nom}, ${a.ill} % éclairée. Lune en ${a.sg[0]}.\n${a.sg[3]}.${q?'\n\n'+q.text:''}${notes[sel]?'\n\nNotes : '+notes[sel]:''}`;
  window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(`${a.em} Jour ${a.day.toLowerCase()} · Lune en ${a.sg[0]}`)+'&dates='+ymd(dt)+'/'+ymd(n)+'&details='+encodeURIComponent(det),'_blank','noopener')};
 /* ---- Bouturage : calendrier, espèces, comment faire ---- */
 const BT={hb:['Herbacée (tige tendre)','#4ea884'],sa:['Semi-aoûtée','#c9a45c'],bs:['Bois sec (hiver)','#a9713a'],cf:['Conifères','#3a6d8c'],fe:['Feuille','#b0417a'],ra:['Racine','#e0654e'],ec:['Éclat de souche','#8a6fc9'],ea:["Dans l'eau",'#5b8fd9']};
@@ -1569,4 +1572,76 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.
  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();ip=e;b.hidden=false});
  window.addEventListener('appinstalled',()=>{b.hidden=true;ip=null});
  b.onclick=async()=>{$('#nav').classList.remove('open');$('#mb').textContent='☰';$('#mb').setAttribute('aria-expanded',false);if(ip){ip.prompt();await ip.userChoice.catch(()=>{});ip=null;b.hidden=true}}}
+/* ---- PDF du mois et de l'année : version imprimable décorée (affiche + estampille de droit d'auteur) ---- */
+const PCOL={F:'#e0654e',R:'#a9713a',L:'#b0417a',E:'#4ea884'},PTI={F:'#fbe6df',R:'#f0e3d3',L:'#f4deea',E:'#dff0e8'},PKEY={Fruit:'F',Racine:'R',Fleur:'L',Feuille:'E'},PNAME={F:'Fruit',R:'Racine',L:'Fleur',E:'Feuille'};
+const PMN=JM.map(m=>m.charAt(0).toUpperCase()+m.slice(1));
+const POG='<span class="og">᚛ᚏᚐᚉᚔᚅᚓ᚜ ᚛ᚚᚐᚄᚉᚐᚂ᚜</span>',PCOPY='© 2026 '+POG+' — Tous droits réservés';
+const PSEAL=`<svg class="seal" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="sc" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><circle cx="50" cy="50" r="48" fill="none" stroke="#7a1f45" stroke-width="2.6"/><circle cx="50" cy="50" r="44" fill="none" stroke="#7a1f45" stroke-width=".9"/><text font-size="9" fill="#7a1f45" letter-spacing="1" font-family="Georgia,serif"><textPath href="#sc">© 2026 · TOUS DROITS RÉSERVÉS · </textPath></text><text x="50" y="46" text-anchor="middle" font-size="11" fill="#7a1f45" class="og">᚛ᚏᚐᚉᚔᚅᚓ᚜</text><text x="50" y="62" text-anchor="middle" font-size="11" fill="#7a1f45" class="og">᚛ᚚᚐᚄᚉᚐᚂ᚜</text></svg>`;
+const PCSS=`@page{size:A4 landscape;margin:10mm 12mm 20mm}*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{font-family:Georgia,'Palatino Linotype','Liberation Serif','DejaVu Serif',serif;color:#14282a;font-size:9.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.og{font-family:'Segoe UI Historic','Noto Sans Ogham','DejaVu Sans',sans-serif}
+.frame{position:fixed;top:-7mm;left:-9mm;right:-9mm;bottom:-17mm;border:.5mm solid #c9a45c;border-radius:3mm;z-index:5}
+.wm{position:fixed;right:-6mm;bottom:-10mm;width:105mm;opacity:.08;z-index:0}
+.ft{position:fixed;left:0;right:0;bottom:-12.5mm;text-align:center;font-size:8.5pt;color:#40554f;z-index:6}
+.seal{position:fixed;right:-4mm;bottom:-16mm;width:14mm;height:14mm;z-index:6}
+.pg{page-break-after:always;position:relative;z-index:1}.pg:last-child{page-break-after:auto}
+h1{font-weight:400;font-size:24pt;margin:0;color:#123c40;line-height:1.1}h2{font-weight:400;font-size:15pt;color:#7a1f45;margin:0 0 2mm}h3{font-size:10pt;margin:0 0 1mm;color:#123c40}
+.hd{display:flex;align-items:center;gap:5mm;height:21mm;margin-bottom:2.5mm;border-bottom:.4mm solid #c9a45c}
+.arch{width:15mm;height:19mm;border:.5mm solid #c9a45c;border-radius:7.5mm 7.5mm 1.5mm 1.5mm;overflow:hidden;flex:none}.arch img{width:100%;height:100%;object-fit:cover;object-position:28% 32%}
+.sub{font-style:italic;color:#40554f;font-size:10pt}
+.mo{display:grid;grid-template-columns:1fr 66mm;gap:5mm}
+.g{display:grid;grid-template-columns:repeat(7,1fr);gap:.9mm}.dh{text-align:center;font-size:7.5pt;color:#7a1f45}
+.c{height:21.5mm;border:.2mm solid #cfc7b4;border-bottom-width:1.3mm;border-radius:1.2mm;padding:.9mm 1.2mm;position:relative;background:#fff;overflow:hidden}
+.c b{font-size:10pt;font-weight:700}.c .m{position:absolute;right:1mm;top:.8mm;width:6.5mm;height:6.5mm}
+.c .s{display:block;margin-top:2.2mm;font-size:6.6pt;line-height:1.15}.c .n{position:absolute;left:1.2mm;right:1mm;bottom:.8mm;font-size:6pt;color:#40554f;white-space:nowrap}
+.c.F{background:${PTI.F};border-bottom-color:${PCOL.F}}.c.R{background:${PTI.R};border-bottom-color:${PCOL.R}}.c.L{background:${PTI.L};border-bottom-color:${PCOL.L}}.c.E{background:${PTI.E};border-bottom-color:${PCOL.E}}
+.c.nd{background:repeating-linear-gradient(45deg,#ececec,#ececec 1.2mm,#f7f7f7 1.2mm,#f7f7f7 2.4mm);border-bottom-color:#777}
+.side h3{margin-top:2.5mm}.side .row{display:flex;align-items:center;gap:1.5mm;font-size:8.3pt;line-height:1.5}.side svg{width:4.5mm;height:4.5mm;flex:none}
+.sw{display:inline-block;width:3.2mm;height:3.2mm;border-radius:.6mm;flex:none}.side p{margin:0;font-size:8.2pt;line-height:1.4}
+.cols{column-count:3;column-gap:6mm}.cols section{break-inside:avoid;margin-bottom:3mm}.lst{margin:0;font-size:8.2pt;line-height:1.38}
+.cover{display:flex;align-items:center;gap:14mm;height:172mm;padding:0 14mm}.big{width:98mm;height:146mm;border:1mm solid #c9a45c;border-radius:49mm 49mm 4mm 4mm;overflow:hidden;flex:none;box-shadow:0 2mm 6mm #0003}.big img{width:100%;height:100%;object-fit:cover}
+.cover h1{font-size:34pt}.cover p{font-size:12.5pt;margin:3mm 0}
+.y4{display:grid;grid-template-columns:1fr 1fr;gap:3mm 9mm}.ym h3{font-size:11pt;color:#7a1f45;text-align:center;margin:0 0 1mm}
+.ym .g{gap:.5mm}.ym .c{height:11.2mm;border-bottom-width:1mm;padding:.5mm .8mm}.ym .c b{font-size:7pt}.ym .c .m{width:4.2mm;height:4.2mm;right:.6mm;top:.5mm}.ym .c.nd b:after{content:'●';font-size:5pt;color:#777;margin-left:.6mm}
+.leg{display:flex;gap:4mm;flex-wrap:wrap;font-size:7.8pt;margin-bottom:2mm;align-items:center}.leg .sw{margin-right:1mm}
+table{width:100%;border-collapse:collapse;font-size:8.5pt}th,td{border:.2mm solid #cfc7b4;padding:.9mm 1.4mm;text-align:center}th{background:#123c40;color:#f3efe6;font-weight:400}td:first-child{text-align:left;font-weight:700}tr:nth-child(even) td{background:#f6f1e6}th svg{width:4.5mm;height:4.5mm;vertical-align:middle}`;
+const pdfMoon=(ph)=>{const r=9.2,cx=10,cy=10,cv=Math.cos(ph*Math.PI/180),rx=Math.abs(cv)*r;let lit='';
+ if(ph>=179&&ph<=181)lit=`<circle cx="10" cy="10" r="${r}" fill="#f6edcf"/>`;
+ else if(ph<=1||ph>=359)lit='';
+ else if(ph<180)lit=`<path d="M${cx} ${cy-r} A${r} ${r} 0 0 1 ${cx} ${cy+r} A${rx.toFixed(2)} ${r} 0 0 ${ph<90?0:1} ${cx} ${cy-r} Z" fill="#f6edcf"/>`;
+ else lit=`<path d="M${cx} ${cy-r} A${r} ${r} 0 0 0 ${cx} ${cy+r} A${rx.toFixed(2)} ${r} 0 0 ${ph>270?1:0} ${cx} ${cy-r} Z" fill="#f6edcf"/>`;
+ return`<svg class="m" viewBox="0 0 20 20"><circle cx="10" cy="10" r="${r}" fill="#2c4a52"/>${lit}<circle cx="10" cy="10" r="${r}" fill="none" stroke="#c9a45c" stroke-width=".9"/></svg>`};
+function pdfPhases(y,m){const o=[];for(let i=1;i<=new Date(y,m+1,0).getDate();i++){const a=astro(new Date(y,m,i)),p=astro(new Date(y,m,i-1)),q=Math.floor(a.ph/90);if(q!=Math.floor(p.ph/90))o.push({d:i,q})}return o}
+const PQN=['Nouvelle lune','Premier quartier','Pleine lune','Dernier quartier'],PQP=[0,90,180,270];
+function pdfSets(m1){const nm=l=>[...new Set(l)].sort((a,b)=>a.localeCompare(b,'fr')),has=(s,m)=>mset(s).has(m),qs=p=>QC[norm(p.n)];
+ const fl=[...FL0,...FLI,...FLC].filter(f=>inM(m1,f.a,f.b)).map(f=>f.n);
+ return{sem:nm(P.filter(p=>{const q=qs(p);return q?has(q.S,m1):mois(p.s).includes(m1-1)}).map(p=>p.n)),pla:nm(P.filter(p=>{const q=qs(p);return q&&has(q.P,m1)}).map(p=>p.n)),
+  rec:nm(P.filter(p=>{const q=qs(p);return q&&has(q.R,m1)}).map(p=>p.n)),tai:nm(P.filter(p=>{const q=qs(p);return q&&has(q.T,m1)}).map(p=>p.n)),
+  bou:nm(BD.filter(r=>has(r.m,m1)).map(r=>r.n)),gre:nm(GFD.filter(r=>has(r.m,m1)).map(r=>r.n)),flo:nm(fl)}}
+const pdfHd=(t,s,u)=>`<div class="hd"><div class="arch"><img src="${u}" alt=""></div><div><h1>${t}</h1><div class="sub">${s}</div></div></div>`;
+function pdfMonth(y,m,u){const n=new Date(y,m+1,0).getDate(),first=(new Date(y,m,1).getDay()+6)%7,m1=m+1,ph=pdfPhases(y,m);let g=JS.map(j=>`<div class="dh">${j.slice(0,3)}</div>`).join('')+'<div></div>'.repeat(first);
+ const D={F:[],R:[],L:[],E:[]},N=[];
+ for(let i=1;i<=n;i++){const d=new Date(y,m,i),a=astro(d),k=PKEY[a.day],r=todo(d),c=x=>tfMerge(r.g[x]).length;if(a.nd)N.push(i);else D[k].push(i);
+  g+=`<div class="c ${a.nd?'nd':k}"><b>${i}</b>${pdfMoon(a.ph)}<span class="s">${a.sg[0]} ${a.mont?'↑':'↓'}${a.nd?'<br>nœud lunaire':''}</span>${r.nd?'':`<span class="n">S${c('sem')} P${c('pla')} B${c('bou')} G${c('gre')}</span>`}</div>`}
+ const nt=Object.keys(notes).filter(k=>k.startsWith(y+'-'+String(m1).padStart(2,'0'))).sort();
+ const side=`<div class="side"><h3>Légende</h3>${Object.keys(PNAME).map(k=>`<div class="row"><span class="sw" style="background:${PCOL[k]}"></span>Jour ${PNAME[k].toLowerCase()}</div>`).join('')}<p style="margin-top:1mm">↑ lune montante · ↓ descendante<br>S semer · P planter · B bouturer · G greffer<br>(nombre de possibilités du jour)</p>
+ <h3>Phases de la lune</h3>${ph.map(p=>`<div class="row">${pdfMoon(PQP[p.q])}${PQN[p.q]} : ${p.d} ${JM[m]}</div>`).join('')}
+ <h3>Meilleurs jours</h3>${Object.keys(PNAME).map(k=>`<p><b style="color:${PCOL[k]}">${PNAME[k]}</b> : ${D[k].join(', ')||'—'}</p>`).join('')}
+ ${N.length?`<h3>Nœuds lunaires</h3><p>${N.join(', ')} : on évite de semer, planter, bouturer et greffer.</p>`:''}
+ ${nt.length?`<h3>Mes notes</h3>${nt.slice(0,8).map(k=>`<p><b>${+k.slice(8)}</b> : ${esc(String(notes[k]).replace(/\s+/g,' ').slice(0,70))}</p>`).join('')}`:''}</div>`;
+ const S=pdfSets(m1),sec=(t,l)=>`<section><h3>${t} <small>(${l.length})</small></h3><p class="lst">${l.map(esc).join(', ')||'—'}</p></section>`;
+ return`<div class="pg">${pdfHd(PMN[m]+' '+y,'Calendrier lunaire du jardin',u)}<div class="mo"><div class="g">${g}</div>${side}</div></div>
+ <div class="pg">${pdfHd('Que faire en '+JM[m],'Semis, plantation, récolte, bouturage, greffe et floraisons',u)}<div class="cols">${sec('Semer',S.sem)}${sec('Planter',S.pla)}${sec('Récolter',S.rec)}${sec('Tailler (fruitiers)',S.tai)}${sec('Bouturer',S.bou)}${sec('Greffer',S.gre)}${sec('En fleur',S.flo)}</div></div>`}
+function pdfYear(y,u){let b=`<div class="pg"><div class="cover"><div class="big"><img src="${u}" alt=""></div><div><h1>Calendrier lunaire<br>du jardin ${y}</h1><p>Phases de la lune, jours fruit, racine, fleur et feuille, lune montante et descendante, mois par mois.</p><p class="sub">Semis, plantation, bouturage, greffe et floraisons.</p></div></div></div>`;
+ const leg=`<div class="leg">${Object.keys(PNAME).map(k=>`<span><span class="sw" style="background:${PCOL[k]}"></span>${PNAME[k]}</span>`).join('')}<span>● jour de nœud lunaire</span><span>Les lunes sont dessinées jour par jour.</span></div>`;
+ for(let p=0;p<3;p++){let h='';for(let m=p*4;m<p*4+4;m++){const n=new Date(y,m+1,0).getDate(),first=(new Date(y,m,1).getDay()+6)%7;let g=JS.map(j=>`<div class="dh">${j.slice(0,1)}</div>`).join('')+'<div></div>'.repeat(first);
+   for(let i=1;i<=n;i++){const a=astro(new Date(y,m,i));g+=`<div class="c ${a.nd?'nd':PKEY[a.day]}"><b>${i}</b>${pdfMoon(a.ph)}</div>`}h+=`<div class="ym"><h3>${PMN[m]}</h3><div class="g">${g}</div></div>`}
+  b+=`<div class="pg">${pdfHd('Année '+y+' : '+JM[p*4]+' à '+JM[p*4+3],'Calendrier lunaire du jardin',u)}${leg}<div class="y4">${h}</div></div>`}
+ let rows='';for(let m=0;m<12;m++){const ph=pdfPhases(y,m),S=pdfSets(m+1);rows+=`<tr><td>${PMN[m]}</td>${[0,1,2,3].map(q=>`<td>${ph.filter(p=>p.q==q).map(p=>p.d).join(' · ')||'—'}</td>`).join('')}<td>${S.sem.length}</td><td>${S.pla.length}</td><td>${S.rec.length}</td><td>${S.tai.length}</td><td>${S.bou.length}</td><td>${S.gre.length}</td><td>${S.flo.length}</td></tr>`}
+ b+=`<div class="pg">${pdfHd('Résumé de l\'année '+y,'Phases de la lune (jour du mois) et nombre de plantes concernées',u)}<table><thead><tr><th>Mois</th>${PQP.map(p=>`<th>${pdfMoon(p).replace('class="m"','')}</th>`).join('')}<th>Semer</th><th>Planter</th><th>Récolter</th><th>Tailler</th><th>Bouturer</th><th>Greffer</th><th>En fleur</th></tr></thead><tbody>${rows}</tbody></table><p class="sub" style="margin-top:3mm">Colonnes de gauche : nouvelle lune, premier quartier, pleine lune, dernier quartier. Les traditions de jardinage suivent la lune sans effet démontré ; la météo reste décisive.</p></div>`;
+ return b}
+function pdfDoc(title,body){return`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>${esc(title)}</title><style>${PCSS}</style></head><body><div class="frame"></div><img class="wm" src="${new URL('poster.jpg',location.href).href}" alt=""><div class="ft">${PCOPY}</div>${PSEAL}${body}</body></html>`}
+function pdfOpen(title,body){const w=window.open('','_blank');if(!w){alert('Autorisez les fenêtres pop-up pour créer le PDF.');return}w.document.open();w.document.write(pdfDoc(title,body));w.document.close();const go=()=>{try{w.focus();w.print()}catch(e){}};w.onload=()=>setTimeout(go,400);setTimeout(go,2500)}
+$('#pdm').onclick=()=>pdfOpen('Jardin lunaire - '+PMN[cur.getMonth()]+' '+cur.getFullYear(),pdfMonth(cur.getFullYear(),cur.getMonth(),new URL('poster.jpg',location.href).href));
+$('#pda').onclick=()=>pdfOpen('Jardin lunaire - '+cur.getFullYear(),pdfYear(cur.getFullYear(),new URL('poster.jpg',location.href).href));
 </script></body></html>
